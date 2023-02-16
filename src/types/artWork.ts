@@ -9,7 +9,7 @@
 interface artWork {
   date?: Date
   /**
-   * Optional description of the piece.
+   * [MARKDOWN OPTIONAL] Optional description of the piece.
    * Will not display anything if this is undefined.
    */
   description?: string

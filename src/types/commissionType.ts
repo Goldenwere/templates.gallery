@@ -3,7 +3,7 @@
  */
 interface commissionType {
   /**
-   * The details of a commission.
+   * [MARKDOWN OPTIONAL] The details of a commission.
    */
   details: string
   /**

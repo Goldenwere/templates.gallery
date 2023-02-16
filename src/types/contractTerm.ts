@@ -4,17 +4,17 @@
  */
 interface contractTerm {
   /**
-   * Simplified version of the terms.
+   * [MARKDOWN OPTIONAL] Simplified version of the terms.
    * Ignored if terms is an array of `contractTerm` and intro is unset.
    */
   simple?: string
   /**
-   * An introductory section of terms if `terms` is set to an array of `contractTerm`.
+   * [MARKDOWN OPTIONAL] An introductory section of terms if `terms` is set to an array of `contractTerm`.
    * This will still be inserted if `terms` is just a string, but is intended for `terms` being `contractTerm[]`
    */
   intro?: string
   /**
-   * TOS terms, either a collection of more terms, or a string.
+   * [MARKDOWN OPTIONAL (if string)] TOS terms, either a collection of more terms, or a string.
    */
   terms: contractTerm[] | string
   /**

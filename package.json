@@ -9,14 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dompurify": "^3.0.0",
     "js-yaml": "^4.1.0",
+    "marked": "^4.2.12",
     "normalize.css": "^8.0.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.4.0",
     "@types/js-yaml": "^4.0.5",
+    "@types/marked": "^4.0.8",
     "@vitejs/plugin-vue": "^4.0.0",
     "pug": "^3.0.2",
     "sass": "^1.58.1",
