@@ -10,6 +10,23 @@ export const SiteRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     component: home,
+    name: 'home',
+  },
+  {
+    path: '/tos',
+    component: home,
+    name: 'tos'
+  },
+  {
+    path: '/commission',
+    component: home,
+    name: 'commission',
+  },
+  {
+    path: '/gallery/:id',
+    component: home,
+    props: true,
+    name: 'gallery',
   },
 ]
 

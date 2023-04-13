@@ -1,24 +1,12 @@
-import {
-  createApp,
-} from 'vue'
-import {
-  createStore,
-} from 'vuex'
-import * as AppStore from './store/store'
-import App from './main.vue'
-import router from './router'
-
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './main.sass'
+import router from './router'
+import app from './main.vue'
 
-const store = createStore({
-  state: AppStore.state,
-  getters: AppStore.getter,
-  mutations: AppStore.mutations,
-})
-
-createApp(App)
+createApp(app)
   .use(router)
-  .use(store)
+  .use(createPinia())
   .directive('focus', {
     mounted (el) {
       el.focus()
