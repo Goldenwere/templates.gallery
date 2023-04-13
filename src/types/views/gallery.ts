@@ -1,7 +1,7 @@
-import artWork from '@/types/artWork';
+import type artWork from '@/src/types/artWork'
 
 interface gallery {
-  work: artWork
+  work: artWork[]
 }
 
 export default gallery

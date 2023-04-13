@@ -1,14 +1,11 @@
-import directoryRoute from '@/types/directoryRoute'
-import artWork from '@/types/artWork'
-import socialContact from '@/types/socialContact'
+import type artWork from '@/src/types/artWork'
+import type socialContact from '@/src/types/socialContact'
 
 interface home {
-  directories: directoryRoute[]
+  about?: string
+  copyrightNotice: string
   social?: socialContact[]
   featured?: artWork[]
-  faviconUrl?: string
-  title: string
-  subtitle?: string
   logo?: string
 }
 

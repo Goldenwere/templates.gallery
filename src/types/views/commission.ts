@@ -1,4 +1,4 @@
-import commissionType from '@/types/commissionType'
+import type commissionType from '@/src/types/commissionType'
 
 interface commission {
   commissionTypes: commissionType[]

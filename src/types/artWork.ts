@@ -4,7 +4,8 @@
  * or will open a preview of the piece if it does not contain `variants`.
  * 
  * Technically every variable can be undefined, however this will just lead to generic placeholders being added that do nothing.
- * At minimum, `url` *OR* `variants` (which eventually filter to `artWork` with urls) should be defined.
+ * At minimum, `url` *OR* `variants` (which eventually filter to `artWork` with urls) should be defined,
+ * unless using for the featured artwork on the home page, in which only thumbnailUrl and optionally title needs to be defined.
  */
 interface artWork {
   date?: Date

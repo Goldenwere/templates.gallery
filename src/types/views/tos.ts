@@ -1,4 +1,4 @@
-import contractTerm from '@/types/contractTerm'
+import type contractTerm from '@/src/types/contractTerm'
 
 interface tos {
   lastUpdated: Date
