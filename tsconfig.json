@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./*"]
+    },
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    },
     "strict": true,
     "jsx": "preserve",
     "resolveJsonModule": true,
