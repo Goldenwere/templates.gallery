@@ -81,7 +81,7 @@ function onFeatureClick(event: Event, index: number) {
         v-if='site.subtitle'
       ) {{ site.subtitle }}
       img.logo(
-        :src='content.logo'
+        :src='site.logo'
         alt='logo'
       )
       .featured-gallery

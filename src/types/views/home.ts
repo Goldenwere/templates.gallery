@@ -6,7 +6,6 @@ interface home {
   copyrightNotice: string
   social?: socialContact[]
   featured?: artWork[]
-  logo?: string
 }
 
 export default home
