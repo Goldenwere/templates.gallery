@@ -1,10 +1,14 @@
 import {
   createRouter,
-  createWebHistory,
+  createWebHashHistory,
   RouteRecordRaw,
 } from 'vue-router'
 
 import home from './views/home/home.vue'
+
+const commission = () => import('./views/commission/commission.vue')
+const gallery = () => import('./views/gallery/gallery.vue')
+const tos = () => import('./views/tos/tos.vue')
 
 export const SiteRoutes: RouteRecordRaw[] = [
   {
@@ -14,23 +18,23 @@ export const SiteRoutes: RouteRecordRaw[] = [
   },
   {
     path: '/tos',
-    component: home,
+    component: tos,
     name: 'tos'
   },
   {
     path: '/commission',
-    component: home,
+    component: commission,
     name: 'commission',
   },
   {
     path: '/gallery/:id',
-    component: home,
+    component: gallery,
     props: true,
     name: 'gallery',
   },
 ]
 
 export default createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: SiteRoutes as RouteRecordRaw[],
 })
