@@ -38,6 +38,11 @@ interface artWork {
    */
   title?: string
   /**
+   * The CSS background-position of the thumbnail of the piece.
+   * The default is the CSS default for `background-position`
+   */
+  thumbnailPosition?: string
+  /**
    * The url of the thumbnail of the piece.
    * The default of the thumbnail differs with decreasing priority depending on the work:
    * - If the artwork is an image, then use the url

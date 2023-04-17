@@ -8,6 +8,7 @@ import type home from '@/src/types/views/home'
 import type artWork from '@/src/types/artWork'
 import type directoryRoute from '@/src/types/directoryRoute'
 import GalleryArticle from '@/src/components/embeds/GalleryArticle.vue'
+import GallerySocial from '@/src/components/embeds/GallerySocial.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -16,6 +17,8 @@ const site = reactive(store.site)
 const ready = ref(false)
 const selectedImage = ref({} as artWork | undefined)
 const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl})`)
+const selectedImagePosition = computed(() => `${selectedImage.value?.thumbnailPosition}`)
+const selectedImageIndex = ref(0)
 const directories = computed(() => {
   return site.directories?.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
     if (directory.path === 'tos') {
@@ -62,13 +65,14 @@ if (store.home.copyrightNotice === undefined) {
 function onFeatureClick(event: Event, index: number) {
   event.preventDefault()
   selectedImage.value = store.home.featured?.[index]
+  selectedImageIndex.value = index
 }
 </script>
 
 <template lang='pug'>
 #home(
   v-if='ready'
-  :style='{ backgroundImage: selectedImageUrl }'
+  :style='{ backgroundImage: selectedImageUrl, backgroundPosition: selectedImagePosition, }'
 )
   #landing
     .body
@@ -83,10 +87,11 @@ function onFeatureClick(event: Event, index: number) {
       .featured-gallery
         .element(
           v-for='(feature, index) in content.featured'
+          :class='{ "unselected": index !== selectedImageIndex }'
           @click='onFeatureClick($event, index)'
         )
           .img(
-            :style='{ backgroundImage: `url(${feature.thumbnailUrl})` }'
+            :style='{ backgroundImage: `url(${feature.thumbnailUrl})`, backgroundPosition: `${feature.thumbnailPosition}`, }'
           )
   #info
     nav#navigation
@@ -111,7 +116,11 @@ function onFeatureClick(event: Event, index: number) {
       v-if='content.social'
     )
       h2 Places
-      p various social links here
+      .grid
+        GallerySocial(
+          v-for='social in content.social'
+          :social='social'
+        )
 </template>
 
 <style scoped lang='sass'>
@@ -135,7 +144,7 @@ function onFeatureClick(event: Event, index: number) {
       top: 0
       bottom: 0
       left: 0
-      width: 28.5%
+      width: 30%
       .logo
         max-height: 12em
         max-width: 95%
@@ -151,6 +160,11 @@ function onFeatureClick(event: Event, index: number) {
         .element
           aspect-ratio: 1
           cursor: pointer
+          transition: opacity 0.5s var(--theme-transition-function)
+          &.unselected
+            opacity: 0.5
+            &:hover
+              opacity: 1.0
           .img
             background-size: cover
             background-position: center center
@@ -158,8 +172,7 @@ function onFeatureClick(event: Event, index: number) {
             height: 100%
   #info
     position: relative
-    display: grid
-    grid-template-columns: 1fr 1fr 1.5fr
+    display: flex
     min-height: 100vh
     width: 100vw
     > nav,
@@ -168,6 +181,7 @@ function onFeatureClick(event: Event, index: number) {
       > h2
         margin: 0
     #navigation
+      width: 30%
       background-color: var(--theme-home-nav-bg)
       color: var(--theme-home-nav-fg)
       display: flex
@@ -184,9 +198,18 @@ function onFeatureClick(event: Event, index: number) {
           width: auto
           height: auto
     #about
+      width: 30%
       background-color: var(--theme-home-about-bg)
       color: var(--theme-home-about-fg)
     #places
+      width: 40%
       background-color: var(--theme-home-places-bg)
       color: var(--theme-home-places-fg)
+      .grid
+        width: 100%
+        display: flex
+        justify-content: space-between
+        .social
+          height: 4em
+          max-width: 48%
 </style>
