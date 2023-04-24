@@ -14,7 +14,7 @@ const props = defineProps<{
 const router = useRouter()
 const store = useStore()
 const ready = ref(false)
-let indices = reactive([] as number[])
+let indices = reactive((props.indices || []) as number[])
 let content = reactive([] as artWork[])
 const found = store.galleries.find((other) => other.id === props.id)
 const modalImage = ref('')
