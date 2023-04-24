@@ -1,6 +1,6 @@
 import {
   createRouter,
-  createWebHashHistory,
+  createWebHistory,
   RouteRecordRaw,
 } from 'vue-router'
 
@@ -32,9 +32,15 @@ export const SiteRoutes: RouteRecordRaw[] = [
     props: true,
     name: 'gallery',
   },
+  {
+    path: '/gallery/:id/:indices+',
+    component: gallery,
+    props: true,
+    name: 'subgallery',
+  },
 ]
 
 export default createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes: SiteRoutes as RouteRecordRaw[],
 })

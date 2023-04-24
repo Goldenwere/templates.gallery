@@ -1,16 +1,21 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from '@/src/store'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import type artWork from '@/src/types/artWork'
 import type gallery from '@/src/types/views/gallery'
 
 const props = defineProps<{
-  id: string
+  id: string,
+  indices?: number[],
 }>()
 
+const router = useRouter()
 const store = useStore()
 const ready = ref(false)
-const content = ref({} as gallery)
+let indices = reactive([] as number[])
+let content = reactive([] as artWork[])
 const found = store.galleries.find((other) => other.id === props.id)
 if (!found) {
   fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
@@ -22,12 +27,48 @@ if (!found) {
           gallery: contents as gallery,
         },
       ]})
-      content.value = contents as gallery
-      ready.value = true
+      setContent((contents as gallery).work, props.indices)
     })
 } else {
-  content.value = found.gallery
+  setContent(found.gallery.work, props.indices)
+}
+
+function setContent(work: artWork[], indices?: number[]) {
+  content = work
+  if (indices) {
+    const iterator = [ ... indices ]
+    while (iterator.length > 0) {
+      content = content[iterator[0]].variants as artWork[]
+      iterator.shift()
+    }
+  }
   ready.value = true
+}
+
+function navigate(event: Event, index: number, piece?: artWork) {
+  event.preventDefault()
+  const originalContent = ((store.galleries.find((other) => other.id === props.id))?.gallery as gallery).work
+  const newIndices = [ ...(props.indices || [])]
+  if (index < 0) {
+    // handle navigation backwards to parent artwork
+    newIndices.pop()
+    indices = newIndices
+    if (indices.length < 1) {
+      router.push({ name: 'gallery', params: { id: props.id }})
+    } else {
+      router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
+    }
+    setContent(originalContent, newIndices)
+  } else if (piece?.variants === undefined) {
+    // temporary safety check if variants not defined until better structure for gallery elements set
+    return
+  } else {
+    // handle navigation deeper into artwork variants
+    newIndices.push(index)
+    indices = newIndices
+    router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
+    setContent(originalContent, newIndices)
+  }
 }
 </script>
 
@@ -35,19 +76,26 @@ if (!found) {
 #gallery(
   v-if='ready'
 )
-  .element(
-    v-for='piece in content.work'
-  )
-    img(
-      v-if='piece.thumbnailUrl'
-      :alt='`thumbnail for ${piece.title}`'
-      :src='piece.thumbnailUrl'
+  p.back(
+    v-if='indices && indices.length > 0'
+    @click='navigate($event, -1)'
+  ) &lt; Back
+  .gallery
+    .element(
+      v-for='(piece, index) in content'
     )
-    p {{ piece.title }}
+      img(
+        v-if='piece.thumbnailUrl'
+        :alt='`thumbnail for ${piece.title}`'
+        :src='piece.thumbnailUrl'
+        @click='navigate($event, index, piece)'
+      )
+      p {{ piece.title }}
 </template>
 
 <style scoped lang='sass'>
-#gallery
+
+.gallery
   display: flex
   flex-wrap: wrap
   gap: 1em
@@ -62,6 +110,7 @@ if (!found) {
       height: auto
       margin: 0.5em auto
       display: block
+      cursor: pointer
     p
       text-align: center
       margin: 0 0 0.5em
