@@ -32,9 +32,37 @@ if (!found) {
 </script>
 
 <template lang='pug'>
-p Gallery works!
+#gallery(
+  v-if='ready'
+)
+  .element(
+    v-for='piece in content.work'
+  )
+    img(
+      v-if='piece.thumbnailUrl'
+      :alt='`thumbnail for ${piece.title}`'
+      :src='piece.thumbnailUrl'
+    )
+    p {{ piece.title }}
 </template>
 
 <style scoped lang='sass'>
-
+#gallery
+  display: flex
+  flex-wrap: wrap
+  gap: 1em
+  .element
+    background-color: #000a
+    flex: 0 0 10em
+    height: auto
+    img
+      max-height: 12em
+      max-width: 9em
+      width: auto
+      height: auto
+      margin: 0.5em auto
+      display: block
+    p
+      text-align: center
+      margin: 0 0 0.5em
 </style>
