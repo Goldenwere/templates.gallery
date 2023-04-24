@@ -1,5 +1,34 @@
 <script setup lang='ts'>
+import { ref } from 'vue'
+import { useStore } from '@/src/store'
+import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import type gallery from '@/src/types/views/gallery'
 
+const props = defineProps<{
+  id: string
+}>()
+
+const store = useStore()
+const ready = ref(false)
+const content = ref({} as gallery)
+const found = store.galleries.find((other) => other.id === props.id)
+if (!found) {
+  fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
+    .then((contents) => {
+      store.$patch({ galleries: [
+        ...store.galleries,
+        {
+          id: props.id,
+          gallery: contents as gallery,
+        },
+      ]})
+      content.value = contents as gallery
+      ready.value = true
+    })
+} else {
+  content.value = found.gallery
+  ready.value = true
+}
 </script>
 
 <template lang='pug'>
