@@ -17,6 +17,8 @@ const ready = ref(false)
 let indices = reactive([] as number[])
 let content = reactive([] as artWork[])
 const found = store.galleries.find((other) => other.id === props.id)
+const modalImage = ref('')
+const modalOpen = ref(false)
 if (!found) {
   fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
     .then((contents) => {
@@ -70,6 +72,21 @@ function navigate(event: Event, index: number, piece?: artWork) {
     setContent(originalContent, newIndices)
   }
 }
+
+function openImage(event: Event, piece: artWork) {
+  event.preventDefault()
+  if (piece.url?.[0] === '/') {
+    modalImage.value = piece.url
+    modalOpen.value = true
+  } else {
+    window.open(piece.url, '_blank')
+  }
+}
+
+function closeModal(event: Event) {
+  modalImage.value = ''
+  modalOpen.value = false
+}
 </script>
 
 <template lang='pug'>
@@ -84,13 +101,44 @@ function navigate(event: Event, index: number, piece?: artWork) {
     .element(
       v-for='(piece, index) in content'
     )
-      img(
-        v-if='piece.thumbnailUrl'
-        :alt='`thumbnail for ${piece.title}`'
-        :src='piece.thumbnailUrl'
-        @click='navigate($event, index, piece)'
+      .has-variants(
+        v-if='piece.variants'
       )
-      p {{ piece.title }}
+        img(
+          v-if='piece.thumbnailUrl'
+          :alt='`thumbnail for ${piece.title}`'
+          :src='piece.thumbnailUrl'
+          @click='navigate($event, index, piece)'
+        )
+        p {{ piece.title }}
+      .has-url(
+        v-else-if='piece.url'
+      )
+        img(
+          v-if='piece.thumbnailUrl'
+          :alt='`thumbnail for ${piece.title}`'
+          :src='piece.thumbnailUrl'
+          @click='openImage($event, piece)'
+        )
+        p {{ piece.title }}
+      .no-preview(
+        v-else
+      )
+        img(
+          v-if='piece.thumbnailUrl'
+          :alt='`thumbnail for ${piece.title}`'
+          :src='piece.thumbnailUrl'
+        )
+        p {{ piece.title }}
+.modal(
+  v-if='modalOpen'
+)
+  p(
+    @click='closeModal($event)'
+  ) Close
+  img(
+    :src='modalImage'
+  )
 </template>
 
 <style scoped lang='sass'>
@@ -110,8 +158,31 @@ function navigate(event: Event, index: number, piece?: artWork) {
       height: auto
       margin: 0.5em auto
       display: block
-      cursor: pointer
     p
       text-align: center
       margin: 0 0 0.5em
+.has-variants,
+.has-url,
+  img
+    cursor: pointer
+.no-preview
+  img
+    cursor: default
+.modal
+  background-color: #000a
+  position: absolute
+  top: 1em
+  bottom: 1em
+  left: 1em
+  right: 1em
+  img
+    max-height: 80%
+    max-width: 80%
+    margin: auto
+    width: auto
+    height: auto
+    display: block
+  p
+    cursor: pointer
+    text-align: center
 </style>
