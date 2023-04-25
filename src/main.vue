@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed, nextTick, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router'
 import { capitalizeFirstLetter } from '@/src/utilities/string'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
@@ -20,13 +20,20 @@ fetchAndParseYaml('/content/site.yml')
     store.$patch({ site: content as site })
     await router.isReady()
     ready.value = true
-    document.title = `${capitalizeFirstLetter(route.name as string)} - ${store.site.title}`
+    setTitle(route)
     router.afterEach((to, from) => {
       nextTick(() => {
-        document.title = `${capitalizeFirstLetter(to.name as string)} - ${store.site.title}`
+        setTitle(to)
       })
     })
   })
+
+function setTitle(route: RouteLocationNormalized) {
+  const name = (route.name === 'gallery' || route.name === 'subgallery')
+    ? `${capitalizeFirstLetter(route.params.id as string)} - Gallery`
+    : capitalizeFirstLetter(route.name as string)
+  document.title = `${name} - ${store.site.title}`
+}
 </script>
 
 <template lang='pug'>
