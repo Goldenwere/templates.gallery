@@ -8,12 +8,25 @@
  * unless using for the featured artwork on the home page, in which only thumbnailUrl and optionally title needs to be defined.
  */
 interface artWork {
+  /**
+   * The date the piece was finished, published, or otherwise deemed complete.
+   */
   date?: Date
   /**
    * [MARKDOWN OPTIONAL] Optional description of the piece.
    * Will not display anything if this is undefined.
    */
   description?: string
+  /**
+   * Folder ids that the piece will appear in. These should correspond with what folders are defined
+   * 
+   * NOTE: This is an array of folder.id, hierarchy is irrelevant to the artwork.
+   * 
+   * NOTE: This is disregarded on variants,
+   * so organize this at the root artWork according to the variants available to a piece,
+   * or avoid using variants.
+   */
+  folders?: string[]
   /**
    * Optional maturity tag for an artwork, typically displayed in proximity to the thumbnail.
    * Defaults to false. Useful for compliance with some external websites.
@@ -28,10 +41,6 @@ interface artWork {
    * NOTE: Only images are currently supported. A field for media type will be added when other media are supported.
    */
   url?: string
-  /**
-   * Optional tags to apply to the piece for use in searching within a directory or variants page
-   */
-  tags?: string[]
   /**
    * The title of the piece.
    * Defaults to 'untitled' if not defined.
