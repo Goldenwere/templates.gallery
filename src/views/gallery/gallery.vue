@@ -5,6 +5,7 @@ import { useStore } from '@/src/store'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import type artWork from '@/src/types/artWork'
 import type gallery from '@/src/types/views/gallery'
+import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
 
 const props = defineProps<{
   id: string,
@@ -98,38 +99,23 @@ function closeModal(event: Event) {
     @click='navigate($event, -1)'
   ) &lt; Back
   .gallery
-    .element(
+    .piece(
       v-for='(piece, index) in content'
     )
-      .has-variants(
+      GalleryImage.link(
         v-if='piece.variants'
+        :piece='piece'
+        @click='navigate($event, index, piece)'
       )
-        img(
-          v-if='piece.thumbnailUrl'
-          :alt='`thumbnail for ${piece.title}`'
-          :src='piece.thumbnailUrl'
-          @click='navigate($event, index, piece)'
-        )
-        p {{ piece.title }}
-      .has-url(
+      GalleryImage.link(
         v-else-if='piece.url'
+        :piece='piece'
+        @click='openImage($event, piece)'
       )
-        img(
-          v-if='piece.thumbnailUrl'
-          :alt='`thumbnail for ${piece.title}`'
-          :src='piece.thumbnailUrl'
-          @click='openImage($event, piece)'
-        )
-        p {{ piece.title }}
-      .no-preview(
+      GalleryImage(
         v-else
+        :piece='piece'
       )
-        img(
-          v-if='piece.thumbnailUrl'
-          :alt='`thumbnail for ${piece.title}`'
-          :src='piece.thumbnailUrl'
-        )
-        p {{ piece.title }}
 .modal(
   v-if='modalOpen'
 )
@@ -144,30 +130,14 @@ function closeModal(event: Event) {
 <style scoped lang='sass'>
 
 .gallery
+  padding: 0.5em
   display: flex
   flex-wrap: wrap
   gap: 1em
-  .element
-    background-color: #000a
+  .piece
     flex: 0 0 10em
-    height: auto
-    img
-      max-height: 12em
-      max-width: 9em
-      width: auto
-      height: auto
-      margin: 0.5em auto
-      display: block
-    p
-      text-align: center
-      margin: 0 0 0.5em
-.has-variants,
-.has-url,
-  img
-    cursor: pointer
-.no-preview
-  img
-    cursor: default
+    .link
+      cursor: pointer
 .modal
   background-color: #000a
   position: absolute
