@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/src/store'
+import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import type artWork from '@/src/types/artWork'
 import type gallery from '@/src/types/views/gallery'
@@ -14,12 +15,18 @@ const props = defineProps<{
 
 const router = useRouter()
 const store = useStore()
+
+const galleryState = reactive({
+  indices: (props.indices || []) as number[],
+  modalImageSrc: '',
+  modalIsOpen: false,
+  work: [] as artWork[],
+})
+
 const ready = ref(false)
-let indices = reactive((props.indices || []) as number[])
-let content = reactive([] as artWork[])
+
+// init from cache or from yml
 const found = store.galleries.find((other) => other.id === props.id)
-const modalImage = ref('')
-const modalOpen = ref(false)
 if (!found) {
   fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
     .then((contents) => {
@@ -30,63 +37,67 @@ if (!found) {
           gallery: contents as gallery,
         },
       ]})
-      setContent((contents as gallery).work, props.indices)
+      onLoad(contents as gallery, props.indices)
     })
 } else {
-  setContent(found.gallery.work, props.indices)
+  onLoad(found.gallery, props.indices)
+}
+
+function onLoad(galleryContent: gallery, indices?: number[]) {
+  galleryState.indices = deepCopy(indices || [])
+  setContent(galleryContent.work, indices)
+  ready.value = true
+  console.log(galleryState)
 }
 
 function setContent(work: artWork[], indices?: number[]) {
-  content = work
+  let newContent = deepCopy(work)
   if (indices) {
-    const iterator = [ ... indices ]
+    const iterator = deepCopy(indices)
     while (iterator.length > 0) {
-      content = content[iterator[0]].variants as artWork[]
+      newContent = newContent[iterator[0]].variants as artWork[]
       iterator.shift()
     }
   }
-  ready.value = true
+  galleryState.work = newContent
 }
 
 function navigate(event: Event, index: number, piece?: artWork) {
   event.preventDefault()
-  const originalContent = ((store.galleries.find((other) => other.id === props.id))?.gallery as gallery).work
-  const newIndices = [ ...(props.indices || [])]
+  const originalContent = deepCopy((store.galleries.find((other) => other.id === props.id))?.gallery as gallery)
+  const newIndices = deepCopy(props.indices || [])
+
   if (index < 0) {
     // handle navigation backwards to parent artwork
     newIndices.pop()
-    indices = newIndices
-    if (indices.length < 1) {
+    if (newIndices.length < 1) {
       router.push({ name: 'gallery', params: { id: props.id }})
     } else {
       router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
     }
-    setContent(originalContent, newIndices)
-  } else if (piece?.variants === undefined) {
-    // temporary safety check if variants not defined until better structure for gallery elements set
-    return
   } else {
     // handle navigation deeper into artwork variants
     newIndices.push(index)
-    indices = newIndices
     router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
-    setContent(originalContent, newIndices)
   }
+
+  onLoad(originalContent, newIndices)
 }
 
-function openImage(event: Event, piece: artWork) {
+function onOpenImage(event: Event, piece: artWork) {
   event.preventDefault()
   if (piece.url?.[0] === '/') {
-    modalImage.value = piece.url
-    modalOpen.value = true
+    galleryState.modalImageSrc = piece.url
+    galleryState.modalIsOpen = true
   } else {
     window.open(piece.url, '_blank')
   }
 }
 
-function closeModal(event: Event) {
-  modalImage.value = ''
-  modalOpen.value = false
+function onCloseModal(event: Event) {
+  event.preventDefault()
+  galleryState.modalImageSrc = ''
+  galleryState.modalIsOpen = false
 }
 </script>
 
@@ -95,12 +106,12 @@ function closeModal(event: Event) {
   v-if='ready'
 )
   p.back(
-    v-if='indices && indices.length > 0'
+    v-if='galleryState.indices && galleryState.indices.length > 0'
     @click='navigate($event, -1)'
   ) &lt; Back
   .gallery
     .piece(
-      v-for='(piece, index) in content'
+      v-for='(piece, index) in galleryState.work'
     )
       GalleryImage.link(
         v-if='piece.variants'
@@ -110,20 +121,20 @@ function closeModal(event: Event) {
       GalleryImage.link(
         v-else-if='piece.url'
         :piece='piece'
-        @click='openImage($event, piece)'
+        @click='onOpenImage($event, piece)'
       )
       GalleryImage(
         v-else
         :piece='piece'
       )
 .modal(
-  v-if='modalOpen'
+  v-if='galleryState.modalIsOpen'
 )
   p(
-    @click='closeModal($event)'
+    @click='onCloseModal($event)'
   ) Close
   img(
-    :src='modalImage'
+    :src='galleryState.modalImageSrc'
   )
 </template>
 
