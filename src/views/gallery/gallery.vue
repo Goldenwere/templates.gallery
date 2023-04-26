@@ -5,6 +5,7 @@ import { useStore } from '@/src/store'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import type artWork from '@/src/types/artWork'
+import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
@@ -18,8 +19,12 @@ const router = useRouter()
 const store = useStore()
 
 const galleryState = reactive({
+  /** the folder options mapped from gallery store to a flat array of options */
+  folderOptions: [] as object[],
   /** selected indices of variant pieces; this is in order from root downward */
   indices: (props.indices || []) as number[],
+  /** the selected folder from the gallery folder list; does not apply if not at root of gallery */
+  selectedFolder: '',
   /** the title of the selected variant of indices; does not apply if at root of gallery */
   selectedImageTitle: '',
   /** the source of the selected image; does not apply/resets if modal not open */
@@ -57,8 +62,45 @@ if (!found) {
  */
 function onLoad(galleryContent: gallery, indices?: number[]) {
   galleryState.indices = deepCopy(indices || [])
+  if (galleryState.indices.length === 0) {
+    // flattens the folder options to use in an iterable <select> array;
+    // this will probably be deprecated in favor of a list with a selection state instead
+    galleryState.folderOptions = flattenFolders(galleryContent.folders || [])
+  }
   setContent(galleryContent.work, indices)
   ready.value = true
+}
+
+/**
+ * Utility to map folder depth to indentation on the <select> element
+ * This will probably be deprecated in favor of a list with a selection state instead
+ * @param original the original display name of the folder
+ * @param depth the depth of the folder
+ */
+function getFolderDisplayName(original: string, depth: number = 0) {
+  let padding = ''
+  for (let i = 0; i < depth; ++i) {
+    padding += '&nbsp;'
+  }
+  return `${padding}${original}`
+}
+
+/**
+ * Utility recursive function that flattens folder hierarchy into an array of options for <select> element
+ * This will probably be deprecated in favor of a list with a selection state instead
+ * @param folders the original folders to map from
+ * @param depth the current depth to keep track of for indenting purposes; the initial call should default to 0
+ */
+function flattenFolders(folders: folder[], depth: number = 0): object[] {
+  return folders.flatMap((other) => [
+    {
+      ...deepCopy(other),
+      displayName: getFolderDisplayName(other.displayName || other.id, depth),
+      folders: undefined,
+      depth,
+    },
+    ...flattenFolders(other.folders || [], depth + 1)
+  ])
 }
 
 /**
@@ -67,8 +109,13 @@ function onLoad(galleryContent: gallery, indices?: number[]) {
  * @param indices current indices from param if initially loaded or state if navigating in app
  */
 function setContent(work: artWork[], indices?: number[]) {
-  let newContent = deepCopy(work)
+  // when a folder is selected, the v-for index is no longer accurate to the actual content array to find variants.
+  // this maps the original indices onto the artwork so that it can be used when a folder is selected.
+  // there is no need to deeply map this, as for nested variants, it will fall back on the v-for index like ususal,
+  // since folders are not intended to work alongside variants to begin with
+  let newContent = deepCopy(work).map((other, index) => ({ ...other, index, }))
   if (indices) {
+    // if there are indices navigated, pull out the variants based on index-path
     const iterator = deepCopy(indices)
     let title = ''
     // iterate over variant indices array
@@ -76,10 +123,14 @@ function setContent(work: artWork[], indices?: number[]) {
       // set the title first to make sure it pulls from the parent instead of variants
       title = newContent[iterator[0]].title || 'untitled'
       // then select the variants for display
-      newContent = newContent[iterator[0]].variants as artWork[]
+      newContent = newContent[iterator[0]].variants as any[]
       iterator.shift()
     }
     galleryState.selectedImageTitle = title
+    galleryState.selectedFolder = ''
+  } else if (galleryState.selectedFolder !== '') {
+    // if no indices but a folder is selected, filter out artWork that does not match the selected folder
+    newContent = newContent.filter((other) => other.folders?.includes(galleryState.selectedFolder))
   }
   galleryState.work = newContent
 }
@@ -113,6 +164,14 @@ function navigate(event: Event, index: number, piece?: artWork) {
 
   // refresh gallery state with new indices
   onLoad(originalContent, newIndices)
+}
+
+/**
+ * Handles when a folder is selected
+ * @param event reference to the original event object
+ */
+function onSelectFolder(event: Event) {
+  setContent(galleryState.work)
 }
 
 /**
@@ -155,14 +214,33 @@ function onCloseModal(event: Event) {
       @click='navigate($event, -1)'
     ) 
       span &lt; Back
+  .gallery-nav(
+    v-else-if='galleryState.folderOptions.length > 0'
+  )
+    select(
+      @change='onSelectFolder($event)'
+      v-model='galleryState.selectedFolder'
+    )
+      option(
+        value=''
+      )
+        span No folder selected
+      option(
+        v-for='option in galleryState.folderOptions'
+        :value='option.id'
+      )
+        pre
+          span(
+            v-html='option.displayName'
+          )
   .gallery
     .piece(
-      v-for='(piece, index) in galleryState.work'
+      v-for='(piece, i) in galleryState.work'
     )
       GalleryImage.link(
         v-if='piece.variants'
         :piece='piece'
-        @click='navigate($event, index, piece)'
+        @click='navigate($event, piece.index || i, piece)'
       )
       GalleryImage.link(
         v-else-if='piece.url'
