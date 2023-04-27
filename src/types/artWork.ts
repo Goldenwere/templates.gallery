@@ -47,7 +47,7 @@ interface artWork {
    */
   title?: string
   /**
-   * The CSS background-position of the thumbnail of the piece.
+   * The CSS background-position of the thumbnail of the piece. Only relevant if used as a featured piece.
    * The default is the CSS default for `background-position`
    */
   thumbnailPosition?: string

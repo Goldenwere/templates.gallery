@@ -27,8 +27,8 @@ const galleryState = reactive({
   selectedFolder: '',
   /** the title of the selected variant of indices; does not apply if at root of gallery */
   selectedImageTitle: '',
-  /** the source of the selected image; does not apply/resets if modal not open */
-  modalImageSrc: '',
+  /** the selected image for the modal; does not apply/resets if modal not open */
+  modalImage: {} as artWork,
   /** whether the modal is open or not */
   modalIsOpen: false,
   /** the current work to display, based off of the current state's indices */
@@ -185,7 +185,7 @@ function onOpenImage(event: Event, piece: artWork) {
   event.preventDefault()
   if (piece.url?.[0] === '/') {
     // if the url is root, open a modal
-    galleryState.modalImageSrc = piece.url
+    galleryState.modalImage = piece
     galleryState.modalIsOpen = true
   } else {
     // if the url is not root, open it in a new tab
@@ -199,14 +199,14 @@ function onOpenImage(event: Event, piece: artWork) {
  */
 function onCloseModal(event: Event) {
   event.preventDefault()
-  galleryState.modalImageSrc = ''
+  galleryState.modalImage = {}
   galleryState.modalIsOpen = false
 }
 </script>
 
 <template lang='pug'>
 #gallery(
-  v-if='ready'
+  v-if='ready && !galleryState.modalIsOpen'
 )
   .gallery-nav(
     v-if='galleryState.indices && galleryState.indices.length > 0'
@@ -251,12 +251,17 @@ function onCloseModal(event: Event) {
 .modal(
   v-if='galleryState.modalIsOpen'
 )
-  GalleryButton(
-    @click='onCloseModal($event)'
-  ) Close
+  .titlebar
+    h2 {{ galleryState.modalImage.title }}
+    GalleryButton(
+      @click='onCloseModal($event)'
+    ) Close
   img(
-    :src='galleryState.modalImageSrc'
+    :src='galleryState.modalImage.url'
   )
+  .body
+    p {{ galleryState.modalImage.date }}
+    p {{ galleryState.modalImage.description }}
 </template>
 
 <style scoped lang='sass'>
@@ -291,20 +296,28 @@ function onCloseModal(event: Event) {
     .link
       cursor: pointer
 .modal
-  background-color: #000a
+  background-color: var(--theme-body-bg)
   position: absolute
-  top: 1em
-  bottom: 1em
-  left: 1em
-  right: 1em
+  top: 4em
+  bottom: 0
+  left: 0
+  right: 0
+  overflow-y: auto
   img
-    max-height: 80%
+    max-height: calc(100% - 4em)
     max-width: 80%
     margin: auto
     width: auto
     height: auto
     display: block
-  .button
-    margin: 0.5em auto
-    display: block
+  .titlebar
+    display: flex
+    align-items: center
+    margin: 0.5em
+    h2
+      margin: 0
+    .button
+      margin-left: auto
+  .body
+    margin: 0.5em
 </style>
