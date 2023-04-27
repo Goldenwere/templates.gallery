@@ -12,4 +12,5 @@ button.button
   border: 1px solid gray
   background-color: white
   color: black
+  cursor: pointer
 </style>

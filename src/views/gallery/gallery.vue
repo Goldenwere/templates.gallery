@@ -36,6 +36,7 @@ const galleryState = reactive({
 })
 
 const ready = ref(false)
+let originalGallery = {} as gallery
 
 // init from cache or from yml
 const found = store.galleries.find((other) => other.id === props.id)
@@ -49,10 +50,12 @@ if (!found) {
           gallery: contents as gallery,
         },
       ]})
-      onLoad(contents as gallery, props.indices)
+      originalGallery = contents as gallery
+      onLoad(originalGallery, props.indices)
     })
 } else {
-  onLoad(found.gallery, props.indices)
+  originalGallery = found.gallery
+  onLoad(originalGallery, props.indices)
 }
 
 /**
@@ -63,8 +66,7 @@ if (!found) {
 function onLoad(galleryContent: gallery, indices?: number[]) {
   galleryState.indices = deepCopy(indices || [])
   if (galleryState.indices.length === 0) {
-    // flattens the folder options to use in an iterable <select> array;
-    // this will probably be deprecated in favor of a list with a selection state instead
+    // flattens the folder options to use in an iterable array
     galleryState.folderOptions = flattenFolders(galleryContent.folders || [])
   }
   setContent(galleryContent.work, indices)
@@ -72,8 +74,7 @@ function onLoad(galleryContent: gallery, indices?: number[]) {
 }
 
 /**
- * Utility to map folder depth to indentation on the <select> element
- * This will probably be deprecated in favor of a list with a selection state instead
+ * Utility to map folder depth to indentation
  * @param original the original display name of the folder
  * @param depth the depth of the folder
  */
@@ -86,8 +87,7 @@ function getFolderDisplayName(original: string, depth: number = 0) {
 }
 
 /**
- * Utility recursive function that flattens folder hierarchy into an array of options for <select> element
- * This will probably be deprecated in favor of a list with a selection state instead
+ * Utility recursive function that flattens folder hierarchy into an array of options
  * @param folders the original folders to map from
  * @param depth the current depth to keep track of for indenting purposes; the initial call should default to 0
  */
@@ -170,8 +170,10 @@ function navigate(event: Event, index: number, piece?: artWork) {
  * Handles when a folder is selected
  * @param event reference to the original event object
  */
-function onSelectFolder(event: Event) {
-  setContent(galleryState.work)
+function onSelectFolder(event: Event, option: string) {
+  event.preventDefault()
+  galleryState.selectedFolder = option
+  setContent(originalGallery.work)
 }
 
 /**
@@ -214,25 +216,20 @@ function onCloseModal(event: Event) {
       @click='navigate($event, -1)'
     ) 
       span &lt; Back
-  .gallery-nav(
+  .gallery-folders(
     v-else-if='galleryState.folderOptions.length > 0'
   )
-    select(
-      @change='onSelectFolder($event)'
-      v-model='galleryState.selectedFolder'
+    h2 Folders
+    a(
+      @click='onSelectFolder($event, "")'
+      v-html='"<i>Main Gallery</i>"'
     )
-      option(
-        value=''
-      )
-        span No folder selected
-      option(
-        v-for='option in galleryState.folderOptions'
-        :value='option.id'
-      )
-        pre
-          span(
-            v-html='option.displayName'
-          )
+    a(
+      v-for='option in galleryState.folderOptions'
+      @click='onSelectFolder($event, option.id)'
+      v-html='option.displayName'
+      :class='{ selected: galleryState.selectedFolder === option.id }'
+    )
   .gallery
     .piece(
       v-for='(piece, i) in galleryState.work'
@@ -263,7 +260,27 @@ function onCloseModal(event: Event) {
 </template>
 
 <style scoped lang='sass'>
-
+.gallery-nav
+  margin-left: 0.5em
+.gallery-folders
+  float: right
+  margin-right: 1em
+  a
+    display: block
+    position: relative
+    font-size: 1.25em
+    margin-bottom: 0.33em
+    &:first-of-type
+      margin-bottom: 1em
+    &.selected
+      -webkit-text-stroke-width: 1px
+      -webkit-text-stroke-color: var(--theme-link)
+      &::before
+        content: '►'
+        position: absolute
+        left: -1em
+        top: 0
+        bottom: 0
 .gallery
   padding: 0.5em
   display: flex
