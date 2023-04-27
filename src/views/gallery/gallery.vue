@@ -251,7 +251,7 @@ function onCloseModal(event: Event) {
 .modal(
   v-if='galleryState.modalIsOpen'
 )
-  p(
+  GalleryButton(
     @click='onCloseModal($event)'
   ) Close
   img(
@@ -304,7 +304,7 @@ function onCloseModal(event: Event) {
     width: auto
     height: auto
     display: block
-  p
-    cursor: pointer
-    text-align: center
+  .button
+    margin: 0.5em auto
+    display: block
 </style>
