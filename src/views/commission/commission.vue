@@ -6,6 +6,7 @@ import type artWork from '@/src/types/artWork'
 import type commission from '@/src/types/views/commission'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import GalleryArticle from '@/src/components/embeds/GalleryArticle.vue'
+import GalleryCarousel from '@/src/components/embeds/GalleryCarousel.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
 
 const store = useStore()
@@ -59,13 +60,14 @@ if (store.commission.commissionTypes === undefined) {
       .examples(
         v-if='commission.examples'
       )
-        GalleryImage(
-          v-for='example in commission.examples'
-          :piece='example'
+        GalleryCarousel(
+          :art='commission.examples'
         )
 </template>
 
 <style scoped lang='sass'>
+@import './commission.mixins.scss'
+
 #commission
   width: 100%
   height: calc(100vh - 4em)
@@ -73,7 +75,6 @@ if (store.commission.commissionTypes === undefined) {
   #header
     width: calc(100% - 6em)
     max-width: 48em
-    padding: 2em
     margin: 2em auto
   #types
     width: calc(100% - 6em)
@@ -85,18 +86,6 @@ if (store.commission.commissionTypes === undefined) {
     .type
       flex: 0 0 100%
       padding: 2em
-      display: flex
-      flex-wrap: wrap
       &:last-child
         margin-bottom: 2em
-      h3
-        flex: 0 0 50%
-      .status
-        flex: 0 0 40%
-      article,
-      .examples
-        flex: 0 0 100%
-        display: flex
-        .example
-          flex: 0 0 25%
 </style>

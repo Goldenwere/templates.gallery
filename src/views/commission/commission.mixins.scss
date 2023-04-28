@@ -1,0 +1,32 @@
+section.type {
+  display: grid;
+  gap: 1em;
+  grid-template-areas:
+    'examples heading'
+    'examples status'
+    'examples article'
+  ;
+  grid-template-rows: 0.5em 0.5em auto;
+  background-color: black;
+
+  h3 {
+    grid-area: heading;
+    margin: 0
+  }
+
+  .examples {
+    grid-area: examples;
+
+    .carousel {
+      height: 16em
+    }
+  }
+
+  .status {
+    grid-area: status;
+  }
+
+  article {
+    grid-area: article;
+  }
+}
