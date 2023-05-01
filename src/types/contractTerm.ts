@@ -18,9 +18,9 @@ interface contractTerm {
    */
   terms: contractTerm[] | string
   /**
-   * Title to display above the term if applicable.
+   * Title to display above the term.
    */
-  title?: string
+  title: string
 }
 
 export default contractTerm
