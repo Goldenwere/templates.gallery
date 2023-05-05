@@ -8,6 +8,9 @@ const props = defineProps<{
 
 <template lang='pug'>
 .element
+  span.indicator(
+    v-if='piece.mature'
+  ) Mature
   img(
     v-if='piece.thumbnailUrl || piece.url'
     :alt='piece.alt || `thumbnail for ${piece.title}`'
@@ -23,6 +26,17 @@ const props = defineProps<{
   height: 100%
   display: flex
   flex-direction: column
+  position: relative
+  .indicator
+    opacity: 0.75
+    display: block
+    position: absolute
+    top: 0.5em
+    right: 0.5em
+    font-style: italic
+    font-size: 0.75em
+    background-color: #000a
+    padding: 0.25em 0.5em
   img
     max-height: 12em
     max-width: 9em
