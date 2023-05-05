@@ -120,10 +120,25 @@ function setContent(work: artWork[], indices?: number[]) {
     let title = ''
     // iterate over variant indices array
     while (iterator.length > 0) {
+      const parent = newContent[iterator[0]]
       // set the title first to make sure it pulls from the parent instead of variants
       title = newContent[iterator[0]].title || 'untitled'
       // then select the variants for display
-      newContent = newContent[iterator[0]].variants as any[]
+      newContent = (newContent[iterator[0]].variants as any[]).map((oldValue: artWork) => {
+        const newValue = deepCopy(oldValue)
+
+        if (newValue.title === undefined) {
+          newValue.title = parent.title
+        }
+        if (newValue.date === undefined) {
+          newValue.date = parent.date
+        }
+        if (newValue.description === undefined) {
+          newValue.description = parent.description
+        }
+
+        return newValue
+      }) as any[]
       iterator.shift()
     }
     galleryState.selectedImageTitle = title
@@ -252,7 +267,7 @@ function onCloseModal(event: Event) {
   v-if='galleryState.modalIsOpen'
 )
   .titlebar
-    h2 {{ galleryState.modalImage.title }}
+    h2 {{ galleryState.modalImage.title || 'Untitled' }}
     GalleryButton(
       @click='onCloseModal($event)'
     ) Close

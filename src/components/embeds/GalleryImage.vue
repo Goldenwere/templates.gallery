@@ -9,11 +9,11 @@ const props = defineProps<{
 <template lang='pug'>
 .element
   img(
-    v-if='piece.thumbnailUrl'
+    v-if='piece.thumbnailUrl || piece.url'
     :alt='piece.alt || `thumbnail for ${piece.title}`'
-    :src='piece.thumbnailUrl'
+    :src='piece.thumbnailUrl || piece.url'
   )
-  p {{ piece.title }}
+  p {{ piece.title || 'Untitled' }}
 </template>
 
 <style scoped lang='sass'>

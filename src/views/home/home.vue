@@ -193,8 +193,8 @@ function onFeatureClick(event: Event, index: number) {
         gap: 1em
         align-items: center
         img
-          max-width: 3em
-          max-height: 3em
+          max-width: 5em
+          max-height: 5em
           width: auto
           height: auto
     #about
