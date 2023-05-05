@@ -21,6 +21,8 @@ const props = defineProps<{
   background-color: #000a
   padding: 0.5em
   height: 100%
+  display: flex
+  flex-direction: column
   img
     max-height: 12em
     max-width: 9em

@@ -280,6 +280,10 @@ function onCloseModal(event: Event) {
 </template>
 
 <style scoped lang='sass'>
+#gallery
+  width: 100%
+  height: calc(100vh - 4em)
+  overflow-y: auto
 .gallery-nav
   margin-left: 0.5em
 .gallery-folders
