@@ -9,6 +9,7 @@ import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
+import GalleryViewer from './galleryViewer.vue'
 
 const props = defineProps<{
   id: string,
@@ -217,11 +218,6 @@ function onCloseModal(event: Event) {
   galleryState.modalImage = {}
   galleryState.modalIsOpen = false
 }
-
-function scrollTo(event: Event, id: string) {
-  event.preventDefault()
-  document.querySelector(id)?.scrollIntoView()
-}
 </script>
 
 <template lang='pug'>
@@ -269,23 +265,11 @@ function scrollTo(event: Event, id: string) {
         v-else
         :piece='piece'
       )
-.modal(
+GalleryViewer(
   v-if='galleryState.modalIsOpen'
+  :image='galleryState.modalImage'
+  @close='onCloseModal($event)'
 )
-  .titlebar
-    h2 {{ galleryState.modalImage.title || 'Untitled' }}
-    GalleryButton(
-      @click='scrollTo($event, ".modal .body")'
-    ) Description
-    GalleryButton(
-      @click='onCloseModal($event)'
-    ) Close
-  img(
-    :src='galleryState.modalImage.url'
-  )
-  .body
-    p {{ galleryState.modalImage.date }}
-    p {{ galleryState.modalImage.description }}
 </template>
 
 <style scoped lang='sass'>
@@ -323,30 +307,4 @@ function scrollTo(event: Event, id: string) {
     flex: 0 0 10em
     .link
       cursor: pointer
-.modal
-  background-color: var(--theme-body-bg)
-  position: absolute
-  top: 4em
-  bottom: 0
-  left: 0
-  right: 0
-  overflow-y: auto
-  img
-    max-height: calc(100% - 4em)
-    max-width: 80%
-    margin: auto
-    width: auto
-    height: auto
-    display: block
-  .titlebar
-    display: flex
-    align-items: center
-    margin: 0.5em
-    h2
-      margin: 0
-      margin-right: auto
-  .body
-    margin: 0.5em auto
-    width: calc(100vw - 1em)
-    max-width: 30em
 </style>
