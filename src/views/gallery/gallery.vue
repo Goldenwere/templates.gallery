@@ -217,6 +217,11 @@ function onCloseModal(event: Event) {
   galleryState.modalImage = {}
   galleryState.modalIsOpen = false
 }
+
+function scrollTo(event: Event, id: string) {
+  event.preventDefault()
+  document.querySelector(id)?.scrollIntoView()
+}
 </script>
 
 <template lang='pug'>
@@ -238,6 +243,7 @@ function onCloseModal(event: Event) {
     a(
       @click='onSelectFolder($event, "")'
       v-html='"<i>Main Gallery</i>"'
+      :class='{ selected: galleryState.selectedFolder === "" }'
     )
     a(
       v-for='option in galleryState.folderOptions'
@@ -268,6 +274,9 @@ function onCloseModal(event: Event) {
 )
   .titlebar
     h2 {{ galleryState.modalImage.title || 'Untitled' }}
+    GalleryButton(
+      @click='scrollTo($event, ".modal .body")'
+    ) Description
     GalleryButton(
       @click='onCloseModal($event)'
     ) Close
@@ -335,8 +344,9 @@ function onCloseModal(event: Event) {
     margin: 0.5em
     h2
       margin: 0
-    .button
-      margin-left: auto
+      margin-right: auto
   .body
-    margin: 0.5em
+    margin: 0.5em auto
+    width: calc(100vw - 1em)
+    max-width: 30em
 </style>
