@@ -305,6 +305,7 @@ GalleryViewer(
   gap: 1em
   .piece
     flex: 0 0 10em
+    width: 10em
     .link
       cursor: pointer
 </style>
