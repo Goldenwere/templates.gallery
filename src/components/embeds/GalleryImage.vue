@@ -7,7 +7,9 @@ const props = defineProps<{
 </script>
 
 <template lang='pug'>
-.element
+.element(
+  v-tippy='piece.title || "Untitled"'
+)
   span.indicator(
     v-if='piece.mature'
   ) Mature
