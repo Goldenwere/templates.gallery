@@ -1,4 +1,5 @@
 <script setup lang='ts'>
+import { ref } from 'vue'
 import type artWork from '@/src/types/artWork'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 
@@ -10,6 +11,8 @@ const emits = defineEmits<{
   (e: 'close', event: Event): void
 }>()
 
+const maximized = ref(false)
+
 /**
  * Scrolls element into view
  * @param event the event that called this function
@@ -18,6 +21,11 @@ const emits = defineEmits<{
 function scrollTo(event: Event, id: string) {
   event.preventDefault()
   document.querySelector(id)?.scrollIntoView()
+}
+
+function toggleMaximized(event: Event, value: boolean) {
+  event.preventDefault()
+  maximized.value = value
 }
 </script>
 
@@ -34,6 +42,7 @@ function scrollTo(event: Event, id: string) {
     ) Close
   img(
     :src='image.url'
+    @click='toggleMaximized($event, true)'
   )
   .body
     p {{ image.date }}
@@ -41,6 +50,13 @@ function scrollTo(event: Event, id: string) {
     GalleryButton.to-top(
       @click='scrollTo($event, ".viewer .top")'
     ) To Top
+  .maximized(
+    @click='toggleMaximized($event, false)'
+    v-if='maximized'
+  )
+    img(
+      :src='image.url'
+    )
 </template>
 
 <style scoped lang='sass'>
@@ -65,6 +81,7 @@ function scrollTo(event: Event, id: string) {
     width: auto
     height: auto
     display: block
+    cursor: pointer
   .titlebar
     display: flex
     align-items: center
@@ -79,4 +96,19 @@ function scrollTo(event: Event, id: string) {
     .to-top
       display: block
       margin: auto
+  .maximized
+    position: fixed
+    top: 0em
+    left: 0em
+    right: 0em
+    bottom: 0em
+    background-color: var(--theme-modal-overlay-bg)
+    img
+      position: relative
+      max-width: calc(100% - 1em)
+      max-height: calc(100% - 1em)
+      width: auto
+      height: auto
+      cursor: pointer
+      margin: 0.5em auto
 </style>
