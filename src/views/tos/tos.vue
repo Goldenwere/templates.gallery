@@ -30,6 +30,9 @@ if (store.tos.terms === undefined) {
   p(
     v-if='content.lastUpdated'
   ) Last Updated: {{ content.lastUpdated }}
+  .background
+    .actual
+    .simple
   GalleryTerm(
     v-for='term in content.terms'
     :depth='0'
@@ -43,4 +46,24 @@ if (store.tos.terms === undefined) {
   height: calc(100vh - 4em)
   overflow-y: auto
   padding: 2em
+  background-color: var(--theme-tos-bg)
+  color: var(--theme-tos-fg)
+  z-index: 1
+  position: relative
+  .background
+    z-index: -1
+    pointer-events: none
+    position: fixed
+    bottom: 0
+    top: 0
+    left: 0
+    right: 0
+    display: flex
+    .actual
+      background-color: var(--theme-tos-bg)
+      flex: 0 0 48%
+    .simple
+      background-color: var(--theme-tos-simple-bg)
+      flex: 0 0 48%
+      max-width: 32em
 </style>

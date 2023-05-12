@@ -60,6 +60,8 @@ section.term-container
 
 <style scoped lang='sass'>
 .term-container
+  .intro
+    width: 48%
   .content
     display: flex
     flex-wrap: nowrap
@@ -67,5 +69,9 @@ section.term-container
     .term-actual,
     .term-simple
       flex: 0 0 48%
-    
+    .term-actual
+      color: var(--theme-tos-fg)
+    .term-simple
+      color: var(--theme-tos-simple-fg)
+      max-width: 30em
 </style>
