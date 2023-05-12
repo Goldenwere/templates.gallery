@@ -10,19 +10,30 @@ const headerData = reactive({
   hasTos: false,
 })
 
-watch(site, (oldSite, newSite) => {
-  if (newSite.directories !== undefined) {
-    headerData.hasCommissions = !!site.directories?.find((other) => other.path === 'commission')
-    headerData.hasTos = !!site.directories?.find((other) => other.path === 'tos')
-  }
+if (site.directories !== undefined) {
+  initialize()
+} else {
+  watch(site, (oldSite, newSite) => {
+    if (newSite.directories !== undefined) {
+      initialize()
+    }
 })
+}
+
+function initialize() {
+  headerData.hasCommissions = !!site.directories?.find((other) => other.path === 'commission')
+  headerData.hasTos = !!site.directories?.find((other) => other.path === 'tos')
+}
 </script>
 
 <template lang='pug'>
 header
-  img(
-    :src='site.logo'
+  router-link.logo-link(
+    :to='{ name: "home" }'
   )
+    img(
+      :src='site.logo'
+    )
   nav
     router-link(
       :to='{ name: "home" }'
@@ -47,9 +58,13 @@ header
   align-items: center
   position: relative
   z-index: 99
-  img
-    height: 3em
-    margin: auto 0 auto 0.5em
+  .logo-link
+    outline: none
+    &::after
+      display: none
+    img
+      height: 3em
+      margin: auto 0 auto 0.5em
   nav
     margin-left: 0.5em
     display: flex
