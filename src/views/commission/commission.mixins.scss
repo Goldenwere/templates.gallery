@@ -7,6 +7,7 @@ section.type {
     'examples article'
   ;
   grid-template-rows: 0.5em 0.5em auto;
+  grid-template-columns: 15em auto;
   background-color: black;
 
   h3 {
@@ -18,7 +19,8 @@ section.type {
     grid-area: examples;
 
     .carousel {
-      height: 16em
+      height: 16em;
+      width: 14em;
     }
   }
 
