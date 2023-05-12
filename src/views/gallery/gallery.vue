@@ -223,6 +223,10 @@ function onCloseModal(event: Event) {
 <template lang='pug'>
 #gallery(
   v-if='ready && !galleryState.modalIsOpen'
+  :class=`{
+    hasNav: galleryState.indices && galleryState.indices.length > 0,
+    hasFolders: galleryState.folderOptions.length > 0 && galleryState.indices?.length === 0,
+  }`
 )
   .gallery-nav(
     v-if='galleryState.indices && galleryState.indices.length > 0'
@@ -277,21 +281,29 @@ GalleryViewer(
   width: 100%
   height: calc(100vh - 4em)
   overflow-y: auto
+  display: grid
+  &.hasNav
+    grid-template-rows: 7em auto
+  &.hasFolders
+    grid-template-columns: auto 12em
 .gallery-nav
   margin-left: 0.5em
 .gallery-folders
-  float: right
-  margin-right: 1em
+  grid-row: 1
+  grid-column: 2
+  padding-left: 2em
+  background-color: var(--theme-gallery-folders-bg)
   a
     display: block
     position: relative
     font-size: 1.25em
     margin-bottom: 0.33em
+    color: var(--theme-gallery-folders-fg)
     &:first-of-type
       margin-bottom: 1em
     &.selected
       -webkit-text-stroke-width: 1px
-      -webkit-text-stroke-color: var(--theme-link)
+      -webkit-text-stroke-color: var(--theme-gallery-folders-fg)
       &::before
         content: '►'
         position: absolute
@@ -300,12 +312,13 @@ GalleryViewer(
         bottom: 0
 .gallery
   padding: 0.5em
-  display: flex
-  flex-wrap: wrap
+  display: grid
+  grid-template-columns: repeat(auto-fill, 10em)
+  grid-template-rows: repeat(auto-fill, 12em)
   gap: 1em
   .piece
-    flex: 0 0 10em
     width: 10em
+    height: 12em
     .link
       cursor: pointer
 </style>

@@ -8,7 +8,8 @@ section.type {
   ;
   grid-template-rows: 0.5em 0.5em auto;
   grid-template-columns: 15em auto;
-  background-color: black;
+  background-color: var(--theme-commission-box-bg);
+  color: var(--theme-commission-box-fg);
 
   h3 {
     grid-area: heading;
