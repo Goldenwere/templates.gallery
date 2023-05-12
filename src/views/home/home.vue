@@ -7,6 +7,7 @@ import { useStore } from '@/src/store'
 import type home from '@/src/types/views/home'
 import type artWork from '@/src/types/artWork'
 import type directoryRoute from '@/src/types/directoryRoute'
+import type socialContact from '@/src/types/socialContact'
 import GalleryArticle from '@/src/components/embeds/GalleryArticle.vue'
 import GallerySocial from '@/src/components/embeds/GallerySocial.vue'
 
@@ -47,6 +48,22 @@ const directories = computed(() => {
       }
     }
   })
+})
+const socialMap = computed(() => {
+  if (store.home?.social !== undefined) {
+    let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
+    store.home.social.forEach((value) => {
+      if (value.category === undefined) {
+        mapped['uncategorized'].push(value)
+      } else if (mapped[value.category] === undefined) {
+        mapped[value.category] = [ value ]
+      } else {
+        mapped[value.category].push(value)
+      }
+    })
+
+    return mapped
+  }
 })
 
 if (store.home.copyrightNotice === undefined) {
@@ -116,11 +133,15 @@ function onFeatureClick(event: Event, index: number) {
       v-if='content.social'
     )
       h2 Places
-      .grid
-        GallerySocial(
-          v-for='social in content.social'
-          :social='social'
-        )
+      section(
+        v-for='(category, index) in socialMap'
+      )
+        h3 {{ index }}
+        .grid
+          GallerySocial(
+            v-for='social in category'
+            :social='social'
+          )
 </template>
 
 <style scoped lang='sass'>
@@ -205,9 +226,13 @@ function onFeatureClick(event: Event, index: number) {
       width: 40%
       background-color: var(--theme-home-places-bg)
       color: var(--theme-home-places-fg)
+      h3
+        text-transform: capitalize
       .grid
         width: 100%
         display: flex
+        flex-wrap: wrap
+        gap: 1em
         justify-content: space-between
         .social
           height: 4em
