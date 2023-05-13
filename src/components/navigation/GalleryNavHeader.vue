@@ -87,7 +87,6 @@ header
   display: flex
   align-items: center
   position: relative
-  z-index: 99
   .logo-link
     outline: none
     &::after
@@ -116,7 +115,8 @@ header
         height: auto
         width: 8em
         padding: 1em
-        background-color: black
+        background-color: var(--theme-nav-bg)
+        border: solid 1px var(--theme-nav-fg)
         font-size: 0.9em
         z-index: 1
         a

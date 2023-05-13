@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { reactive, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/src/store'
 import { deepCopy } from '@/src/utilities/object'
@@ -39,24 +39,35 @@ const galleryState = reactive({
 const ready = ref(false)
 let originalGallery = {} as gallery
 
-// init from cache or from yml
-const found = store.galleries.find((other) => other.id === props.id)
-if (!found) {
-  fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
-    .then((contents) => {
-      store.$patch({ galleries: [
-        ...store.galleries,
-        {
-          id: props.id,
-          gallery: contents as gallery,
-        },
-      ]})
-      originalGallery = contents as gallery
-      onLoad(originalGallery, props.indices)
-    })
-} else {
-  originalGallery = found.gallery
-  onLoad(originalGallery, props.indices)
+initialize()
+
+router.afterEach((to, from) => {
+  nextTick(() => {
+    initialize()
+    onCloseModal()
+  })
+})
+
+function initialize() {
+  // init from cache or from yml
+  const found = store.galleries.find((other) => other.id === props.id)
+  if (!found) {
+    fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
+      .then((contents) => {
+        store.$patch({ galleries: [
+          ...store.galleries,
+          {
+            id: props.id,
+            gallery: contents as gallery,
+          },
+        ]})
+        originalGallery = contents as gallery
+        onLoad(originalGallery, props.indices)
+      })
+  } else {
+    originalGallery = found.gallery
+    onLoad(originalGallery, props.indices)
+  }
 }
 
 /**
@@ -213,8 +224,8 @@ function onOpenImage(event: Event, piece: artWork) {
  * Handles when the modal is closed
  * @param event reference to the original event object
  */
-function onCloseModal(event: Event) {
-  event.preventDefault()
+function onCloseModal(event?: Event) {
+  event?.preventDefault()
   galleryState.modalImage = {}
   galleryState.modalIsOpen = false
 }
