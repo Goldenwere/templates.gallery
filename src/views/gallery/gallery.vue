@@ -9,6 +9,7 @@ import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
+import GalleryFolders from './galleryFolders.vue'
 import GalleryViewer from './galleryViewer.vue'
 
 const props = defineProps<{
@@ -41,13 +42,20 @@ let originalGallery = {} as gallery
 
 initialize()
 
+// react to navigation to new gallery
 router.afterEach((to, from) => {
   nextTick(() => {
-    initialize()
-    onCloseModal()
+    // only load if the gallery id changes (i.e. /gallery/{id}, [0] = '', [1] = 'gallery', [2] = {id})
+    if (to.fullPath.split('/')[2] !== from.fullPath.split('/')[2]) {
+      initialize()
+      onCloseModal()
+    }
   })
 })
 
+/**
+ * Handles the very first load of the component or on navigation to a new primary route
+ */
 function initialize() {
   // init from cache or from yml
   const found = store.galleries.find((other) => other.id === props.id)
@@ -195,10 +203,9 @@ function navigate(event: Event, index: number, piece?: artWork) {
 
 /**
  * Handles when a folder is selected
- * @param event reference to the original event object
+ * @param option the folder that was selected
  */
-function onSelectFolder(event: Event, option: string) {
-  event.preventDefault()
+function onSelectFolder(option: string) {
   galleryState.selectedFolder = option
   setContent(originalGallery.work)
 }
@@ -247,21 +254,12 @@ function onCloseModal(event?: Event) {
       @click='navigate($event, -1)'
     ) 
       span &lt; Back
-  .gallery-folders(
+  GalleryFolders(
     v-else-if='galleryState.folderOptions.length > 0'
+    :modelValue='galleryState.selectedFolder'
+    @update:modelValue='newValue => onSelectFolder(newValue)'
+    :options='galleryState.folderOptions'
   )
-    h2 Folders
-    a(
-      @click='onSelectFolder($event, "")'
-      v-html='"<i>Main Gallery</i>"'
-      :class='{ selected: galleryState.selectedFolder === "" }'
-    )
-    a(
-      v-for='option in galleryState.folderOptions'
-      @click='onSelectFolder($event, option.id)'
-      v-html='option.displayName'
-      :class='{ selected: galleryState.selectedFolder === option.id }'
-    )
   .gallery
     .piece(
       v-for='(piece, i) in galleryState.work'
@@ -302,25 +300,6 @@ GalleryViewer(
 .gallery-folders
   grid-row: 1
   grid-column: 2
-  padding-left: 2em
-  background-color: var(--theme-gallery-folders-bg)
-  a
-    display: block
-    position: relative
-    font-size: 1.25em
-    margin-bottom: 0.33em
-    color: var(--theme-gallery-folders-fg)
-    &:first-of-type
-      margin-bottom: 1em
-    &.selected
-      -webkit-text-stroke-width: 1px
-      -webkit-text-stroke-color: var(--theme-gallery-folders-fg)
-      &::before
-        content: '►'
-        position: absolute
-        left: -1em
-        top: 0
-        bottom: 0
 .gallery
   padding: 0.5em
   display: grid
