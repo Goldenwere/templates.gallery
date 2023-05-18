@@ -43,8 +43,6 @@ if (store.tos.terms === undefined) {
 <style scoped lang='sass'>
 #tos
   width: 100%
-  height: calc(100vh - 4em)
-  overflow-y: auto
   padding: 2em
   background-color: var(--theme-tos-bg)
   color: var(--theme-tos-fg)

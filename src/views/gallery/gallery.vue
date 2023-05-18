@@ -252,7 +252,7 @@ function onCloseModal(event?: Event) {
     h2 {{ galleryState.selectedImageTitle }}
     GalleryButton.back(
       @click='navigate($event, -1)'
-    ) 
+    )
       span &lt; Back
   GalleryFolders(
     v-else-if='galleryState.folderOptions.length > 0'
@@ -288,8 +288,7 @@ GalleryViewer(
 <style scoped lang='sass'>
 #gallery
   width: 100%
-  height: calc(100vh - 4em)
-  overflow-y: auto
+  min-height: calc(100vh - 4em)
   display: grid
   &.hasNav
     grid-template-rows: 7em auto

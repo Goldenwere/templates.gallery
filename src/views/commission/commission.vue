@@ -70,8 +70,6 @@ if (store.commission.commissionTypes === undefined) {
 
 #commission
   width: 100%
-  height: calc(100vh - 4em)
-  overflow-y: auto
   #header
     width: calc(100% - 6em)
     max-width: 48em

@@ -146,8 +146,6 @@ function onFeatureClick(event: Event, index: number) {
 
 <style scoped lang='sass'>
 #home
-  overflow: auto
-  height: 100vh
   width: 100vw
   background-size: cover
   background-attachment: fixed

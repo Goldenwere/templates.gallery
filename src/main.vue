@@ -12,7 +12,7 @@ const route = useRoute()
 const router = useRouter()
 const ready = ref(false)
 const showHeader = computed(() => {
-  return ready && route.name !== 'home'
+  return ready && route.name !== 'home' && !store.hideHeader
 })
 
 fetchAndParseYaml('/content/site.yml')
@@ -49,6 +49,12 @@ function setTitle(route: RouteLocationNormalized) {
 #entry
   width: 100vw
   height: 100vh
-  overflow: hidden
+  overflow: auto
   position: relative
+  z-index: 0
+  header
+    z-index: 1
+  main
+    z-index: 0
+    position: relative
 </style>

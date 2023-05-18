@@ -1,7 +1,10 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
+import { useStore } from '@/src/store'
 import type artWork from '@/src/types/artWork'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
+
+const store = useStore()
 
 const props = defineProps<{
   image: artWork,
@@ -26,6 +29,7 @@ function scrollTo(event: Event, id: string) {
 function toggleMaximized(event: Event, value: boolean) {
   event.preventDefault()
   maximized.value = value
+  store.hideHeader = value
 }
 </script>
 
@@ -62,12 +66,7 @@ function toggleMaximized(event: Event, value: boolean) {
 <style scoped lang='sass'>
 .viewer
   background-color: var(--theme-body-bg)
-  position: absolute
-  top: 4em
-  bottom: 0
-  left: 0
-  right: 0
-  overflow-y: auto
+  position: relative
   .top
     position: absolute
     top: 0
@@ -102,6 +101,7 @@ function toggleMaximized(event: Event, value: boolean) {
     left: 0em
     right: 0em
     bottom: 0em
+    z-index: 99
     background-color: var(--theme-modal-overlay-bg)
     img
       position: relative
