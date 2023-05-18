@@ -4,6 +4,8 @@ import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router'
 import { capitalizeFirstLetter } from '@/src/utilities/string'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
+import { envProd } from '@/src/env.prod'
+import type env from '@/src/types/env'
 import type site from '@/src/types/views/site'
 import GalleryNavHeader from './components/navigation/GalleryNavHeader.vue'
 
@@ -17,6 +19,9 @@ const showHeader = computed(() => {
 
 fetchAndParseYaml('/content/site.yml')
   .then(async (content) => {
+    const environment: env = envProd
+    store.$patch({ environment: environment as env })
+
     store.$patch({ site: content as site })
     await router.isReady()
     ready.value = true

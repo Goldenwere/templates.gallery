@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 import { nextTick, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { v5 as uuidv5 } from 'uuid'
 import { useStore } from '@/src/store'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
@@ -62,6 +63,7 @@ function initialize() {
   if (!found) {
     fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
       .then((contents) => {
+        (contents as gallery).work = patchGalleryContentsWithIds((contents as gallery).work)
         store.$patch({ galleries: [
           ...store.galleries,
           {
@@ -76,6 +78,24 @@ function initialize() {
     originalGallery = found.gallery
     onLoad(originalGallery, props.indices)
   }
+}
+
+function patchGalleryContentsWithIds(work: artWork[]): artWork[] {
+  return work.map((other) => {
+    const copy = deepCopy(other)
+
+    if (copy.variants) {
+      copy.variants = patchGalleryContentsWithIds(copy.variants)
+    }
+
+    if (copy._id) {
+      return copy
+    }
+    return {
+      ...copy,
+      _id: uuidv5(`${copy.title}${copy.url}${copy.thumbnailUrl}${copy.date}`, store.environment.uuidNamespace)
+    } as artWork
+  })
 }
 
 /**
@@ -157,6 +177,10 @@ function setContent(work: artWork[], indices?: number[]) {
           newValue.description = parent.description
         }
 
+        if (newValue.thumbnailPosition === undefined) {
+          newValue.thumbnailPosition = parent.thumbnailPosition
+        }
+
         return newValue
       }) as any[]
       iterator.shift()
@@ -233,7 +257,7 @@ function onOpenImage(event: Event, piece: artWork) {
  */
 function onCloseModal(event?: Event) {
   event?.preventDefault()
-  galleryState.modalImage = {}
+  galleryState.modalImage = {} as any
   galleryState.modalIsOpen = false
 }
 </script>

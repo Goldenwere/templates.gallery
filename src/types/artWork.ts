@@ -8,6 +8,7 @@
  * unless using for the featured artwork on the home page, in which only thumbnailUrl and optionally title needs to be defined.
  */
 interface artWork {
+  _id: string,
   /**
    * The date the piece was finished, published, or otherwise deemed complete.
    */
