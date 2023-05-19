@@ -10,6 +10,8 @@ import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/galleryArtWork'
 import type galleryContent from '@/src/types/galleryContent'
+import { GalleryDataUtilities } from './utilities/GalleryDataUtilities'
+import { GalleryFolderUtilities } from './utilities/GalleryFolderUtilities'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
@@ -51,7 +53,7 @@ function getGalleryData() {
     fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
     .then((parsed) => {
       const _parsed = parsed as gallery
-      store.setGalleryById(props.id, convertGalleryData(_parsed))
+      store.setGalleryById(props.id, GalleryDataUtilities.convertGalleryData(_parsed, store.environment.uuidNamespace))
       initializeView()
     })
   } else {
@@ -60,7 +62,7 @@ function getGalleryData() {
 }
 
 function initializeView() {
-  galleryState.folders = flattenFolders(store.getGalleryById(props.id).folders || [])
+  galleryState.folders = GalleryFolderUtilities.flattenFolders(store.getGalleryById(props.id).folders || [])
   galleryState.work = store.getGalleryById(props.id).work
   galleryState.selectedFolder = ''
   initializeContent()
@@ -75,7 +77,7 @@ function initializeContent() {
   while (_iterator.length > 0) {
     const _parent = _work[_iterator[0]]
     _heading = _parent.title || 'Untitled'
-    _work = amendVariantsWithDefaults(_parent)
+    _work = GalleryDataUtilities.amendVariantsWithDefaults(_parent)
     _iterator.shift()
   }
 
@@ -90,81 +92,6 @@ function initializeDisplayedWork() {
   if (galleryState.selectedFolder !== '' && galleryState.variantIds.length === 0) {
     galleryState.workToDisplay = galleryState.workToDisplay.filter((other) => other.folders?.includes(galleryState.selectedFolder))
   }
-}
-
-function convertGalleryData(content: gallery): galleryContent {
-  const _content: galleryContent = {
-    folders: deepCopy(content.folders),
-    work: convertArtWorkData(content.work),
-  }
-  return _content
-}
-
-function convertArtWorkData(work: artWork[]): { [key: string]: galleryArtWork } {
-  const _return: { [key: string]: galleryArtWork } = {}
-  const _work = deepCopy(work)
-  _work.forEach((_piece) => {
-    const _copy: galleryArtWork = {
-      ..._piece,
-      variants: undefined,
-      _id: uuidv5(`${_piece.title}${_piece.url}${_piece.thumbnailUrl}${_piece.date}`, store.environment.uuidNamespace),
-    }
-    if (_piece.variants) {
-      _copy.variants = convertArtWorkData(_piece.variants)
-    }
-    _return[_copy._id] = _copy
-  })
-  return _return
-}
-
-/**
- * Utility to map folder depth to indentation
- * @param original the original display name of the folder
- * @param depth the depth of the folder
- */
-function getFolderDisplayName(original: string, depth: number = 0) {
-  let padding = ''
-  for (let i = 0; i < depth; ++i) {
-    padding += '&nbsp;'
-  }
-  return `${padding}${original}`
-}
-
-/**
- * Utility recursive function that flattens folder hierarchy into an array of options
- * @param folders the original folders to map from
- * @param depth the current depth to keep track of for indenting purposes; the initial call should default to 0
- */
-function flattenFolders(folders: folder[], depth: number = 0): object[] {
-  return folders.flatMap((other) => [
-    {
-      ...deepCopy(other),
-      displayName: getFolderDisplayName(other.displayName || other.id, depth),
-      folders: undefined,
-      depth,
-    },
-    ...flattenFolders(other.folders || [], depth + 1)
-  ])
-}
-
-function amendVariantsWithDefaults(parent: galleryArtWork): {[key: string]: galleryArtWork} {
-  const _variants = deepCopy(parent.variants as {[key: string]: galleryArtWork})
-  Object.keys(_variants).forEach((key) => {
-    const _variant = _variants[key]
-    if (_variant.title === undefined) {
-      _variant.title = parent.title
-    }
-    if (_variant.date === undefined) {
-      _variant.date = parent.date
-    }
-    if (_variant.description === undefined) {
-      _variant.description = parent.description
-    }
-    if (_variant.thumbnailPosition === undefined) {
-      _variant.thumbnailPosition = parent.thumbnailPosition
-    }
-  })
-  return _variants as {[key: string]: galleryArtWork}
 }
 
 function onSelectFolder(option: string) {
