@@ -10,7 +10,35 @@ import type galleryContent from '@/src/types/galleryContent'
  */
 export class GalleryDataUtilities {
   /**
-   * Amends artWork variants with sensible defaults if certain optional data is missing
+   * Amends a variant artWork with sensible defaults from a parent if certain optional data is missing
+   * but present on the parent, carrying this down from the parent to its variants
+   * Assumed variables carried downward are:
+   * - title
+   * - date
+   * - description
+   * - thumbnailPosition
+   * @param parent the parent artwork in which the variant is pulling information from
+   * @returns a copy of the updated variant
+   */
+  static amendVariantWithDefaults = (parent: galleryArtWork, variant: galleryArtWork): galleryArtWork => {
+    const _variant = deepCopy(variant)
+    if (_variant.title === undefined) {
+      _variant.title = parent.title
+    }
+    if (_variant.date === undefined) {
+      _variant.date = parent.date
+    }
+    if (_variant.description === undefined) {
+      _variant.description = parent.description
+    }
+    if (_variant.thumbnailPosition === undefined) {
+      _variant.thumbnailPosition = parent.thumbnailPosition
+    }
+    return _variant
+  }
+
+  /**
+   * Amends artWork variants with sensible defaults from a parent if certain optional data is missing
    * but present on the parent, carrying this down from the parent to its variants
    * Assumed variables carried downward are:
    * - title
@@ -23,19 +51,7 @@ export class GalleryDataUtilities {
   static amendVariantsWithDefaults = (parent: galleryArtWork): {[key: string]: galleryArtWork} => {
     const _variants = deepCopy(parent.variants as {[key: string]: galleryArtWork})
     Object.keys(_variants).forEach((key) => {
-      const _variant = _variants[key]
-      if (_variant.title === undefined) {
-        _variant.title = parent.title
-      }
-      if (_variant.date === undefined) {
-        _variant.date = parent.date
-      }
-      if (_variant.description === undefined) {
-        _variant.description = parent.description
-      }
-      if (_variant.thumbnailPosition === undefined) {
-        _variant.thumbnailPosition = parent.thumbnailPosition
-      }
+      _variants[key] = GalleryDataUtilities.amendVariantWithDefaults(parent, _variants[key])
     })
     return _variants as {[key: string]: galleryArtWork}
   }

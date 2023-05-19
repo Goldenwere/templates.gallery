@@ -11,7 +11,6 @@ import { GalleryFolderUtilities } from './utilities/GalleryFolderUtilities'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
-import GalleryViewer from './galleryViewer.vue'
 
 const props = defineProps<{
   id: string,
@@ -152,6 +151,22 @@ function onNavigate(event: Event, id: string) {
   // as router won't refresh the page or props, update variantIds and view data
   galleryState.variantIds = _variantIds
   initializeView()
+}
+
+/**
+ * Handles when an image is opened that doesn't have variants but does have a URL
+ * @param event reference to the original event object
+ * @param piece reference to the variant piece that was selected
+ */
+ function onOpenImage(event: Event, piece: galleryArtWork) {
+  event.preventDefault()
+  if (piece.url?.[0] === '/') {
+    // if the url is root, navigate to the view
+    router.push({ name: 'view', params: { variantIds: [ ...galleryState.variantIds, piece._id ] }})
+  } else {
+    // if the url is not root, open it in a new tab
+    window.open(piece.url, '_blank')
+  }
 }
 </script>
 

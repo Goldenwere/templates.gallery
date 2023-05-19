@@ -1,17 +1,17 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { useStore } from '@/src/store'
-import type artWork from '@/src/types/artWork'
+import type galleryArtWork from '@/src/types/galleryArtWork'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 
 const store = useStore()
 
 const props = defineProps<{
-  image: artWork,
+  image: galleryArtWork,
 }>()
 
 const emits = defineEmits<{
-  (e: 'close', event: Event): void
+  (e: 'back', event: Event): void
 }>()
 
 const maximized = ref(false)
@@ -35,14 +35,16 @@ function toggleMaximized(event: Event, value: boolean) {
 
 <template lang='pug'>
 .viewer
-  .top
   .titlebar
     h2 {{ image.title || 'Untitled' }}
     GalleryButton(
       @click='scrollTo($event, ".viewer .body")'
     ) Description
     GalleryButton(
-      @click='$emit("close", $event)'
+      @click='toggleMaximized($event, true)'
+    ) Full Size
+    GalleryButton(
+      @click='$emit("back", $event)'
     ) Close
   img(
     :src='image.url'
@@ -52,7 +54,7 @@ function toggleMaximized(event: Event, value: boolean) {
     p {{ image.date }}
     p {{ image.description }}
     GalleryButton.to-top(
-      @click='scrollTo($event, ".viewer .top")'
+      @click='scrollTo($event, "header")'
     ) To Top
   .maximized(
     @click='toggleMaximized($event, false)'
@@ -67,14 +69,8 @@ function toggleMaximized(event: Event, value: boolean) {
 .viewer
   background-color: var(--theme-body-bg)
   position: relative
-  .top
-    position: absolute
-    top: 0
-    left: 0
-    width: 0
-    height: 0
   img
-    max-height: calc(100% - 4em)
+    max-height: calc(100vh - 8em)
     max-width: 80%
     margin: auto
     width: auto

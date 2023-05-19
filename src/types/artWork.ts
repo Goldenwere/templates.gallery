@@ -6,6 +6,18 @@
  * Technically every variable can be undefined, however this will just lead to generic placeholders being added that do nothing.
  * At minimum, `url` *OR* `variants` (which eventually filter to `artWork` with urls) should be defined,
  * unless using for the featured artwork on the home page, in which only thumbnailUrl and optionally title needs to be defined.
+ * 
+ * When an `artWork` is read into the gallery, it is modified to contain an _id, which is a UUID generated
+ * based off a combination of the `title`, `url`, `thumbnailUrl`, and `date`.
+ * It is assumed that you will only use a `thumbnailUrl`/`url` once within a hierarchical level of variants.
+ * Between levels, `thumbnailUrl` can be re-used.
+ * For example, at the root level of a gallery, each `artWork` has a different thumbnail.
+ * One `artWork` has variants, and one of those variants re-uses the same thumbnail used at the root.
+ * This variant doesn't change in title/date/url. While this would generate the same UUID, it won't collide with anything
+ * due to it being nested.
+ * The only point of collision would be if you defined 2+ `artWork` with the same exact `title`, `url`, `thumbnailUrl`, and `date`,
+ * or lack of definition thereof,
+ * all within the same hierarchical level (e.g. the root gallery).
  */
 interface artWork {
   /**
@@ -63,6 +75,9 @@ interface artWork {
    * `variants` allow for defining a number of variant pieces of a greater collection,
    * such as a commission with different options enabled on different exported images.
    * `variants`, if defined, will link and navigate deeper into a gallery.
+   * `variants` can be nested up to around 50 times (depending on the name of the gallery).
+   * This theoretical limit is specified in order to keep the URL under 2048 characters (the proposed maximum length of a URL),
+   * as each variant will append a 36-character generated uuid (not including slash) to the url
    */
   variants?: artWork[]
 }
