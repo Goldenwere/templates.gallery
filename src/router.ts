@@ -33,7 +33,7 @@ export const SiteRoutes: RouteRecordRaw[] = [
     name: 'gallery',
   },
   {
-    path: '/gallery/:id/:indices+',
+    path: '/gallery/:id/:variantIds+',
     component: gallery,
     props: true,
     name: 'subgallery',

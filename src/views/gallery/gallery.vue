@@ -8,6 +8,8 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import type artWork from '@/src/types/artWork'
 import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
+import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryContent from '@/src/types/galleryContent'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
 import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
@@ -15,102 +17,104 @@ import GalleryViewer from './galleryViewer.vue'
 
 const props = defineProps<{
   id: string,
-  indices?: number[],
+  variantIds?: string[],
 }>()
 
 const router = useRouter()
 const store = useStore()
 
-const galleryState = reactive({
-  /** the folder options mapped from gallery store to a flat array of options */
-  folderOptions: [] as object[],
-  /** selected indices of variant pieces; this is in order from root downward */
-  indices: (props.indices || []) as number[],
-  /** the selected folder from the gallery folder list; does not apply if not at root of gallery */
-  selectedFolder: '',
-  /** the title of the selected variant of indices; does not apply if at root of gallery */
-  selectedImageTitle: '',
-  /** the selected image for the modal; does not apply/resets if modal not open */
-  modalImage: {} as artWork,
-  /** whether the modal is open or not */
-  modalIsOpen: false,
-  /** the current work to display, based off of the current state's indices */
-  work: [] as artWork[],
-})
-
 const ready = ref(false)
-let originalGallery = {} as gallery
-
-initialize()
+const galleryState = reactive({
+  folders: [] as object[],
+  heading: '',
+  selectedFolder: '',
+  variantIds: props.variantIds || [],
+  work: {} as { [key: string]: galleryArtWork },
+  workToDisplay: [] as galleryArtWork[],
+})
 
 // react to navigation to new gallery
 router.afterEach((to, from) => {
   nextTick(() => {
     // only load if the gallery id changes (i.e. /gallery/{id}, [0] = '', [1] = 'gallery', [2] = {id})
     if (to.fullPath.split('/')[2] !== from.fullPath.split('/')[2]) {
-      initialize()
-      onCloseModal()
+      getGalleryData()
     }
   })
 })
 
-/**
- * Handles the very first load of the component or on navigation to a new primary route
- */
-function initialize() {
-  // init from cache or from yml
-  const found = store.galleries.find((other) => other.id === props.id)
-  if (!found) {
+getGalleryData()
+
+function getGalleryData() {
+  const notStored = store.getGalleryById(props.id) === undefined
+  if (notStored) {
     fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
-      .then((contents) => {
-        (contents as gallery).work = patchGalleryContentsWithIds((contents as gallery).work)
-        store.$patch({ galleries: [
-          ...store.galleries,
-          {
-            id: props.id,
-            gallery: contents as gallery,
-          },
-        ]})
-        originalGallery = contents as gallery
-        onLoad(originalGallery, props.indices)
-      })
+    .then((parsed) => {
+      const _parsed = parsed as gallery
+      store.setGalleryById(props.id, convertGalleryData(_parsed))
+      initializeView()
+    })
   } else {
-    originalGallery = found.gallery
-    onLoad(originalGallery, props.indices)
+    initializeView()
   }
 }
 
-function patchGalleryContentsWithIds(work: artWork[]): artWork[] {
-  return work.map((other) => {
-    const copy = deepCopy(other)
-
-    if (copy.variants) {
-      copy.variants = patchGalleryContentsWithIds(copy.variants)
-    }
-
-    if (copy._id) {
-      return copy
-    }
-    return {
-      ...copy,
-      _id: uuidv5(`${copy.title}${copy.url}${copy.thumbnailUrl}${copy.date}`, store.environment.uuidNamespace)
-    } as artWork
-  })
-}
-
-/**
- * Handles load-related events (loading YAML/cached gallery data or variants)
- * @param galleryContent cached or loaded gallery view data
- * @param indices ordered set of indices for navigating variants from the root of gallery.work
- */
-function onLoad(galleryContent: gallery, indices?: number[]) {
-  galleryState.indices = deepCopy(indices || [])
-  if (galleryState.indices.length === 0) {
-    // flattens the folder options to use in an iterable array
-    galleryState.folderOptions = flattenFolders(galleryContent.folders || [])
-  }
-  setContent(galleryContent.work, indices)
+function initializeView() {
+  galleryState.folders = flattenFolders(store.getGalleryById(props.id).folders || [])
+  galleryState.work = store.getGalleryById(props.id).work
+  galleryState.selectedFolder = ''
+  initializeContent()
   ready.value = true
+}
+
+function initializeContent() {
+  let _heading = props.id
+
+  const _iterator = deepCopy(galleryState.variantIds)
+  let _work = deepCopy(galleryState.work)
+  while (_iterator.length > 0) {
+    const _parent = _work[_iterator[0]]
+    _heading = _parent.title || 'Untitled'
+    _work = amendVariantsWithDefaults(_parent)
+    _iterator.shift()
+  }
+
+  galleryState.heading = _heading
+  galleryState.work = _work
+
+  initializeDisplayedWork()
+}
+
+function initializeDisplayedWork() {
+  galleryState.workToDisplay = Object.values(deepCopy(galleryState.work))
+  if (galleryState.selectedFolder !== '' && galleryState.variantIds.length === 0) {
+    galleryState.workToDisplay = galleryState.workToDisplay.filter((other) => other.folders?.includes(galleryState.selectedFolder))
+  }
+}
+
+function convertGalleryData(content: gallery): galleryContent {
+  const _content: galleryContent = {
+    folders: deepCopy(content.folders),
+    work: convertArtWorkData(content.work),
+  }
+  return _content
+}
+
+function convertArtWorkData(work: artWork[]): { [key: string]: galleryArtWork } {
+  const _return: { [key: string]: galleryArtWork } = {}
+  const _work = deepCopy(work)
+  _work.forEach((_piece) => {
+    const _copy: galleryArtWork = {
+      ..._piece,
+      variants: undefined,
+      _id: uuidv5(`${_piece.title}${_piece.url}${_piece.thumbnailUrl}${_piece.date}`, store.environment.uuidNamespace),
+    }
+    if (_piece.variants) {
+      _copy.variants = convertArtWorkData(_piece.variants)
+    }
+    _return[_copy._id] = _copy
+  })
+  return _return
 }
 
 /**
@@ -143,155 +147,83 @@ function flattenFolders(folders: folder[], depth: number = 0): object[] {
   ])
 }
 
-/**
- * Sets artwork content based on selected variants
- * @param work reference to gallery.work
- * @param indices current indices from param if initially loaded or state if navigating in app
- */
-function setContent(work: artWork[], indices?: number[]) {
-  // when a folder is selected, the v-for index is no longer accurate to the actual content array to find variants.
-  // this maps the original indices onto the artwork so that it can be used when a folder is selected.
-  // there is no need to deeply map this, as for nested variants, it will fall back on the v-for index like ususal,
-  // since folders are not intended to work alongside variants to begin with
-  let newContent = deepCopy(work).map((other, index) => ({ ...other, index, }))
-  if (indices) {
-    // if there are indices navigated, pull out the variants based on index-path
-    const iterator = deepCopy(indices)
-    let title = ''
-    // iterate over variant indices array
-    while (iterator.length > 0) {
-      const parent = newContent[iterator[0]]
-      // set the title first to make sure it pulls from the parent instead of variants
-      title = newContent[iterator[0]].title || 'untitled'
-      // then select the variants for display
-      newContent = (newContent[iterator[0]].variants as any[]).map((oldValue: artWork) => {
-        const newValue = deepCopy(oldValue)
-
-        if (newValue.title === undefined) {
-          newValue.title = parent.title
-        }
-        if (newValue.date === undefined) {
-          newValue.date = parent.date
-        }
-        if (newValue.description === undefined) {
-          newValue.description = parent.description
-        }
-
-        if (newValue.thumbnailPosition === undefined) {
-          newValue.thumbnailPosition = parent.thumbnailPosition
-        }
-
-        return newValue
-      }) as any[]
-      iterator.shift()
+function amendVariantsWithDefaults(parent: galleryArtWork): {[key: string]: galleryArtWork} {
+  const _variants = deepCopy(parent.variants as {[key: string]: galleryArtWork})
+  Object.keys(_variants).forEach((key) => {
+    const _variant = _variants[key]
+    if (_variant.title === undefined) {
+      _variant.title = parent.title
     }
-    galleryState.selectedImageTitle = title
-    galleryState.selectedFolder = ''
-  } else if (galleryState.selectedFolder !== '') {
-    // if no indices but a folder is selected, filter out artWork that does not match the selected folder
-    newContent = newContent.filter((other) => other.folders?.includes(galleryState.selectedFolder))
-  }
-  galleryState.work = newContent
+    if (_variant.date === undefined) {
+      _variant.date = parent.date
+    }
+    if (_variant.description === undefined) {
+      _variant.description = parent.description
+    }
+    if (_variant.thumbnailPosition === undefined) {
+      _variant.thumbnailPosition = parent.thumbnailPosition
+    }
+  })
+  return _variants as {[key: string]: galleryArtWork}
 }
 
-/**
- * Handles gallery navigation events
- * @param event reference to the original event object
- * @param index the index of the variant selected, or a negative number if navigating upward
- * @param piece reference to the variant piece that was selected
- */
-function navigate(event: Event, index: number, piece?: artWork) {
-  event.preventDefault()
-  const originalContent = deepCopy((store.galleries.find((other) => other.id === props.id))?.gallery as gallery)
-  const newIndices = deepCopy(props.indices || [])
+function onSelectFolder(option: string) {
+  galleryState.selectedFolder = option
+  initializeDisplayedWork()
+}
 
-  if (index < 0) {
+function onNavigate(event: Event, id: string) {
+  event.preventDefault()
+  const _variantIds = deepCopy(galleryState.variantIds)
+  if (id === 'back') {
     // handle navigation backwards to parent artwork
-    newIndices.pop()
-    if (newIndices.length < 1) {
+    _variantIds.pop()
+    if (_variantIds.length < 1) {
       // navigate to the root gallery route (without indices)
       router.push({ name: 'gallery', params: { id: props.id }})
     } else {
       // navigate to the subgallery route with the new indices
-      router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
+      router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
     }
   } else {
-    // handle navigation deeper into artwork variants
-    newIndices.push(index)
-    router.push({ name: 'subgallery', params: { id: props.id, indices: newIndices}})
+    _variantIds.push(id)
+    router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
   }
-
-  // refresh gallery state with new indices
-  onLoad(originalContent, newIndices)
-}
-
-/**
- * Handles when a folder is selected
- * @param option the folder that was selected
- */
-function onSelectFolder(option: string) {
-  galleryState.selectedFolder = option
-  setContent(originalGallery.work)
-}
-
-/**
- * Handles when an image is opened that doesn't have variants but does have a URL
- * @param event reference to the original event object
- * @param piece reference to the variant piece that was selected
- */
-function onOpenImage(event: Event, piece: artWork) {
-  event.preventDefault()
-  if (piece.url?.[0] === '/') {
-    // if the url is root, open a modal
-    galleryState.modalImage = piece
-    galleryState.modalIsOpen = true
-  } else {
-    // if the url is not root, open it in a new tab
-    window.open(piece.url, '_blank')
-  }
-}
-
-/**
- * Handles when the modal is closed
- * @param event reference to the original event object
- */
-function onCloseModal(event?: Event) {
-  event?.preventDefault()
-  galleryState.modalImage = {} as any
-  galleryState.modalIsOpen = false
+  galleryState.variantIds = _variantIds
+  initializeView()
 }
 </script>
 
 <template lang='pug'>
 #gallery(
-  v-if='ready && !galleryState.modalIsOpen'
+  v-if='ready'
   :class=`{
-    hasNav: galleryState.indices && galleryState.indices.length > 0,
-    hasFolders: galleryState.folderOptions.length > 0 && galleryState.indices?.length === 0,
+    hasNav: galleryState.variantIds.length > 0,
+    hasFolders: galleryState.folders.length > 0 && galleryState.variantIds?.length === 0,
   }`
 )
   .gallery-nav(
-    v-if='galleryState.indices && galleryState.indices.length > 0'
+    v-if='galleryState.variantIds.length > 0'
   )
-    h2 {{ galleryState.selectedImageTitle }}
+    h2 {{ galleryState.heading }}
     GalleryButton.back(
-      @click='navigate($event, -1)'
+      @click='onNavigate($event, "back")'
     )
       span &lt; Back
   GalleryFolders(
-    v-else-if='galleryState.folderOptions.length > 0'
+    v-else-if='galleryState.folders.length > 0'
     :modelValue='galleryState.selectedFolder'
     @update:modelValue='newValue => onSelectFolder(newValue)'
-    :options='galleryState.folderOptions'
+    :options='galleryState.folders'
   )
   .gallery
     .piece(
-      v-for='(piece, i) in galleryState.work'
+      v-for='(piece) in galleryState.workToDisplay'
     )
       GalleryImage.link(
         v-if='piece.variants'
         :piece='piece'
-        @click='navigate($event, piece.index || i, piece)'
+        @click='onNavigate($event, piece._id)'
       )
       GalleryImage.link(
         v-else-if='piece.url'
@@ -302,11 +234,6 @@ function onCloseModal(event?: Event) {
         v-else
         :piece='piece'
       )
-GalleryViewer(
-  v-if='galleryState.modalIsOpen'
-  :image='galleryState.modalImage'
-  @close='onCloseModal($event)'
-)
 </template>
 
 <style scoped lang='sass'>
