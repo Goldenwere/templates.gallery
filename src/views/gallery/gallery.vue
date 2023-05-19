@@ -1,15 +1,11 @@
 <script setup lang='ts'>
 import { nextTick, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { v5 as uuidv5 } from 'uuid'
 import { useStore } from '@/src/store'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
-import type artWork from '@/src/types/artWork'
-import type folder from '@/src/types/folder'
 import type gallery from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/galleryArtWork'
-import type galleryContent from '@/src/types/galleryContent'
 import { GalleryDataUtilities } from './utilities/GalleryDataUtilities'
 import { GalleryFolderUtilities } from './utilities/GalleryFolderUtilities'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
@@ -47,6 +43,12 @@ router.afterEach((to, from) => {
 
 getGalleryData()
 
+/**
+ * Ensures gallery data is loaded in the store and calls `initializeView` once loaded.
+ *
+ * This only needs to happen when the component first loads or when the primary gallery id changes
+ * (i.e. from navigating to a different gallery from the header while still in the gallery component)
+ */
 function getGalleryData() {
   const notStored = store.getGalleryById(props.id) === undefined
   if (notStored) {
@@ -61,32 +63,53 @@ function getGalleryData() {
   }
 }
 
+/**
+ * Loads the initial gallery view state.
+ * 
+ * This should happen once gallery data is loaded,
+ * and anytime the user navigates to between the hierarchy of variants
+ */
 function initializeView() {
+  // 1. set primary content to state
   galleryState.folders = GalleryFolderUtilities.flattenFolders(store.getGalleryById(props.id).folders || [])
   galleryState.work = store.getGalleryById(props.id).work
+  // 2. reset other state info
   galleryState.selectedFolder = ''
-  initializeContent()
-  ready.value = true
-}
-
-function initializeContent() {
-  let _heading = props.id
-
+  
+  // 3. prepare to handle variants if navigated to
+  // heading does not need to be defined by default as it only shows on variants
+  let _heading = ''
+  // create a working array to iterate over based off the variantIds
   const _iterator = deepCopy(galleryState.variantIds)
+  // create a working copy of the work which will pull out variants based off how deep variantIds points
   let _work = deepCopy(galleryState.work)
+
+  // 4. loop over iterator until there are no more variantIds left
   while (_iterator.length > 0) {
+    // keep a copy of the variant being selected
     const _parent = _work[_iterator[0]]
+    // set the title based off the selected variant
     _heading = _parent.title || 'Untitled'
+    // set the new array of artWork as the selected variant's variants
     _work = GalleryDataUtilities.amendVariantsWithDefaults(_parent)
+    // finally remove the first variantId to navigate further down if there are any left
     _iterator.shift()
   }
 
-  galleryState.heading = _heading
+  // 5. update the gallery view state with the selected work and heading
   galleryState.work = _work
+  galleryState.heading = _heading
 
   initializeDisplayedWork()
+  ready.value = true
 }
 
+/**
+ * Sets the initially displayed work by converting it back to an array and filtering by folder if selected.
+ * 
+ * This should happen every time the view is initialized,
+ * and every time a folder is selected/unselected
+ */
 function initializeDisplayedWork() {
   galleryState.workToDisplay = Object.values(deepCopy(galleryState.work))
   if (galleryState.selectedFolder !== '' && galleryState.variantIds.length === 0) {
@@ -94,28 +117,39 @@ function initializeDisplayedWork() {
   }
 }
 
-function onSelectFolder(option: string) {
-  galleryState.selectedFolder = option
+/**
+ * Handler for user selection of a folder
+ * @param folder the folder that was selected; an empty string represents a lack of selected folder
+ */
+function onSelectFolder(folder: string) {
+  galleryState.selectedFolder = folder
   initializeDisplayedWork()
 }
 
+/**
+ * Handler for user navigation of artWork/variants
+ * @param event reference to the event object that called this method
+ * @param id the _id of the artWork that was selected
+ */
 function onNavigate(event: Event, id: string) {
   event.preventDefault()
   const _variantIds = deepCopy(galleryState.variantIds)
   if (id === 'back') {
-    // handle navigation backwards to parent artwork
+    // handle navigation backwards to parent artWork by removing the most recently pushed variantId
     _variantIds.pop()
     if (_variantIds.length < 1) {
-      // navigate to the root gallery route (without indices)
+      // navigate to the root gallery route (without variantIds)
       router.push({ name: 'gallery', params: { id: props.id }})
     } else {
-      // navigate to the subgallery route with the new indices
+      // navigate to the subgallery route with the new variantIds
       router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
     }
   } else {
+    // handle navigation into an artWork by pushing its id to variantIds and navigating to subgallery route
     _variantIds.push(id)
     router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
   }
+  // as router won't refresh the page or props, update variantIds and view data
   galleryState.variantIds = _variantIds
   initializeView()
 }
