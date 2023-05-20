@@ -7,7 +7,7 @@ import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
 import ViewArt from './viewArt.vue'

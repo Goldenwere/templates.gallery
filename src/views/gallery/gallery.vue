@@ -8,7 +8,7 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { flattenFolders } from '@/src/utilities/galleryFolder'
 import { useStore } from '@/src/store'
 
-import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
 import GalleryButton from '@/src/components/inputs/galleryButton.vue'

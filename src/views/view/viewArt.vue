@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { useStore } from '@/src/store'
 
-import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 
 import GalleryButton from '@/src/components/inputs/galleryButton.vue'
 

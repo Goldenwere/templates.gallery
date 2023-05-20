@@ -1,5 +1,5 @@
 /**
- * This is a converted version of artWork to work with the site
+ * This is a converted version of artWork to work with the site.
  */
 interface artWork {
   _id: string

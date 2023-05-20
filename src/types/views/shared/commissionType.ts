@@ -1,4 +1,4 @@
-import type artWork from "./artWork"
+import type artWork from './artWork'
 
 /**
  * Represents a type of commission a commissioner can order.

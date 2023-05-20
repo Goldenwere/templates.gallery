@@ -1,5 +1,5 @@
-import type artWork from '@/src/types/artWork'
-import type socialContact from '@/src/types/socialContact'
+import type artWork from '@/src/types/views/shared/artWork'
+import type socialContact from '@/src/types/views/shared/socialContact'
 
 /**
  * Modal for home route data

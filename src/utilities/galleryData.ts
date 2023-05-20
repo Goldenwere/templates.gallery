@@ -1,8 +1,8 @@
 import { v5 as uuidv5 } from 'uuid'
 import { deepCopy } from '@/src/utilities/object'
-import type artWork from '@/src/types/artWork'
+import type artWork from '@/src/types/views/shared/artWork'
 import type galleryData from '@/src/types/views/gallery'
-import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryContent from '@/src/types/galleryContent'
 
 /**

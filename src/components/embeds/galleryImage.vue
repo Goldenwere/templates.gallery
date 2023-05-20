@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type artWork from '@/src/types/artWork'
+import type artWork from '@/src/types/views/shared/artWork'
 
 const props = defineProps<{
   piece: artWork,

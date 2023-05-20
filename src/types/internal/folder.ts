@@ -1,3 +1,6 @@
+/**
+ * Represents a folder to organize artwork under
+ */
 interface folder {
   /**
    * A display name for the folder.

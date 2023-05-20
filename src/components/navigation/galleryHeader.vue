@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { reactive, ref, watch } from 'vue'
 import { useStore } from '@/src/store'
-import type directoryRoute from '@/src/types/directoryRoute'
+import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 
 const store = useStore()
 const site = reactive(store.site)

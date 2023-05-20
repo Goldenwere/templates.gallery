@@ -6,10 +6,10 @@ import type { RouteLocationRaw } from 'vue-router'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type artWork from '@/src/types/artWork'
-import type directoryRoute from '@/src/types/directoryRoute'
+import type artWork from '@/src/types/views/shared/artWork'
+import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type homeData from '@/src/types/views/home'
-import type socialContact from '@/src/types/socialContact'
+import type socialContact from '@/src/types/views/shared/socialContact'
 
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 import GallerySocial from '@/src/components/embeds/gallerySocial.vue'

@@ -7,7 +7,7 @@ import { envProd } from '@/src/env.prod'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type env from '@/src/types/env'
+import type env from '@/src/types/internal/env'
 import type site from '@/src/types/views/site'
 
 import GalleryHeader from './components/navigation/galleryHeader.vue'

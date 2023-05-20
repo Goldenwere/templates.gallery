@@ -1,5 +1,5 @@
 import { deepCopy } from '@/src/utilities/object'
-import type folder from '@/src/types/folder'
+import type folder from '@/src/types/internal/folder'
 
 /**
  * Utility recursive function that flattens folder hierarchy into an array of options

@@ -1,4 +1,4 @@
-import type directoryRoute from '@/src/types/directoryRoute'
+import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 
 /**
  * Modal for site data

@@ -1,5 +1,5 @@
-import type artWork from '@/src/types/artWork'
-import type folder from '@/src/types/folder'
+import type artWork from '@/src/types/views/shared/artWork'
+import type folder from '@/src/types/internal/folder'
 
 /**
  * Modal for gallery route data

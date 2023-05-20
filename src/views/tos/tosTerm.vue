@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 
-import type contractTerm from '@/src/types/contractTerm'
+import type contractTerm from '@/src/types/views/shared/contractTerm'
 
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 

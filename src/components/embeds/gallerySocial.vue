@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type socialContact from '@/src/types/socialContact'
+import type socialContact from '@/src/types/views/shared/socialContact'
 
 const props = defineProps<{
   social: socialContact
