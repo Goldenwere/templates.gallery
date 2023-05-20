@@ -2,24 +2,31 @@
 import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import type { RouteLocationRaw } from 'vue-router'
+
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
-import type home from '@/src/types/views/home'
+
 import type artWork from '@/src/types/artWork'
 import type directoryRoute from '@/src/types/directoryRoute'
+import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/socialContact'
+
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 import GallerySocial from '@/src/components/embeds/gallerySocial.vue'
 
 const store = useStore()
 const route = useRoute()
+
 const content = reactive(store.home)
 const site = reactive(store.site)
+
 const ready = ref(false)
+
 const selectedImage = ref({} as artWork | undefined)
 const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl})`)
 const selectedImagePosition = computed(() => `${selectedImage.value?.thumbnailPosition}`)
 const selectedImageIndex = ref(0)
+
 const directories = computed(() => {
   return site.directories?.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
     if (directory.path === 'tos') {
@@ -49,6 +56,7 @@ const directories = computed(() => {
     }
   })
 })
+
 const socialMap = computed(() => {
   if (store.home?.social !== undefined) {
     let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
@@ -69,16 +77,26 @@ const socialMap = computed(() => {
 if (store.home.copyrightNotice === undefined) {
   fetchAndParseYaml('/content/home.yml')
     .then((content) => {
-      const parsed = content as home
-      store.$patch({ home: parsed })
-      ready.value = true
-      selectedImage.value = parsed.featured?.[0]
+      store.$patch({ home: content as homeData })
+      initializeView(content as homeData)
     })
 } else {
-  ready.value = true
-  selectedImage.value = store.home.featured?.[0]
+  initializeView(store.home)
 }
 
+/**
+ * Initializes the view data of the component
+ */
+function initializeView(content: homeData) {
+  ready.value = true
+  selectedImage.value = content.featured?.[0]
+}
+
+/**
+ * Handles selection of featured artwork
+ * @param event the event that called this function
+ * @param index the index of the featured artwork selected
+ */
 function onFeatureClick(event: Event, index: number) {
   event.preventDefault()
   selectedImage.value = store.home.featured?.[index]
@@ -145,6 +163,8 @@ function onFeatureClick(event: Event, index: number) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
+
 #home
   width: 100vw
   background-size: cover
@@ -160,9 +180,7 @@ function onFeatureClick(event: Event, index: number) {
       display: flex
       flex-direction: column
       align-items: center
-      top: 0
-      bottom: 0
-      left: 0
+      @include positioning(0, 0, 0, unset)
       width: 30%
       .logo
         max-height: 12em

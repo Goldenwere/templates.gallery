@@ -1,7 +1,7 @@
 import { v5 as uuidv5 } from 'uuid'
 import { deepCopy } from '@/src/utilities/object'
 import type artWork from '@/src/types/artWork'
-import type gallery from '@/src/types/views/gallery'
+import type galleryData from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/galleryArtWork'
 import type galleryContent from '@/src/types/galleryContent'
 
@@ -89,7 +89,7 @@ export const convertArtWorkData = (work: artWork[], uuidNamespace: string): { [k
  * @param uuidNamespace the UUID namespace to apply to the UUID generator
  * @returns the converted `content`
  */
-export const convertGalleryData = (content: gallery, uuidNamespace: string): galleryContent => {
+export const convertGalleryData = (content: galleryData, uuidNamespace: string): galleryContent => {
   const _content: galleryContent = {
     folders: deepCopy(content.folders),
     work: convertArtWorkData(content.work, uuidNamespace),

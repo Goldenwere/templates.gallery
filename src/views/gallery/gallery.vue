@@ -1,14 +1,17 @@
 <script setup lang='ts'>
 import { nextTick, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from '@/src/store'
+
 import { amendVariantsWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { flattenFolders } from '@/src/utilities/galleryFolder'
-import type gallery from '@/src/types/views/gallery'
+import { useStore } from '@/src/store'
+
 import type galleryArtWork from '@/src/types/galleryArtWork'
-import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
+import type galleryData from '@/src/types/views/gallery'
+
+import GalleryButton from '@/src/components/inputs/galleryButton.vue'
 import GalleryImage from '@/src/components/embeds/galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
@@ -21,6 +24,7 @@ const router = useRouter()
 const store = useStore()
 
 const ready = ref(false)
+
 const galleryState = reactive({
   folders: [] as object[],
   heading: '',
@@ -53,7 +57,7 @@ function getGalleryData() {
   if (notStored) {
     fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
     .then((parsed) => {
-      const _parsed = parsed as gallery
+      const _parsed = parsed as galleryData
       store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
       initializeView()
     })

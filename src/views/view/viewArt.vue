@@ -1,8 +1,11 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
+
 import { useStore } from '@/src/store'
+
 import type galleryArtWork from '@/src/types/galleryArtWork'
-import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
+
+import GalleryButton from '@/src/components/inputs/galleryButton.vue'
 
 const store = useStore()
 

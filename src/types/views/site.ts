@@ -1,6 +1,9 @@
 import type directoryRoute from '@/src/types/directoryRoute'
 
-interface site {
+/**
+ * Modal for site data
+ */
+interface siteData {
   /** the gallery directories present on the site; see directoryRoute for more information on how to configure */
   directories: directoryRoute[]
   /** the url to the favicon */
@@ -13,4 +16,4 @@ interface site {
   subtitle?: string
 }
 
-export default site
+export default siteData

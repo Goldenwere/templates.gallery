@@ -1,24 +1,27 @@
 <script setup lang='ts'>
-import { computed, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from '@/src/store'
-import type artWork from '@/src/types/artWork'
-import type commission from '@/src/types/views/commission'
+
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import { useStore } from '@/src/store'
+
+import type commissionData from '@/src/types/views/commission'
+
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 import GalleryCarousel from '@/src/components/embeds/galleryCarousel.vue'
 import GalleryImage from '@/src/components/embeds/galleryImage.vue'
 
 const store = useStore()
 const route = useRoute()
+
 const content = reactive(store.commission)
+
 const ready = ref(false)
 
 if (store.commission.commissionTypes === undefined) {
   fetchAndParseYaml('/content/commission.yml')
     .then((content) => {
-      const parsed = content as commission
-      store.$patch({ commission: parsed })
+      store.$patch({ commission: content as commissionData })
       ready.value = true
     })
 } else {

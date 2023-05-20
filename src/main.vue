@@ -1,21 +1,25 @@
 <script setup lang='ts'>
 import { computed, nextTick, ref } from 'vue'
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router'
+
 import { capitalizeFirstLetter } from '@/src/utilities/string'
+import { envProd } from '@/src/env.prod'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
-import { envProd } from '@/src/env.prod'
+
 import type env from '@/src/types/env'
 import type site from '@/src/types/views/site'
-import GalleryNavHeader from './components/navigation/GalleryNavHeader.vue'
+
+import GalleryHeader from './components/navigation/galleryHeader.vue'
 
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
-const ready = ref(false)
+
 const showHeader = computed(() => {
   return ready && route.name !== 'home' && !store.hideHeader
 })
+const ready = ref(false)
 
 fetchAndParseYaml('/content/site.yml')
   .then(async (content) => {
@@ -33,6 +37,10 @@ fetchAndParseYaml('/content/site.yml')
     })
   })
 
+/**
+ * Sets the title of the document based on current route
+ * @param route the current route
+ */
 function setTitle(route: RouteLocationNormalized) {
   const name = (route.name === 'gallery' || route.name === 'subgallery')
     ? `${capitalizeFirstLetter(route.params.id as string)} - Gallery`
@@ -43,7 +51,7 @@ function setTitle(route: RouteLocationNormalized) {
 
 <template lang='pug'>
 #entry
-  GalleryNavHeader(
+  GalleryHeader(
     v-if='showHeader'
   )
   main

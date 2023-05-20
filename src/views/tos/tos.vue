@@ -1,21 +1,25 @@
 <script setup lang='ts'>
 import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useStore } from '@/src/store'
-import type tos from '@/src/types/views/tos'
+
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import { useStore } from '@/src/store'
+
+import type tosData from '@/src/types/views/tos'
+
 import TosTerm from './tosTerm.vue'
 
 const store = useStore()
 const route = useRoute()
+
 const content = reactive(store.tos)
+
 const ready = ref(false)
 
 if (store.tos.terms === undefined) {
   fetchAndParseYaml('/content/tos.yml')
     .then((content) => {
-      const parsed = content as tos
-      store.$patch({ tos: parsed })
+      store.$patch({ tos: content as tosData })
       ready.value = true
     })
 } else {
@@ -41,6 +45,7 @@ if (store.tos.terms === undefined) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #tos
   width: 100%
   padding: 2em
@@ -52,10 +57,7 @@ if (store.tos.terms === undefined) {
     z-index: -1
     pointer-events: none
     position: fixed
-    bottom: 0
-    top: 0
-    left: 0
-    right: 0
+    @include positioning(0, 0, 0, 0)
     display: flex
     .actual
       background-color: var(--theme-tos-bg)

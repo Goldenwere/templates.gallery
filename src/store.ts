@@ -1,18 +1,18 @@
 import { defineStore } from 'pinia'
-import type commission from './types/views/commission'
+import type commissionData from './types/views/commission'
 import galleryContent from './types/galleryContent'
-import type home from './types/views/home'
-import type site from './types/views/site'
+import type homeData from './types/views/home'
+import type siteData from './types/views/site'
 import type env from './types/env'
-import tos from './types/views/tos'
+import tosData from './types/views/tos'
 
 export const useStore = defineStore('store', {
   state: () => ({
     environment: {} as env,
-    site: {} as site,
-    home: {} as home,
-    commission: {} as commission,
-    tos: {} as tos,
+    site: {} as siteData,
+    home: {} as homeData,
+    commission: {} as commissionData,
+    tos: {} as tosData,
     galleries: {} as { [key: string]: galleryContent },
 
     hideHeader: false,

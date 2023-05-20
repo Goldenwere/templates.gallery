@@ -1,6 +1,10 @@
 import type commissionType from '@/src/types/commissionType'
 
-interface commission {
+/**
+ * Modal for commission route data
+ */
+interface commissionData {
+  /** the commission types offerred */
   commissionTypes: commissionType[]
   /** Optional descriptive header for the commission page */
   header?: {
@@ -14,4 +18,4 @@ interface commission {
   }
 }
 
-export default commission
+export default commissionData

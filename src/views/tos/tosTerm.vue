@@ -1,7 +1,9 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+
 import type contractTerm from '@/src/types/contractTerm'
+
+import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 
 const props = defineProps<{
   depth: number,
@@ -55,7 +57,6 @@ section.term-container
       v-if='props.term.simple'
       :content='props.term.simple'
     )
-
 </template>
 
 <style scoped lang='sass'>

@@ -6,8 +6,14 @@ const props = defineProps<{
     displayName: string,
   }
 }>()
+
 const emits = defineEmits(['update:modelValue'])
 
+/**
+ * Emits folder selection upward
+ * @param event the event that called this function
+ * @param option the option that was clicked
+ */
 function onSelectFolder(event: Event, option: string) {
   event.preventDefault()
   emits('update:modelValue', option)

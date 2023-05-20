@@ -1,7 +1,10 @@
 import type artWork from '@/src/types/artWork'
 import type socialContact from '@/src/types/socialContact'
 
-interface home {
+/**
+ * Modal for home route data
+ */
+interface homeData {
   /** [MARKDOWN OPTIONAL] description about the artist, site, etc. */
   about?: string
   /** copyright notice displayed as is on the page */
@@ -12,4 +15,4 @@ interface home {
   featured?: artWork[]
 }
 
-export default home
+export default homeData

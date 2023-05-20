@@ -1,29 +1,34 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from '@/src/store'
+
 import { amendVariantWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
-import type gallery from '@/src/types/views/gallery'
-import type galleryArtWork from '@/src/types/galleryArtWork'
-import ViewArt from './viewArt.vue'
+import { useStore } from '@/src/store'
 
-const store = useStore()
-const router = useRouter()
+import type galleryArtWork from '@/src/types/galleryArtWork'
+import type galleryData from '@/src/types/views/gallery'
+
+import ViewArt from './viewArt.vue'
 
 const props = defineProps<{
   id: string,
   variantIds: string[],
 }>()
-const ready = ref(false)
+
+const store = useStore()
+const router = useRouter()
+
 const work = ref({} as galleryArtWork)
+
+const ready = ref(false)
 
 const notStored = store.getGalleryById(props.id) === undefined
 if (notStored) {
   fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
   .then((parsed) => {
-    const _parsed = parsed as gallery
+    const _parsed = parsed as galleryData
     store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
     initializeView()
   })
