@@ -2,14 +2,14 @@
 import { nextTick, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from '@/src/store'
+import { amendVariantsWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import { flattenFolders } from '@/src/utilities/galleryFolder'
 import type gallery from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/galleryArtWork'
-import { GalleryDataUtilities } from './utilities/GalleryDataUtilities'
-import { GalleryFolderUtilities } from './utilities/GalleryFolderUtilities'
 import GalleryButton from '@/src/components/inputs/GalleryButton.vue'
-import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
+import GalleryImage from '@/src/components/embeds/galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
 const props = defineProps<{
@@ -54,7 +54,7 @@ function getGalleryData() {
     fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
     .then((parsed) => {
       const _parsed = parsed as gallery
-      store.setGalleryById(props.id, GalleryDataUtilities.convertGalleryData(_parsed, store.environment.uuidNamespace))
+      store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
       initializeView()
     })
   } else {
@@ -70,7 +70,7 @@ function getGalleryData() {
  */
 function initializeView() {
   // 1. set primary content to state
-  galleryState.folders = GalleryFolderUtilities.flattenFolders(store.getGalleryById(props.id).folders || [])
+  galleryState.folders = flattenFolders(store.getGalleryById(props.id).folders || [])
   galleryState.work = store.getGalleryById(props.id).work
   // 2. reset other state info
   galleryState.selectedFolder = ''
@@ -90,7 +90,7 @@ function initializeView() {
     // set the title based off the selected variant
     _heading = _parent.title || 'Untitled'
     // set the new array of artWork as the selected variant's variants
-    _work = GalleryDataUtilities.amendVariantsWithDefaults(_parent)
+    _work = amendVariantsWithDefaults(_parent)
     // finally remove the first variantId to navigate further down if there are any left
     _iterator.shift()
   }

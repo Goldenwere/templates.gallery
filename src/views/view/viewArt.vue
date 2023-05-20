@@ -26,6 +26,11 @@ function scrollTo(event: Event, id: string) {
   document.querySelector(id)?.scrollIntoView()
 }
 
+/**
+ * Handler for toggling maximization of the image
+ * @param event the event that called this function
+ * @param value whether to enable or disable maximization
+ */
 function toggleMaximized(event: Event, value: boolean) {
   event.preventDefault()
   maximized.value = value
@@ -66,6 +71,8 @@ function toggleMaximized(event: Event, value: boolean) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
+
 .viewer
   background-color: var(--theme-body-bg)
   position: relative
@@ -93,10 +100,7 @@ function toggleMaximized(event: Event, value: boolean) {
       margin: auto
   .maximized
     position: fixed
-    top: 0em
-    left: 0em
-    right: 0em
-    bottom: 0em
+    @include positioning(0, 0, 0, 0)
     z-index: 99
     background-color: var(--theme-modal-overlay-bg)
     img

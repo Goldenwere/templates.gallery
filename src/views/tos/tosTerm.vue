@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import GalleryArticle from './GalleryArticle.vue'
+import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 import type contractTerm from '@/src/types/contractTerm'
 
 const props = defineProps<{

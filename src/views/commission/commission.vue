@@ -5,9 +5,9 @@ import { useStore } from '@/src/store'
 import type artWork from '@/src/types/artWork'
 import type commission from '@/src/types/views/commission'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
-import GalleryArticle from '@/src/components/embeds/GalleryArticle.vue'
-import GalleryCarousel from '@/src/components/embeds/GalleryCarousel.vue'
-import GalleryImage from '@/src/components/embeds/GalleryImage.vue'
+import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+import GalleryCarousel from '@/src/components/embeds/galleryCarousel.vue'
+import GalleryImage from '@/src/components/embeds/galleryImage.vue'
 
 const store = useStore()
 const route = useRoute()

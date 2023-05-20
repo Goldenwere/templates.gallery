@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from '@/src/store'
 import type tos from '@/src/types/views/tos'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
-import GalleryTerm from '@/src/components/embeds/GalleryTerm.vue'
+import TosTerm from './tosTerm.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -33,7 +33,7 @@ if (store.tos.terms === undefined) {
   .background
     .actual
     .simple
-  GalleryTerm(
+  TosTerm(
     v-for='term in content.terms'
     :depth='0'
     :term='term'

@@ -1,13 +1,13 @@
 <script setup lang='ts'>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from '@/src/store'
+import { amendVariantWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
+import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
-import { GalleryDataUtilities } from '@/src/views/gallery/utilities/GalleryDataUtilities'
 import type gallery from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/galleryArtWork'
 import ViewArt from './viewArt.vue'
-import { deepCopy } from '@/src/utilities/object';
 
 const store = useStore()
 const router = useRouter()
@@ -24,26 +24,33 @@ if (notStored) {
   fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
   .then((parsed) => {
     const _parsed = parsed as gallery
-    store.setGalleryById(props.id, GalleryDataUtilities.convertGalleryData(_parsed, store.environment.uuidNamespace))
+    store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
     initializeView()
   })
 } else {
   initializeView()
 }
 
+/**
+ * Initializes view data of the component
+ */
 function initializeView() {
   const _iterator = deepCopy(props.variantIds)
   const _galleryRef = store.getGalleryById(props.id)
   let _work = deepCopy(_galleryRef.work[_iterator[0]])
   _iterator.shift()
   while (_iterator.length > 0) {
-    _work = GalleryDataUtilities.amendVariantWithDefaults(_work, (_work.variants as { [key: string]: galleryArtWork })[_iterator[0]])
+    _work = amendVariantWithDefaults(_work, (_work.variants as { [key: string]: galleryArtWork })[_iterator[0]])
     _iterator.shift()
   }
   work.value = _work
   ready.value = true
 }
 
+/**
+ * Handler for navigation back button
+ * @param event the event that called this method
+ */
 function onBack(event: Event) {
   event.preventDefault()
   router.back()

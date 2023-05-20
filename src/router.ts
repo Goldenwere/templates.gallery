@@ -4,44 +4,43 @@ import {
   RouteRecordRaw,
 } from 'vue-router'
 
-import home from './views/home/home.vue'
-
-const commission = () => import('./views/commission/commission.vue')
-const gallery = () => import('./views/gallery/gallery.vue')
-const tos = () => import('./views/tos/tos.vue')
-const view = () => import('./views/view/view.vue')
+const homeBody = () => import('./views/home/home.vue')
+const commissionBody = () => import('./views/commission/commission.vue')
+const galleryBody = () => import('./views/gallery/gallery.vue')
+const tosBody = () => import('./views/tos/tos.vue')
+const viewBody = () => import('./views/view/view.vue')
 
 export const SiteRoutes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: home,
+    component: homeBody,
     name: 'home',
   },
   {
     path: '/tos',
-    component: tos,
+    component: tosBody,
     name: 'tos'
   },
   {
     path: '/commission',
-    component: commission,
+    component: commissionBody,
     name: 'commission',
   },
   {
     path: '/gallery/:id',
-    component: gallery,
+    component: galleryBody,
     props: true,
     name: 'gallery',
   },
   {
     path: '/gallery/:id/:variantIds+',
-    component: gallery,
+    component: galleryBody,
     props: true,
     name: 'subgallery',
   },
   {
     path: '/view/:id/:variantIds+',
-    component: view,
+    component: viewBody,
     props: true,
     name: 'view',
   }

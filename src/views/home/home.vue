@@ -8,8 +8,8 @@ import type home from '@/src/types/views/home'
 import type artWork from '@/src/types/artWork'
 import type directoryRoute from '@/src/types/directoryRoute'
 import type socialContact from '@/src/types/socialContact'
-import GalleryArticle from '@/src/components/embeds/GalleryArticle.vue'
-import GallerySocial from '@/src/components/embeds/GallerySocial.vue'
+import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+import GallerySocial from '@/src/components/embeds/gallerySocial.vue'
 
 const store = useStore()
 const route = useRoute()
