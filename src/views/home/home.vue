@@ -122,8 +122,10 @@ function onFeatureClick(event: Event, index: number) {
       .featured-gallery
         .element(
           v-for='(feature, index) in content.featured'
+          tabindex='0'
           :class='{ "unselected": index !== selectedImageIndex }'
           @click='onFeatureClick($event, index)'
+          @keydown.enter='onFeatureClick($event, index)'
         )
           .img(
             :style='{ backgroundImage: `url(${feature.thumbnailUrl})`, backgroundPosition: `${feature.thumbnailPosition}`, }'
@@ -198,6 +200,8 @@ function onFeatureClick(event: Event, index: number) {
           aspect-ratio: 1
           cursor: pointer
           transition: opacity 0.5s var(--theme-transition-function)
+          &:focus
+            outline: 1px solid var(--theme-nav-fg)
           &.unselected
             opacity: 0.5
             &:hover

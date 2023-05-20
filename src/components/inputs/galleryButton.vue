@@ -3,7 +3,9 @@
 </script>
 
 <template lang='pug'>
-button.button
+button.button(
+  tabindex='0'
+)
   slot
 </template>
 

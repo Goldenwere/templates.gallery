@@ -25,12 +25,16 @@ function onSelectFolder(event: Event, option: string) {
   h2 Folders
   a(
     @click='onSelectFolder($event, "")'
+    @keydown.enter='onSelectFolder($event, "")'
     v-html='"<i>Main Gallery</i>"'
+    tabindex='0'
     :class='{ selected: modelValue === "" }'
   )
   a(
     v-for='option in options'
+    tabindex='0'
     @click='onSelectFolder($event, option.id)'
+    @keydown.enter='onSelectFolder($event, option.id)'
     v-html='option.displayName || option.id'
     :class='{ selected: modelValue === option.id }'
   )

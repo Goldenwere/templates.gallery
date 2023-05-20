@@ -1,6 +1,8 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
+
 import type artWork from '@/src/types/views/shared/artWork'
+
 import GalleryButton from '../inputs/galleryButton.vue'
 
 const props = defineProps<{

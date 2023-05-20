@@ -9,6 +9,8 @@ const props = defineProps<{
 <template lang='pug'>
 a.social(
   :href='props.social.url'
+  target='_blank'
+  tabindex='0'
 )
   img.thumbnail(
     :src='props.social.thumbnailUrl'

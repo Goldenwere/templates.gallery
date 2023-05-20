@@ -204,11 +204,13 @@ function onNavigate(event: Event, id: string) {
         v-if='piece.variants'
         :piece='piece'
         @click='onNavigate($event, piece._id)'
+        @keydown.enter='onNavigate($event, piece._id)'
       )
       GalleryImage.link(
         v-else-if='piece.url'
         :piece='piece'
         @click='onOpenImage($event, piece)'
+        @keydown.enter='onOpenImage($event, piece)'
       )
       GalleryImage(
         v-else

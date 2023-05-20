@@ -9,6 +9,7 @@ const props = defineProps<{
 <template lang='pug'>
 .element(
   v-tippy='piece.title || "Untitled"'
+  tabindex='0'
 )
   span.indicator(
     v-if='piece.mature'
@@ -29,6 +30,8 @@ const props = defineProps<{
   display: flex
   flex-direction: column
   position: relative
+  &:focus
+    outline: 1px solid var(--theme-nav-fg)
   .indicator
     opacity: 0.75
     display: block

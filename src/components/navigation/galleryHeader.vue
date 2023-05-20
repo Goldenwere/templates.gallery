@@ -23,6 +23,9 @@ if (site.directories !== undefined) {
 })
 }
 
+/**
+ * Handles initializing the view data
+ */
 function initialize() {
   headerData.hasCommissions = !!site.directories?.find((other) => other.path === 'commission')
   headerData.hasTos = !!site.directories?.find((other) => other.path === 'tos')
@@ -39,8 +42,21 @@ function initialize() {
   })
 }
 
+/**
+ * Handles toggling the dropdown menu
+ * @param event the event that called this function
+ * @param isOpen whether the dropdown menu is open
+ */
 function onToggleMenu(event: Event, isOpen: boolean) {
   event.preventDefault()
+  console.log(document.activeElement)
+  if (
+    document.activeElement?.classList.contains('dropdown') ||
+    document.activeElement?.classList.contains('dropdown-link')
+  ) {
+    galleryDropdownOpen.value = true
+    return
+  }
   galleryDropdownOpen.value = isOpen
 }
 </script>
@@ -69,13 +85,18 @@ header
     span.dropdown(
       @mouseover='onToggleMenu($event, true)'
       @mouseleave='onToggleMenu($event, false)'
+      @focusin='onToggleMenu($event, true)'
+      @focusout='onToggleMenu($event, false)'
+      tabindex='0'
     ) Galleries
       .menu(
-        v-if='galleryDropdownOpen'
+        :class='{ visible: galleryDropdownOpen }'
       )
-        router-link(
+        router-link.dropdown-link(
           v-for='gallery in headerData.galleries'
           :to='gallery.route'
+          :tabindex='galleryDropdownOpen ? 0 : 1'
+          @focusout='onToggleMenu($event, false)'
         ) {{ gallery.title || gallery.path }}
 </template>
 
@@ -108,6 +129,8 @@ header
     .dropdown
       position: relative
       cursor: pointer
+      &:focus
+        outline: 1px solid var(--theme-nav-fg)
       .menu
         position: absolute
         display: flex
@@ -119,6 +142,11 @@ header
         border: solid 1px var(--theme-nav-fg)
         font-size: 0.9em
         z-index: 1
+        opacity: 0
+        pointer-events: none
+        &.visible
+          opacity: 1
+          pointer-events: all
         a
           margin-bottom: 0.5em
           &:last-child
