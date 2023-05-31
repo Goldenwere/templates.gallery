@@ -41,7 +41,7 @@ section.term-container
   .nested(
     v-if='shouldRecurse'
   )
-    GalleryTerm(
+    TosTerm(
       v-for='nestedTerm in props.term.terms'
       :depth='depth + 1'
       :term='nestedTerm'
