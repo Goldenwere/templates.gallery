@@ -94,6 +94,8 @@ function toggleMaximized(event: Event, value: boolean) {
     h2
       margin: 0
       margin-right: auto
+    .button
+      white-space: nowrap
   .body
     margin: 0.5em auto
     width: calc(100vw - 1em)
@@ -114,4 +116,13 @@ function toggleMaximized(event: Event, value: boolean) {
       height: auto
       cursor: pointer
       margin: 0.5em auto
+
+@media screen and (max-aspect-ratio: 5/6)
+  .viewer
+    .titlebar
+      flex-wrap: wrap
+      justify-content: center
+      h2
+        width: 100%
+        flex: 0 0 100%
 </style>
