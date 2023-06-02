@@ -89,4 +89,9 @@ if (store.commission.commissionTypes === undefined) {
       padding: 2em
       &:last-child
         margin-bottom: 2em
+@media screen and (max-aspect-ratio: 2/3)
+  #commission
+    #types
+      .type
+        padding: 1em
 </style>

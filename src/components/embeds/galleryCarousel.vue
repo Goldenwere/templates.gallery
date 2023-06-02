@@ -49,7 +49,7 @@ function navigate(event: Event, direction: number) {
 .carousel
   .container
     position: relative
-    height: calc(100% - 4em)
+    height: calc(100% - 2.5em)
     width: 100%
     display: flex
     img
@@ -58,10 +58,11 @@ function navigate(event: Event, direction: number) {
       margin: auto
       display: block
   .controls
-    height: 4em
+    height: 2em
     display: flex
     align-items: center
     justify-content: center
+    margin-top: 0.5em
     .count
       margin: 0 1em
     .button

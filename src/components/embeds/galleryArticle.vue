@@ -22,4 +22,8 @@ article(
   article
     :deep(ul)
       padding-left: 1em
+    :deep(p)
+      margin-top: 0
+    :deep(p:last-child)
+      margin-bottom: 0
 </style>
