@@ -243,4 +243,14 @@ function onNavigate(event: Event, id: string) {
     height: 12em
     .link
       cursor: pointer
+
+@media screen and (max-width: 500px)
+  #gallery
+    margin-top: 1em
+    display: flex
+    flex-direction: column
+    &.hasFolders
+      flex-direction: column-reverse
+  .gallery
+    justify-content: center
 </style>
