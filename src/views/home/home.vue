@@ -257,4 +257,20 @@ function onFeatureClick(event: Event, index: number) {
         .social
           height: 4em
           max-width: 48%
+
+@media screen and (max-aspect-ratio: 1/1)
+  #home
+    #landing
+      .body
+        width: 100%
+    #info
+      flex-direction: column
+      #navigation,
+      #about,
+      #places
+        width: 100%
+      #about
+        article
+          max-width: 24rem
+          font-size: 1.2em
 </style>
