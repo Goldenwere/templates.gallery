@@ -66,4 +66,8 @@ if (store.tos.terms === undefined) {
       background-color: var(--theme-tos-simple-bg)
       flex: 0 0 48%
       max-width: 32em
+@media screen and (max-aspect-ratio: 3/4)
+  #tos
+    .background
+      display: none
 </style>

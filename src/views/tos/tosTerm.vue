@@ -53,10 +53,12 @@ section.term-container
     GalleryArticle.term-actual(
       :content='props.term.terms'
     )
-    GalleryArticle.term-simple(
-      v-if='props.term.simple'
-      :content='props.term.simple'
-    )
+    .term-simple
+      span In Simple Terms...
+      GalleryArticle(
+        v-if='props.term.simple'
+        :content='props.term.simple'
+      )
 </template>
 
 <style scoped lang='sass'>
@@ -75,4 +77,21 @@ section.term-container
     .term-simple
       color: var(--theme-tos-simple-fg)
       max-width: 30em
+      span
+        margin-top: -0.5em
+        font-style: italic
+        position: absolute
+@media screen and (max-aspect-ratio: 3/4)
+  .term-container
+    .intro
+      max-width: 24rem
+    .content
+      flex-direction: column
+      .term-simple,
+      .term-actual
+        padding: 2em 1em 0.5em 1em
+      .term-actual
+        background-color: var(--theme-tos-bg)
+      .term-simple
+        background-color: var(--theme-tos-simple-bg)
 </style>
