@@ -18,5 +18,8 @@ article(
 </template>
 
 <style scoped lang='sass'>
-
+@media screen and (max-aspect-ratio: 3/4)
+  article
+    :deep(ul)
+      padding-left: 1em
 </style>
