@@ -12,6 +12,7 @@ import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/views/shared/socialContact'
 
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+import GalleryPlaceholder from '@/src/components/embeds/galleryPlaceholder.vue'
 import GallerySocial from '@/src/components/embeds/gallerySocial.vue'
 
 const store = useStore()
@@ -117,6 +118,7 @@ function onFeatureClick(event: Event, index: number) {
       ) {{ site.subtitle }}
       img.logo(
         :src='site.logo'
+        v-if='site.logo'
         alt='logo'
       )
       .featured-gallery
@@ -137,7 +139,11 @@ function onFeatureClick(event: Event, index: number) {
         v-for='directory in directories'
       )
         img(
+          v-if='directory.directory.thumbnailUrl'
           :src='directory.directory.thumbnailUrl'
+        )
+        GalleryPlaceholder(
+          v-else
         )
         router-link(
           :to='directory.route'
@@ -239,6 +245,9 @@ function onFeatureClick(event: Event, index: number) {
           max-height: 5em
           width: auto
           height: auto
+        .placeholder
+          height: 5em
+          width: 5em
     #about
       width: 30%
       background-color: var(--theme-home-about-bg)

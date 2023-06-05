@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import type socialContact from '@/src/types/views/shared/socialContact'
+import GalleryPlaceholder from './galleryPlaceholder.vue'
 
 const props = defineProps<{
   social: socialContact
@@ -13,7 +14,11 @@ a.social(
   tabindex='0'
 )
   img.thumbnail(
+    v-if='props.social.thumbnailUrl'
     :src='props.social.thumbnailUrl'
+  )
+  GalleryPlaceholder(
+    v-else
   )
   .text
     p.title {{ props.social.title }}
@@ -26,6 +31,7 @@ a.social(
   color: var(--theme-social-fg)
   text-decoration: none
   display: flex
+  .placeholder,
   .thumbnail
     aspect-ratio: 1/1
     margin: 0.5em

@@ -1,9 +1,15 @@
 <script setup lang='ts'>
+import { computed } from 'vue'
 import type artWork from '@/src/types/views/shared/artWork'
+import GalleryPlaceholder from './galleryPlaceholder.vue'
 
 const props = defineProps<{
   piece: artWork,
 }>()
+
+const hasOnsiteImage = computed(() => {
+  return !!props.piece.thumbnailUrl || props.piece.url?.charAt(0) === '/'
+})
 </script>
 
 <template lang='pug'>
@@ -15,8 +21,11 @@ const props = defineProps<{
     v-if='piece.mature'
   ) Mature
   .thumbnail(
-    v-if='piece.thumbnailUrl || piece.url'
-    :style='{ backgroundImage: `url(${piece.thumbnailUrl || piece.url})`, backgroundPosition: `${piece.thumbnailPosition}` }'
+    v-if='hasOnsiteImage'
+    :style='{ backgroundImage: `url(${piece.thumbnailUrl || piece.url})`, backgroundPosition: `${piece.thumbnailPosition || "center center"}` }'
+  )
+  GalleryPlaceholder(
+    v-else
   )
   p {{ piece.title || 'Untitled' }}
 </template>
@@ -42,11 +51,13 @@ const props = defineProps<{
     font-size: 0.75em
     background-color: #000a
     padding: 0.25em 0.5em
+  .placeholder,
   .thumbnail
     height: 9em
     width: 9em
     background-size: cover
     margin: auto
+  .thumbnail
     display: block
   p
     text-align: center
