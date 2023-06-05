@@ -53,10 +53,11 @@ section.term-container
     GalleryArticle.term-actual(
       :content='props.term.terms'
     )
-    .term-simple
+    .term-simple(
+      v-if='props.term.simple'
+    )
       span In Simple Terms...
       GalleryArticle(
-        v-if='props.term.simple'
         :content='props.term.simple'
       )
 </template>

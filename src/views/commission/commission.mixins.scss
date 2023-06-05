@@ -11,6 +11,15 @@ section.type {
   background-color: var(--theme-commission-box-bg);
   color: var(--theme-commission-box-fg);
 
+  &.no-example {
+    grid-template-areas:
+      'heading'
+      'status'
+      'article'
+    ;
+    grid-template-columns: unset;
+  }
+
   h3 {
     grid-area: heading;
     margin: 0
@@ -38,13 +47,23 @@ section.type {
 @media screen and (max-aspect-ratio: 2/3) {
   section.type {
     grid-template-areas:
-      'heading heading'
-      'status status'
-      'examples examples'
-      'article article'
+      'heading'
+      'status'
+      'examples'
+      'article'
     ;
     grid-template-columns: auto;
     grid-template-rows: auto;
     gap: 0.25em;
+
+    &.no-examples {
+      &.no-example {
+        grid-template-areas:
+          'heading'
+          'status'
+          'article'
+        ;
+      }
+    }
   }
 }

@@ -51,6 +51,7 @@ if (store.commission.commissionTypes === undefined) {
     h2 Commission Types
     section.type(
       v-for='commission in content.commissionTypes'
+      :class='{ "no-example": commission.examples === undefined }'
     )
       h3 {{ commission.title }}
       span.status(

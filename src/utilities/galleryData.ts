@@ -3,7 +3,7 @@ import { deepCopy } from '@/src/utilities/object'
 import type artWork from '@/src/types/views/shared/artWork'
 import type galleryData from '@/src/types/views/gallery'
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
-import type galleryContent from '@/src/types/galleryContent'
+import type galleryContent from '@/src/types/internal/galleryContent'
 
 /**
  * Amends a variant artWork with sensible defaults from a parent if certain optional data is missing
@@ -91,7 +91,7 @@ export const convertArtWorkData = (work: artWork[], uuidNamespace: string): { [k
  */
 export const convertGalleryData = (content: galleryData, uuidNamespace: string): galleryContent => {
   const _content: galleryContent = {
-    folders: deepCopy(content.folders),
+    folders: deepCopy(content.folders || []),
     work: convertArtWorkData(content.work, uuidNamespace),
   }
   return _content

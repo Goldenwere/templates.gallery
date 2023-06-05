@@ -175,6 +175,7 @@ function onFeatureClick(event: Event, index: number) {
     position: relative
     width: 100vw
     height: 100vh
+    text-align: center
     .body
       background-color: var(--theme-landing-body-bg)
       color: var(--theme-landing-body-fg)
@@ -195,7 +196,7 @@ function onFeatureClick(event: Event, index: number) {
         width: 100%
         display: grid
         gap: 0.25em
-        grid-template-columns: 1fr 1fr 1fr 1fr
+        grid-template-columns: repeat(auto-fit, minmax(3rem,1fr))
         .element
           aspect-ratio: 1
           cursor: pointer
