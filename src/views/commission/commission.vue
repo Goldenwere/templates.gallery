@@ -7,9 +7,8 @@ import { useStore } from '@/src/store'
 
 import type commissionData from '@/src/types/views/commission'
 
+import CommissionCarousel from './commissionCarousel.vue'
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
-import GalleryCarousel from '@/src/components/embeds/galleryCarousel.vue'
-import GalleryImage from '@/src/components/embeds/galleryImage.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -64,7 +63,7 @@ if (store.commission.commissionTypes === undefined) {
       .examples(
         v-if='commission.examples'
       )
-        GalleryCarousel(
+        CommissionCarousel(
           :art='commission.examples'
         )
 </template>

@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import type artWork from '@/src/types/views/shared/artWork'
-import GalleryPlaceholder from './galleryPlaceholder.vue'
+import GalleryPlaceholder from '../../components/embeds/galleryPlaceholder.vue'
 
 const props = defineProps<{
   piece: artWork,

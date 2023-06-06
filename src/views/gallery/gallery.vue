@@ -12,7 +12,7 @@ import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
 import GalleryButton from '@/src/components/inputs/galleryButton.vue'
-import GalleryImage from '@/src/components/embeds/galleryImage.vue'
+import GalleryImage from './galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
 const props = defineProps<{

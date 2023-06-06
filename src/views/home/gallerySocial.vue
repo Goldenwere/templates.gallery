@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type socialContact from '@/src/types/views/shared/socialContact'
-import GalleryPlaceholder from './galleryPlaceholder.vue'
+import GalleryPlaceholder from '../../components/embeds/galleryPlaceholder.vue'
 
 const props = defineProps<{
   social: socialContact

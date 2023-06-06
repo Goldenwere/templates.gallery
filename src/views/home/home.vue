@@ -13,7 +13,7 @@ import type socialContact from '@/src/types/views/shared/socialContact'
 
 import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
 import GalleryPlaceholder from '@/src/components/embeds/galleryPlaceholder.vue'
-import GallerySocial from '@/src/components/embeds/gallerySocial.vue'
+import HomeSocial from './gallerySocial.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -164,7 +164,7 @@ function onFeatureClick(event: Event, index: number) {
       )
         h3 {{ index }}
         .grid
-          GallerySocial(
+          HomeSocial(
             v-for='social in category'
             :social='social'
           )
