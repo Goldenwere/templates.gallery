@@ -12,8 +12,8 @@ import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/views/shared/socialContact'
 
 import AppArticle from '@/src/components/embeds/appArticle.vue'
-import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 import HomeLanding from './homeLanding.vue'
+import HomeNavigation from './homeNavigation.vue'
 import HomeSocial from './homeSocial.vue'
 
 const store = useStore()
@@ -27,36 +27,6 @@ const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl
 const selectedImagePosition = computed(() => `${selectedImage.value?.thumbnailPosition}`)
 
 const ready = ref(false)
-
-const directories = computed(() => {
-  return site.directories?.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
-    if (directory.path === 'tos') {
-      return {
-        route: {
-          name: 'tos',
-        },
-        directory,
-      }
-    } else if (directory.path === 'commission') {
-      return {
-        route: {
-          name: 'commission',
-        },
-        directory,
-      }
-    } else {
-      return {
-        route: {
-          name: 'gallery',
-          params: {
-            id: directory.path,
-          }
-        },
-        directory,
-      }
-    }
-  })
-})
 
 if (store.home.copyrightNotice === undefined) {
   fetchAndParseYaml('/content/home.yml')
@@ -95,21 +65,9 @@ function onSelectedImage(image: artWork) {
     @selectedImage='onSelectedImage'
   )
   #info
-    nav#navigation
-      h2 Navigation
-      .link(
-        v-for='directory in directories'
-      )
-        img(
-          v-if='directory.directory.thumbnailUrl'
-          :src='directory.directory.thumbnailUrl'
-        )
-        AppPlaceholder(
-          v-else
-        )
-        router-link(
-          :to='directory.route'
-        ) {{ directory.directory.title }}
+    HomeNavigation(
+      :site='site'
+    )
     section#about(
       v-if='content.about'
     )
@@ -135,28 +93,10 @@ function onSelectedImage(image: artWork) {
     > nav,
     > section
       padding: 1em
-      > h2
+      > :deep(h2)
         margin: 0
     #navigation
       width: 30%
-      background-color: var(--theme-home-nav-bg)
-      color: var(--theme-home-nav-fg)
-      display: flex
-      flex-direction: column
-      justify-content: flex-start
-      gap: 0.5em
-      .link
-        display: flex
-        gap: 1em
-        align-items: center
-        img
-          max-width: 5em
-          max-height: 5em
-          width: auto
-          height: auto
-        .placeholder
-          height: 5em
-          width: 5em
     #about
       width: 30%
       background-color: var(--theme-home-about-bg)
