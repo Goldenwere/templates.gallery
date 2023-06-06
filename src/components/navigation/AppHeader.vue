@@ -48,11 +48,15 @@ function initialize() {
  * @param isOpen whether the dropdown menu is open
  */
 function onToggleMenu(event: Event, isOpen: boolean) {
-  event.preventDefault()
-  console.log(document.activeElement)
+  event?.preventDefault()
+  if (event === null) {
+    (document.querySelector('.logo-link') as HTMLElement).focus()
+    galleryDropdownOpen.value = false
+    return
+  }
   if (
-    document.activeElement?.classList.contains('dropdown') ||
-    document.activeElement?.classList.contains('dropdown-link')
+    (document.activeElement?.classList.contains('dropdown') ||
+    document.activeElement?.classList.contains('dropdown-link'))
   ) {
     galleryDropdownOpen.value = true
     return
@@ -97,6 +101,8 @@ header
           :to='gallery.route'
           :tabindex='galleryDropdownOpen ? 0 : 1'
           @focusout='onToggleMenu($event, false)'
+          @click='onToggleMenu(null, false)'
+          @keydown.enter='onToggleMenu(null, false)'
         ) {{ gallery.title || gallery.path }}
 </template>
 
@@ -109,12 +115,16 @@ header
   align-items: center
   position: relative
   .logo-link
-    outline: none
+    outline: 1px solid transparent
+    height: 3em
+    margin: auto 0 auto 0.5em
     &::after
       display: none
+    &:focus
+      outline: 1px solid var(--theme-nav-fg)
     img
-      height: 3em
-      margin: auto 0 auto 0.5em
+      height: 100%
+      width: 3em
   nav
     margin-left: 0.5em
     display: flex
@@ -126,18 +136,18 @@ header
       text-decoration: none
       font-weight: bold
       font-family: var(--theme-font-display)
+      &:focus
+        outline: 1px solid var(--theme-nav-fg)
     .dropdown
       position: relative
       cursor: pointer
-      &:focus
-        outline: 1px solid var(--theme-nav-fg)
       .menu
         position: absolute
         display: flex
         flex-direction: column
         height: auto
         width: 8em
-        padding: 1em
+        padding: 0.5em
         background-color: var(--theme-nav-bg)
         border: solid 1px var(--theme-nav-fg)
         font-size: 0.9em
