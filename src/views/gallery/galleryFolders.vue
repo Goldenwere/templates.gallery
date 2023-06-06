@@ -43,7 +43,8 @@ function onSelectFolder(event: Event, option: string) {
 <style scoped lang='sass'>
 .gallery-folders
   padding-left: 2em
-  background-color: var(--theme-gallery-folders-bg)
+  background: var(--theme-gallery-folders-bg)
+  color: var(--theme-gallery-folders-fg)
   a
     display: block
     position: relative

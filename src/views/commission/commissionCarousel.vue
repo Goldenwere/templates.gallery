@@ -77,7 +77,7 @@ function navigate(event: Event, direction: number) {
         margin: auto
         width: 0.5em
         height: 90%
-        background-color: var(--theme-input-fg)
+        background: var(--theme-input-fg)
         mask-position: center center
         mask-size: 100% 100%
       .left

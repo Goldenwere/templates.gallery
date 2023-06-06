@@ -27,7 +27,7 @@ a.social(
 
 <style scoped lang='sass'>
 .social
-  background-color: var(--theme-social-bg)
+  background: var(--theme-social-bg)
   color: var(--theme-social-fg)
   text-decoration: none
   display: flex

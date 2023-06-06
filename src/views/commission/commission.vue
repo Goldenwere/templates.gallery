@@ -73,10 +73,13 @@ if (store.commission.commissionTypes === undefined) {
 
 #commission
   width: 100%
+  background: var(--theme-commission-bg)
+  color: var(--theme-commission-fg)
   #header
     width: calc(100% - 6em)
     max-width: 48em
-    margin: 2em auto
+    margin: 0 auto 2em
+    padding-top: 2em
   #types
     width: calc(100% - 6em)
     max-width: 48em

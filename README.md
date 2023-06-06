@@ -60,9 +60,5 @@ If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has a
 
 Github Actions is configured to build `/dist` to AWS on push to `main`. `/content` must be syncronized manually.
 
-## Content API
-"Content" is defined as the text, images, and other information displayed by the framework, in addition to theme stylesheets that apply branding to the framework. Content is set up primarily in a `.gitignored` `/content` folder using YML files to update this information independently from the CI/CD framework (e.g. updating information about games, credits, etc.) and to make the framework itself more re-usable, open-source, and independent of branding. YML files for each view (i.e. `/src/views`) have associated modals to adhere to.
-
-The following content definitions are required (or assumed but optional) by the framework in order to load properly.
-
-TBD
+## Content DB
+"Content" is defined as the text, images, and other information displayed by the framework, in addition to theme stylesheets that apply branding to the framework. Content is set up primarily in a `.gitignored` `/content` folder using YML files to update this information independently from the CI/CD framework (e.g. updating information about games, credits, etc.) and to make the framework itself more re-usable, open-source, and independent of branding. YML files for each view (i.e. `/src/views`) have associated modals to adhere to (`/src/types/views`). To read more about the Content DB, read the [wiki page on the topic](https://github.com/Goldenwere/templates.gallery/wiki/API)

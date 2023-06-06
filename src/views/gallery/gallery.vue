@@ -223,6 +223,8 @@ function onNavigate(event: Event, id: string) {
   width: 100%
   min-height: calc(100vh - 4em)
   display: grid
+  background: var(--theme-gallery-bg)
+  color: var(--theme-gallery-fg)
   &.hasNav
     grid-template-rows: 7em auto
   &.hasFolders

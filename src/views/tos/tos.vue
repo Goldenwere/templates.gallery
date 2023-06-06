@@ -49,7 +49,7 @@ if (store.tos.terms === undefined) {
 #tos
   width: 100%
   padding: 2em
-  background-color: var(--theme-tos-bg)
+  background: var(--theme-tos-bg)
   color: var(--theme-tos-fg)
   z-index: 1
   position: relative
@@ -60,10 +60,10 @@ if (store.tos.terms === undefined) {
     @include positioning(0, 0, 0, 0)
     display: flex
     .actual
-      background-color: var(--theme-tos-bg)
+      background: var(--theme-tos-bg)
       flex: 0 0 48%
     .simple
-      background-color: var(--theme-tos-simple-bg)
+      background: var(--theme-tos-simple-bg)
       flex: 0 0 48%
       max-width: 32em
 @media screen and (max-aspect-ratio: 3/4)

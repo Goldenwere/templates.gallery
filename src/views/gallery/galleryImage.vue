@@ -49,7 +49,8 @@ const hasOnsiteImage = computed(() => {
 
 <style scoped lang='sass'>
 .element
-  background-color: #000a
+  background: var(--theme-gallery-element-bg)
+  color: var(--theme-gallery-element-fg)
   padding: 0.5em
   height: 100%
   width: 100%
@@ -66,7 +67,8 @@ const hasOnsiteImage = computed(() => {
     right: 0.5em
     font-style: italic
     font-size: 0.75em
-    background-color: #000a
+    background: var(--theme-gallery-maturity-bg)
+    color: var(--theme-gallery-maturity-fg)
     padding: 0.25em 0.5em
   .placeholder,
   .thumbnail

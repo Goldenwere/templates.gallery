@@ -92,7 +92,7 @@ section.term-container
       .term-actual
         padding: 2em 1em 0.5em 1em
       .term-actual
-        background-color: var(--theme-tos-bg)
+        background: var(--theme-tos-bg)
       .term-simple
-        background-color: var(--theme-tos-simple-bg)
+        background: var(--theme-tos-simple-bg)
 </style>

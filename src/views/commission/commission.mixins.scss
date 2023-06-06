@@ -8,7 +8,7 @@ section.type {
   ;
   grid-template-rows: 0.5em 0.5em auto;
   grid-template-columns: 15em auto;
-  background-color: var(--theme-commission-box-bg);
+  background: var(--theme-commission-box-bg);
   color: var(--theme-commission-box-fg);
 
   &.no-example {

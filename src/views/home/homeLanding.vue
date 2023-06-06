@@ -66,7 +66,7 @@ emit('selectedImage', selectedImage.value)
   height: 100vh
   text-align: center
   .body
-    background-color: var(--theme-landing-body-bg)
+    background: var(--theme-landing-body-bg)
     color: var(--theme-landing-body-fg)
     position: absolute
     display: flex

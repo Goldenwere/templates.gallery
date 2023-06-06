@@ -41,7 +41,7 @@ section#places
 
 <style scoped lang='sass'>
 #places
-  background-color: var(--theme-home-places-bg)
+  background: var(--theme-home-places-bg)
   color: var(--theme-home-places-fg)
   h3
     text-transform: capitalize

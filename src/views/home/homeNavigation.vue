@@ -61,7 +61,7 @@ nav#navigation
 
 <style scoped lang='sass'>
 #navigation
-  background-color: var(--theme-home-nav-bg)
+  background: var(--theme-home-nav-bg)
   color: var(--theme-home-nav-fg)
   display: flex
   flex-direction: column

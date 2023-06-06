@@ -19,6 +19,6 @@ section#about
 
 <style scoped lang='sass'>
 #about
-  background-color: var(--theme-home-about-bg)
+  background: var(--theme-home-about-bg)
   color: var(--theme-home-about-fg)
 </style>
