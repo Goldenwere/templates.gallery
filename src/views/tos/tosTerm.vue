@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import type contractTerm from '@/src/types/views/shared/contractTerm'
 
-import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const props = defineProps<{
   depth: number,
@@ -33,7 +33,7 @@ section.term-container
     v-if='depth === 4'
   ) {{ props.term.title }}
 
-  GalleryArticle.intro(
+  AppArticle.intro(
     v-if='props.term.intro'
     :content='props.term.intro'
   )
@@ -50,14 +50,14 @@ section.term-container
   .content(
     v-else
   )
-    GalleryArticle.term-actual(
+    AppArticle.term-actual(
       :content='props.term.terms'
     )
     .term-simple(
       v-if='props.term.simple'
     )
       span In Simple Terms...
-      GalleryArticle(
+      AppArticle(
         :content='props.term.simple'
       )
 </template>

@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type socialContact from '@/src/types/views/shared/socialContact'
-import GalleryPlaceholder from '../../components/embeds/galleryPlaceholder.vue'
+import AppPlaceholder from '../../components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
   social: socialContact
@@ -17,7 +17,7 @@ a.social(
     v-if='props.social.thumbnailUrl'
     :src='props.social.thumbnailUrl'
   )
-  GalleryPlaceholder(
+  AppPlaceholder(
     v-else
   )
   .text

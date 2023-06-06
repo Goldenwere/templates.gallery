@@ -11,8 +11,8 @@ import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/views/shared/socialContact'
 
-import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
-import GalleryPlaceholder from '@/src/components/embeds/galleryPlaceholder.vue'
+import AppArticle from '@/src/components/embeds/appArticle.vue'
+import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 import HomeSocial from './gallerySocial.vue'
 
 const store = useStore()
@@ -142,7 +142,7 @@ function onFeatureClick(event: Event, index: number) {
           v-if='directory.directory.thumbnailUrl'
           :src='directory.directory.thumbnailUrl'
         )
-        GalleryPlaceholder(
+        AppPlaceholder(
           v-else
         )
         router-link(
@@ -152,7 +152,7 @@ function onFeatureClick(event: Event, index: number) {
       v-if='content.about'
     )
       h2 About
-      GalleryArticle(
+      AppArticle(
         :content='content.about'
       )
     section#places(

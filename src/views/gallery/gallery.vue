@@ -11,7 +11,7 @@ import { useStore } from '@/src/store'
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
-import GalleryButton from '@/src/components/inputs/galleryButton.vue'
+import AppButton from '@/src/components/inputs/appButton.vue'
 import GalleryImage from './galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
@@ -186,7 +186,7 @@ function onNavigate(event: Event, id: string) {
     v-if='galleryState.variantIds.length > 0'
   )
     h2 {{ galleryState.heading }}
-    GalleryButton.back(
+    AppButton.back(
       @click='onNavigate($event, "back")'
     )
       span &lt; Back

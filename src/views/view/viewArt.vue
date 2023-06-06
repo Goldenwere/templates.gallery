@@ -5,7 +5,7 @@ import { useStore } from '@/src/store'
 
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 
-import GalleryButton from '@/src/components/inputs/galleryButton.vue'
+import AppButton from '@/src/components/inputs/appButton.vue'
 
 const store = useStore()
 
@@ -45,13 +45,13 @@ function toggleMaximized(event: Event, value: boolean) {
 .viewer
   .titlebar
     h2 {{ image.title || 'Untitled' }}
-    GalleryButton(
+    AppButton(
       @click='scrollTo($event, ".viewer .body")'
     ) Description
-    GalleryButton(
+    AppButton(
       @click='toggleMaximized($event, true)'
     ) Full Size
-    GalleryButton(
+    AppButton(
       @click='$emit("back", $event)'
     ) Close
   img(
@@ -61,7 +61,7 @@ function toggleMaximized(event: Event, value: boolean) {
   .body
     p {{ image.date }}
     p {{ image.description }}
-    GalleryButton.to-top(
+    AppButton.to-top(
       @click='scrollTo($event, "header")'
     ) To Top
   .maximized(

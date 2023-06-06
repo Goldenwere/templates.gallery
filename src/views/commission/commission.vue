@@ -8,7 +8,7 @@ import { useStore } from '@/src/store'
 import type commissionData from '@/src/types/views/commission'
 
 import CommissionCarousel from './commissionCarousel.vue'
-import GalleryArticle from '@/src/components/embeds/galleryArticle.vue'
+import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -42,7 +42,7 @@ if (store.commission.commissionTypes === undefined) {
         :href='content.header.form'
         target='_blank'
       ) {{ content.header.form }}
-    GalleryArticle(
+    AppArticle(
       v-if='content.header.description'
       :content='content.header.description'
     )
@@ -56,7 +56,7 @@ if (store.commission.commissionTypes === undefined) {
       span.status(
         v-if='commission.status'
       ) {{ commission.status }}
-      GalleryArticle(
+      AppArticle(
         v-if='commission.details'
         :content='commission.details'
       )

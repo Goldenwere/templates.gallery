@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 
 import type artWork from '@/src/types/views/shared/artWork'
 
-import GalleryButton from '../../components/inputs/galleryButton.vue'
+import AppButton from '@/src/components/inputs/appButton.vue'
 
 const props = defineProps<{
   art: artWork[]
@@ -32,13 +32,13 @@ function navigate(event: Event, direction: number) {
       :alt='props.art[selected].alt'
     )
   .controls
-    GalleryButton(
+    AppButton(
       v-if='length > 1'
       @click='navigate($event, -1)'
     )
       .svg.left
     span.count {{ selected + 1 }} / {{ length }}
-    GalleryButton(
+    AppButton(
       v-if='length > 1'
       @click='navigate($event, 1)'
     )

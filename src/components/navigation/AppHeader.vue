@@ -151,4 +151,8 @@ header
           margin-bottom: 0.5em
           &:last-child
             margin-bottom: 0.25em
+@media screen and (max-width: 820px)
+  header
+    nav
+      font-size: 1.25em
 </style>

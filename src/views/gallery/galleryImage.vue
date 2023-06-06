@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import type artWork from '@/src/types/views/shared/artWork'
-import GalleryPlaceholder from '../../components/embeds/galleryPlaceholder.vue'
+import AppPlaceholder from '../../components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
   piece: artWork,
@@ -24,7 +24,7 @@ const hasOnsiteImage = computed(() => {
     v-if='hasOnsiteImage'
     :style='{ backgroundImage: `url(${piece.thumbnailUrl || piece.url})`, backgroundPosition: `${piece.thumbnailPosition || "center center"}` }'
   )
-  GalleryPlaceholder(
+  AppPlaceholder(
     v-else
   )
   p {{ piece.title || 'Untitled' }}

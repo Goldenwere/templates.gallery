@@ -10,7 +10,7 @@ import { useStore } from '@/src/store'
 import type env from '@/src/types/internal/env'
 import type site from '@/src/types/views/site'
 
-import GalleryHeader from './components/navigation/galleryHeader.vue'
+import AppHeader from './components/navigation/AppHeader.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -51,7 +51,7 @@ function setTitle(route: RouteLocationNormalized) {
 
 <template lang='pug'>
 #entry
-  GalleryHeader(
+  AppHeader(
     v-if='showHeader'
   )
   main
