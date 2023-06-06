@@ -56,7 +56,7 @@ section.term-container
     .term-simple(
       v-if='props.term.simple'
     )
-      span In Simple Terms...
+      p.title In Simple Terms...
       AppArticle(
         :content='props.term.simple'
       )
@@ -64,8 +64,11 @@ section.term-container
 
 <style scoped lang='sass'>
 .term-container
+  h1, h2, h3, h4, h5, h6
+    margin-bottom: 0
   .intro
     width: 48%
+    margin-top: 1em
   .content
     display: flex
     flex-wrap: nowrap
@@ -78,7 +81,7 @@ section.term-container
     .term-simple
       color: var(--theme-tos-simple-fg)
       max-width: 30em
-      span
+      p.title
         margin-top: -0.5em
         font-style: italic
         position: absolute
@@ -90,9 +93,12 @@ section.term-container
       flex-direction: column
       .term-simple,
       .term-actual
-        padding: 2em 1em 0.5em 1em
+        padding: 1em
       .term-actual
         background: var(--theme-tos-bg)
       .term-simple
         background: var(--theme-tos-simple-bg)
+        p.title
+          margin-top: 0
+          position: relative
 </style>

@@ -53,5 +53,10 @@ section#places
     justify-content: space-between
     .social
       height: 4em
-      max-width: 48%
+      flex: 1 1 auto
+      max-width: calc(50% - 0.5em)
+      :deep(.placeholder),
+      :deep(.thumbnail)
+        height: 3em
+        width: 3em
 </style>

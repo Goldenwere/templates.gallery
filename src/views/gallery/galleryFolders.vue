@@ -51,6 +51,8 @@ function onSelectFolder(event: Event, option: string) {
     font-size: 1.25em
     margin-bottom: 0.33em
     color: var(--theme-gallery-folders-fg)
+    &:focus
+      outline: 1px solid var(--theme-gallery-folders-fg)
     &:first-of-type
       margin-bottom: 1em
     &.selected

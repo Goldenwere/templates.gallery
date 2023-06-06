@@ -73,5 +73,9 @@ function onBack(event: Event) {
 </template>
 
 <style scoped lang='sass'>
-
+#view
+  background: var(--theme-view-bg)
+  color: var(--theme-view-fg)
+  min-height: calc(100vh - 4rem)
+  padding: 1em 1em
 </style>

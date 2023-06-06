@@ -103,7 +103,6 @@ function toggleMaximized(event: Event, value: boolean) {
 @import '@/src/styles/mixins.scss'
 
 .viewer
-  background-color: var(--theme-body-bg)
   position: relative
   img,
   .placeholder
@@ -121,14 +120,14 @@ function toggleMaximized(event: Event, value: boolean) {
   .titlebar
     display: flex
     align-items: center
-    margin: 0.5em
+    margin-bottom: 1em
     h2
       margin: 0
       margin-right: auto
     .button
       white-space: nowrap
   .body
-    margin: 0.5em auto
+    margin: 0.5em auto 0
     width: calc(100vw - 1em)
     max-width: 30em
     .to-top

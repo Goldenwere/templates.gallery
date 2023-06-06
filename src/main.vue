@@ -60,8 +60,6 @@ function setTitle(route: RouteLocationNormalized) {
 
 <style lang='sass' scoped>
 #entry
-  width: 100vw
-  height: 100vh
   overflow: auto
   position: relative
   z-index: 0
