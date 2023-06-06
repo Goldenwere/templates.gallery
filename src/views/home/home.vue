@@ -11,7 +11,7 @@ import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/views/shared/socialContact'
 
-import AppArticle from '@/src/components/embeds/appArticle.vue'
+import HomeAbout from './homeAbout.vue'
 import HomeLanding from './homeLanding.vue'
 import HomeNavigation from './homeNavigation.vue'
 import HomeSocial from './homeSocial.vue'
@@ -68,14 +68,12 @@ function onSelectedImage(image: artWork) {
     HomeNavigation(
       :site='site'
     )
-    section#about(
+    HomeAbout(
       v-if='content.about'
+      :content='content'
     )
-      h2 About
-      AppArticle(
-        :content='content.about'
-      )
     HomeSocial(
+      v-if='content.social'
       :content='content'
     )
 </template>
@@ -99,8 +97,6 @@ function onSelectedImage(image: artWork) {
       width: 30%
     #about
       width: 30%
-      background-color: var(--theme-home-about-bg)
-      color: var(--theme-home-about-fg)
     #places
       width: 40%
 
