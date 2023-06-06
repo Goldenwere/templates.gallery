@@ -1,11 +1,15 @@
 <script setup lang='ts'>
 import { reactive, ref, watch } from 'vue'
 import { useStore } from '@/src/store'
+
 import type directoryRoute from '@/src/types/views/shared/directoryRoute'
+
+import AppNavButton from './appNavButton.vue'
 
 const store = useStore()
 const site = reactive(store.site)
 const galleryDropdownOpen = ref(false)
+const isOpen = ref(false)
 
 const headerData = reactive({
   hasCommissions: false,
@@ -63,16 +67,28 @@ function onToggleMenu(event: Event, isOpen: boolean) {
   }
   galleryDropdownOpen.value = isOpen
 }
+
+/**
+ * Handler for when the navigation button is toggled
+ */
+function onToggleNavigation(state: boolean) {
+  isOpen.value = state
+}
 </script>
 
 <template lang='pug'>
-header
+header(
+  :class='{ "is-open": isOpen }'
+)
   router-link.logo-link(
     :to='{ name: "home" }'
   )
     img(
       :src='site.logo'
     )
+  AppNavButton(
+    @stateChanged='onToggleNavigation($event)'
+  )
   nav
     router-link(
       :to='{ name: "home" }'
@@ -110,10 +126,12 @@ header
 header
   width: 100%
   height: 4em
-  background-color: var(--theme-nav-bg)
+  background: var(--theme-nav-bg)
   display: flex
   align-items: center
   position: relative
+  .nav-button
+    display: none
   .logo-link
     outline: 1px solid transparent
     height: 3em
@@ -165,4 +183,26 @@ header
   header
     nav
       font-size: 1.25em
+
+@media screen and (max-aspect-ratio: 3/4)
+  header
+    background: unset
+    height: unset
+    .nav-button
+      display: block
+    .logo-link
+      display: none
+    nav
+      padding: 1em
+      margin: 0
+      transition: 0.5s left var(--theme-transition-function)
+      flex-direction: column
+      position: absolute
+      width: 100vw
+      top: 3.5em
+      left: -200vw
+      background: var(--theme-nav-bg)
+    &.is-open
+      nav
+        left: 0
 </style>
