@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import type socialContact from '@/src/types/views/shared/socialContact'
-import AppPlaceholder from '../../components/embeds/appPlaceholder.vue'
+import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
   social: socialContact

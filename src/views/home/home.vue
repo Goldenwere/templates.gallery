@@ -13,7 +13,8 @@ import type socialContact from '@/src/types/views/shared/socialContact'
 
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
-import HomeSocial from './gallerySocial.vue'
+import HomeLanding from './homeLanding.vue'
+import HomeSocial from './homeSocial.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -21,12 +22,11 @@ const route = useRoute()
 const content = reactive(store.home)
 const site = reactive(store.site)
 
-const ready = ref(false)
-
 const selectedImage = ref({} as artWork | undefined)
 const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl})`)
 const selectedImagePosition = computed(() => `${selectedImage.value?.thumbnailPosition}`)
-const selectedImageIndex = ref(0)
+
+const ready = ref(false)
 
 const directories = computed(() => {
   return site.directories?.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
@@ -90,18 +90,14 @@ if (store.home.copyrightNotice === undefined) {
  */
 function initializeView(content: homeData) {
   ready.value = true
-  selectedImage.value = content.featured?.[0]
 }
 
 /**
- * Handles selection of featured artwork
- * @param event the event that called this function
- * @param index the index of the featured artwork selected
+ * Handler for updating the selected image from the landing component
+ * @param image the image that was selected
  */
-function onFeatureClick(event: Event, index: number) {
-  event.preventDefault()
-  selectedImage.value = store.home.featured?.[index]
-  selectedImageIndex.value = index
+function onSelectedImage(image: artWork) {
+  selectedImage.value = image
 }
 </script>
 
@@ -110,28 +106,11 @@ function onFeatureClick(event: Event, index: number) {
   v-if='ready'
   :style='{ backgroundImage: selectedImageUrl, backgroundPosition: selectedImagePosition, }'
 )
-  #landing
-    .body
-      h1 {{ site.title }}
-      h2(
-        v-if='site.subtitle'
-      ) {{ site.subtitle }}
-      img.logo(
-        :src='site.logo'
-        v-if='site.logo'
-        alt='logo'
-      )
-      .featured-gallery
-        .element(
-          v-for='(feature, index) in content.featured'
-          tabindex='0'
-          :class='{ "unselected": index !== selectedImageIndex }'
-          @click='onFeatureClick($event, index)'
-          @keydown.enter='onFeatureClick($event, index)'
-        )
-          .img(
-            :style='{ backgroundImage: `url(${feature.thumbnailUrl})`, backgroundPosition: `${feature.thumbnailPosition}`, }'
-          )
+  HomeLanding(
+    :site='site'
+    :content='content'
+    @selectedImage='onSelectedImage'
+  )
   #info
     nav#navigation
       h2 Navigation
@@ -171,53 +150,10 @@ function onFeatureClick(event: Event, index: number) {
 </template>
 
 <style scoped lang='sass'>
-@import '@/src/styles/mixins.scss'
-
 #home
   width: 100vw
   background-size: cover
   background-attachment: fixed
-  #landing
-    position: relative
-    width: 100vw
-    height: 100vh
-    text-align: center
-    .body
-      background-color: var(--theme-landing-body-bg)
-      color: var(--theme-landing-body-fg)
-      position: absolute
-      display: flex
-      flex-direction: column
-      align-items: center
-      @include positioning(0, 0, 0, unset)
-      width: 30%
-      .logo
-        max-height: 12em
-        max-width: 95%
-        height: auto
-        width: auto
-      .featured-gallery
-        margin-top: 1em
-        padding: 0 1em
-        width: 100%
-        display: grid
-        gap: 0.25em
-        grid-template-columns: repeat(auto-fit, minmax(3rem,1fr))
-        .element
-          aspect-ratio: 1
-          cursor: pointer
-          transition: opacity 0.5s var(--theme-transition-function)
-          &:focus
-            outline: 1px solid var(--theme-nav-fg)
-          &.unselected
-            opacity: 0.5
-            &:hover
-              opacity: 1.0
-          .img
-            background-size: cover
-            background-position: center center
-            width: 100%
-            height: 100%
   #info
     position: relative
     display: flex
