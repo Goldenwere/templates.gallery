@@ -1,28 +1,27 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import type homeData from '@/src/types/views/home'
+
 import type socialContact from '@/src/types/views/shared/socialContact'
+
 import HomeSocialLink from './homeSocialLink.vue'
 
 const props = defineProps<{
-  content: homeData
+  socialContacts: socialContact[]
 }>()
 
 const socialMap = computed(() => {
-  if (props.content?.social !== undefined) {
-    let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
-    props.content.social.forEach((value) => {
-      if (value.category === undefined) {
-        mapped['uncategorized'].push(value)
-      } else if (mapped[value.category] === undefined) {
-        mapped[value.category] = [ value ]
-      } else {
-        mapped[value.category].push(value)
-      }
-    })
+  let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
+  props.socialContacts.forEach((value) => {
+    if (value.category === undefined) {
+      mapped['uncategorized'].push(value)
+    } else if (mapped[value.category] === undefined) {
+      mapped[value.category] = [ value ]
+    } else {
+      mapped[value.category].push(value)
+    }
+  })
 
-    return mapped
-  }
+  return mapped
 })
 </script>
 

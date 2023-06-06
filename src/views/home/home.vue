@@ -32,16 +32,9 @@ if (store.home.copyrightNotice === undefined) {
   fetchAndParseYaml('/content/home.yml')
     .then((content) => {
       store.$patch({ home: content as homeData })
-      initializeView(content as homeData)
+      ready.value = true
     })
 } else {
-  initializeView(store.home)
-}
-
-/**
- * Initializes the view data of the component
- */
-function initializeView(content: homeData) {
   ready.value = true
 }
 
@@ -66,15 +59,15 @@ function onSelectedImage(image: artWork) {
   )
   #info
     HomeNavigation(
-      :site='site'
+      :directories='site.directories'
     )
     HomeAbout(
       v-if='content.about'
-      :content='content'
+      :aboutContent='content.about'
     )
     HomeSocial(
       v-if='content.social'
-      :content='content'
+      :socialContacts='content.social'
     )
 </template>
 

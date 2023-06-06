@@ -4,7 +4,7 @@ import type homeData from '@/src/types/views/home'
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const props = defineProps<{
-  content: homeData
+  aboutContent: string
 }>()
 
 </script>
@@ -13,7 +13,7 @@ const props = defineProps<{
 section#about
   h2 About
   AppArticle(
-    :content='content.about'
+    :content='aboutContent'
   )
 </template>
 

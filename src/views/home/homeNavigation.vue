@@ -3,16 +3,15 @@ import { computed } from 'vue'
 import { type RouteLocationRaw } from 'vue-router'
 
 import type directoryRoute from '@/src/types/views/shared/directoryRoute'
-import type siteData from '@/src/types/views/site'
 
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
-  site: siteData
+  directories: directoryRoute[]
 }>()
 
-const directories = computed(() => {
-  return props.site.directories?.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
+const navigationRoutes = computed(() => {
+  return props.directories.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
     if (directory.path === 'tos') {
       return {
         route: {
@@ -46,18 +45,18 @@ const directories = computed(() => {
 nav#navigation
   h2 Navigation
   .link(
-    v-for='directory in directories'
+    v-for='navigationRoute in navigationRoutes'
   )
     img(
-      v-if='directory.directory.thumbnailUrl'
-      :src='directory.directory.thumbnailUrl'
+      v-if='navigationRoute.directory.thumbnailUrl'
+      :src='navigationRoute.directory.thumbnailUrl'
     )
     AppPlaceholder(
       v-else
     )
     router-link(
-      :to='directory.route'
-    ) {{ directory.directory.title }}
+      :to='navigationRoute.route'
+    ) {{ navigationRoute.directory.title }}
 </template>
 
 <style scoped lang='sass'>
