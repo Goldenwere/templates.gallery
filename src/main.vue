@@ -10,7 +10,7 @@ import { useStore } from '@/src/store'
 import type env from '@/src/types/internal/env'
 import type site from '@/src/types/views/site'
 
-import AppHeader from './components/navigation/AppHeader.vue'
+import AppHeader from './components/navigation/appHeader.vue'
 
 const store = useStore()
 const route = useRoute()
