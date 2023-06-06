@@ -101,4 +101,9 @@ emit('selectedImage', selectedImage.value)
           background-position: center center
           width: 100%
           height: 100%
+
+@media screen and (max-aspect-ratio: 1/1)
+  #landing
+    .body
+      width: 100%
 </style>

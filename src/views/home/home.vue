@@ -58,23 +58,6 @@ const directories = computed(() => {
   })
 })
 
-const socialMap = computed(() => {
-  if (store.home?.social !== undefined) {
-    let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
-    store.home.social.forEach((value) => {
-      if (value.category === undefined) {
-        mapped['uncategorized'].push(value)
-      } else if (mapped[value.category] === undefined) {
-        mapped[value.category] = [ value ]
-      } else {
-        mapped[value.category].push(value)
-      }
-    })
-
-    return mapped
-  }
-})
-
 if (store.home.copyrightNotice === undefined) {
   fetchAndParseYaml('/content/home.yml')
     .then((content) => {
@@ -134,19 +117,9 @@ function onSelectedImage(image: artWork) {
       AppArticle(
         :content='content.about'
       )
-    section#places(
-      v-if='content.social'
+    HomeSocial(
+      :content='content'
     )
-      h2 Places
-      section(
-        v-for='(category, index) in socialMap'
-      )
-        h3 {{ index }}
-        .grid
-          HomeSocial(
-            v-for='social in category'
-            :social='social'
-          )
 </template>
 
 <style scoped lang='sass'>
@@ -190,25 +163,9 @@ function onSelectedImage(image: artWork) {
       color: var(--theme-home-about-fg)
     #places
       width: 40%
-      background-color: var(--theme-home-places-bg)
-      color: var(--theme-home-places-fg)
-      h3
-        text-transform: capitalize
-      .grid
-        width: 100%
-        display: flex
-        flex-wrap: wrap
-        gap: 1em
-        justify-content: space-between
-        .social
-          height: 4em
-          max-width: 48%
 
 @media screen and (max-aspect-ratio: 1/1)
   #home
-    #landing
-      .body
-        width: 100%
     #info
       flex-direction: column
       #navigation,

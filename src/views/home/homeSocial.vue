@@ -1,52 +1,58 @@
 <script setup lang='ts'>
+import { computed } from 'vue'
+import type homeData from '@/src/types/views/home'
 import type socialContact from '@/src/types/views/shared/socialContact'
-import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
+import HomeSocialLink from './homeSocialLink.vue'
 
 const props = defineProps<{
-  social: socialContact
+  content: homeData
 }>()
+
+const socialMap = computed(() => {
+  if (props.content?.social !== undefined) {
+    let mapped: { [key: string]: socialContact[] } = { 'uncategorized': [] }
+    props.content.social.forEach((value) => {
+      if (value.category === undefined) {
+        mapped['uncategorized'].push(value)
+      } else if (mapped[value.category] === undefined) {
+        mapped[value.category] = [ value ]
+      } else {
+        mapped[value.category].push(value)
+      }
+    })
+
+    return mapped
+  }
+})
 </script>
 
 <template lang='pug'>
-a.social(
-  :href='props.social.url'
-  target='_blank'
-  tabindex='0'
-)
-  img.thumbnail(
-    v-if='props.social.thumbnailUrl'
-    :src='props.social.thumbnailUrl'
+section#places
+  h2 Places
+  section(
+    v-for='(category, index) in socialMap'
   )
-  AppPlaceholder(
-    v-else
-  )
-  .text
-    p.title {{ props.social.title }}
-    p.subtitle {{ props.social.subtitle }}
+    h3 {{ index }}
+    .grid
+      HomeSocialLink(
+        v-for='social in category'
+        :social='social'
+      )
 </template>
 
 <style scoped lang='sass'>
-.social
-  background-color: var(--theme-social-bg)
-  color: var(--theme-social-fg)
-  text-decoration: none
-  display: flex
-  .placeholder,
-  .thumbnail
-    aspect-ratio: 1/1
-    margin: 0.5em
-  .text
-    flex: 1 1 auto
+#places
+  background-color: var(--theme-home-places-bg)
+  color: var(--theme-home-places-fg)
+  h3
+    text-transform: capitalize
+  .grid
+    width: 100%
     display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    p
-      margin: 0
-    .title
-      font-size: 1.1em
-      font-weight: bold
-    .subtitle
-      font-size: 0.9em
-      font-style: italic
+    flex-wrap: wrap
+    gap: 1em
+    justify-content: space-between
+    .social
+      height: 4em
+      max-width: 48%
 </style>
