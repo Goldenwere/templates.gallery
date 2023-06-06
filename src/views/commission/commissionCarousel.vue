@@ -12,6 +12,11 @@ const props = defineProps<{
 const selected = ref(0)
 const length = computed(() => props.art.length)
 
+/**
+ * Handles pagination
+ * @param event the original event object that called this function
+ * @param direction the direction (negative for left, positive for right; will loop if out of bounds)
+ */
 function navigate(event: Event, direction: number) {
   event.preventDefault()
   let newIndex = selected.value + direction

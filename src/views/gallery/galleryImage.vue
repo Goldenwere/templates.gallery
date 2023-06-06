@@ -1,14 +1,31 @@
 <script setup lang='ts'>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { getContentType } from '@/src/utilities/fetch'
 import type artWork from '@/src/types/views/shared/artWork'
-import AppPlaceholder from '../../components/embeds/appPlaceholder.vue'
+import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
   piece: artWork,
 }>()
 
+const urlContentType = ref('')
+const thumbnailContentType = ref('')
+if (!!props.piece.url) {
+  getContentType(props.piece.url)
+  .then((value) => {
+    urlContentType.value = value || ''
+  })
+}
+if (!!props.piece.thumbnailUrl) {
+  getContentType(props.piece.thumbnailUrl)
+  .then((value) => {
+    thumbnailContentType.value = value || ''
+  })
+}
+
 const hasOnsiteImage = computed(() => {
-  return !!props.piece.thumbnailUrl || props.piece.url?.charAt(0) === '/'
+  return !!props.piece.thumbnailUrl && thumbnailContentType.value.startsWith('image')
+    || props.piece.url?.charAt(0) === '/' && urlContentType.value.startsWith('image')
 })
 </script>
 

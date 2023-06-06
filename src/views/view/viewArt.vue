@@ -1,16 +1,18 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { useStore } from '@/src/store'
+import { getContentType } from '@/src/utilities/fetch'
 
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 
 import AppButton from '@/src/components/inputs/appButton.vue'
+import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const store = useStore()
 
 const props = defineProps<{
-  image: galleryArtWork,
+  piece: galleryArtWork,
 }>()
 
 const emits = defineEmits<{
@@ -18,6 +20,25 @@ const emits = defineEmits<{
 }>()
 
 const maximized = ref(false)
+const urlContentType = ref('')
+const thumbnailContentType = ref('')
+if (!!props.piece.url) {
+  getContentType(props.piece.url)
+  .then((value) => {
+    urlContentType.value = value || ''
+  })
+}
+if (!!props.piece.thumbnailUrl) {
+  getContentType(props.piece.thumbnailUrl)
+  .then((value) => {
+    thumbnailContentType.value = value || ''
+  })
+}
+
+const isValidImage = computed(() => {
+  return !!props.piece.thumbnailUrl && thumbnailContentType.value.startsWith('image')
+    || props.piece.url?.charAt(0) === '/' && urlContentType.value.startsWith('image')
+})
 
 /**
  * Scrolls element into view
@@ -30,7 +51,7 @@ function scrollTo(event: Event, id: string) {
 }
 
 /**
- * Handler for toggling maximization of the image
+ * Handler for toggling maximization of the piece
  * @param event the event that called this function
  * @param value whether to enable or disable maximization
  */
@@ -44,23 +65,28 @@ function toggleMaximized(event: Event, value: boolean) {
 <template lang='pug'>
 .viewer
   .titlebar
-    h2 {{ image.title || 'Untitled' }}
+    h2 {{ piece.title || 'Untitled' }}
     AppButton(
       @click='scrollTo($event, ".viewer .body")'
     ) Description
     AppButton(
+      v-if='isValidImage'
       @click='toggleMaximized($event, true)'
     ) Full Size
     AppButton(
       @click='$emit("back", $event)'
     ) Close
   img(
-    :src='image.url'
+    v-if='isValidImage'
+    :src='piece.url'
     @click='toggleMaximized($event, true)'
   )
+  AppPlaceholder(
+    v-else
+  )
   .body
-    p {{ image.date }}
-    p {{ image.description }}
+    p {{ piece.date }}
+    p {{ piece.description }}
     AppButton.to-top(
       @click='scrollTo($event, "header")'
     ) To Top
@@ -69,7 +95,7 @@ function toggleMaximized(event: Event, value: boolean) {
     v-if='maximized'
   )
     img(
-      :src='image.url'
+      :src='piece.url'
     )
 </template>
 
@@ -79,14 +105,19 @@ function toggleMaximized(event: Event, value: boolean) {
 .viewer
   background-color: var(--theme-body-bg)
   position: relative
-  img
-    max-height: calc(100vh - 8em)
-    max-width: 80%
+  img,
+  .placeholder
     margin: auto
     width: auto
     height: auto
-    display: block
+  img
+    max-height: calc(100vh - 8em)
+    max-width: 80%
     cursor: pointer
+    display: block
+  .placeholder
+    height: 5em
+    width: 5em
   .titlebar
     display: flex
     align-items: center
@@ -117,7 +148,7 @@ function toggleMaximized(event: Event, value: boolean) {
       cursor: pointer
       margin: 0.5em auto
 
-@media screen and (max-aspect-ratio: 5/6)
+@piece screen and (max-aspect-ratio: 5/6)
   .viewer
     .titlebar
       flex-wrap: wrap

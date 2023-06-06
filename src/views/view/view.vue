@@ -67,7 +67,7 @@ function onBack(event: Event) {
   v-if='ready'
 )
   ViewArt(
-    :image='work'
+    :piece='work'
     @back='onBack($event)'
   )
 </template>

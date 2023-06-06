@@ -76,3 +76,13 @@ export const fetchAndParseYaml = async (path: string) => {
   const sanitized = DOMPurify.sanitize(yamlAsString, domPurifyConfig)
   return yaml.load(sanitized)
 }
+
+/**
+ * Fetches content type from an image
+ * @param path the path of the file to check
+ * @returns the Content-Type header of the file
+ */
+export const getContentType = async (path: string) => {
+  const response = await fetch(path, {method: 'HEAD'})
+  return response.headers.get('Content-Type')
+}
