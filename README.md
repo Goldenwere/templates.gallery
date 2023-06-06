@@ -1,41 +1,6 @@
 # Gallery Template
 
-This is a template for artists to self-host a gallery site on a static host. The demo workflow is set up for AWS but the site can theoretically work for any sort of static host. Content, site configuration, and site themes are maintained separately through an expected `/content` folder at the root of the deployed build folder. See "Content API" for more information on how to configure the site.
-
-## Features
-- Lander page
-  - Featured art as background with user ability to select from featured set
-  - Clear site navigation with thumbnails for separate galleries
-  - Markdown-supported "about me" section
-  - Section for linking to external websites
-- Gallery page
-  - Folders with nesting
-    - Infinite nesting
-    - Treats gallery page like a filter with instant effect
-    - Doesn't show when user is navigated deeper into artwork variants
-  - Optional positioned thumbnails (fallback: image (`url`))
-  - Nested artwork variants
-    - Infinite variant nesting, and nesting is optional
-    - Copies optional variables (description, date, title) as fallback to avoid needing to manually re-define redundant information
-  - Maturity warning labels
-  - External link support
-  - Tooltips for lengthy artwork titles
-  - On-site image viewer
-    - User ability to show maximized image modal
-    - Display markdown-supported descriptions, date, and title
-
-## Stack
-- builder: Vite 4
-  - static build
-- framework: Vue 3
-  - *.vue SFCs
-  - `<script setup>`
-  - `<style scoped>`
-- language: Typescript 4.9
-- router: Vue Router 4
-- store: Pinia 2
-- markup: Pug 3
-- style: Sass 1
+This is a template for artists to self-host a gallery site on a static host. The demo workflow is set up for AWS but the site can theoretically work for any sort of static host. Content, site configuration, and site themes are maintained separately through an expected `/content` folder at the root of the deployed build folder. See "Content DB" for more information on how to configure the site.
 
 ## Development
 
