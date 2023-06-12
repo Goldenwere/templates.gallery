@@ -1,3 +1,5 @@
+import type templateType from './templateType'
+
 /**
  * Represents routes present on the site.
  * Special route paths will use specially-made component views,
@@ -29,6 +31,16 @@ interface directoryRoute {
    * Defaults to a generic icon when not defined.
    */
   thumbnailUrl?: string
+  /**
+   * The view template to use for the route
+   * Defaults to templateType.gallery
+   */
+  template?: templateType
+  /**
+   * Whether to include the navigation in the site header
+   * Defaults to false
+   */
+  hideFromHeader?: boolean
 }
 
 export default directoryRoute

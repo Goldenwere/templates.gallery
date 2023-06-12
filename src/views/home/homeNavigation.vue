@@ -1,6 +1,8 @@
 <script setup lang='ts'>
-import { computed } from 'vue'
-import { type RouteLocationRaw } from 'vue-router'
+import { type ComputedRef, computed } from 'vue'
+import { type RouteLocationRaw, type RouteRecordRaw } from 'vue-router'
+
+import { getRoute } from '@/src/router'
 
 import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 
@@ -10,32 +12,11 @@ const props = defineProps<{
   directories: directoryRoute[]
 }>()
 
-const navigationRoutes = computed(() => {
-  return props.directories.map((directory): { route: RouteLocationRaw, directory: directoryRoute } => {
-    if (directory.path === 'tos') {
-      return {
-        route: {
-          name: 'tos',
-        },
-        directory,
-      }
-    } else if (directory.path === 'commission') {
-      return {
-        route: {
-          name: 'commission',
-        },
-        directory,
-      }
-    } else {
-      return {
-        route: {
-          name: 'gallery',
-          params: {
-            id: directory.path,
-          }
-        },
-        directory,
-      }
+const navigationRoutes: ComputedRef<(directoryRoute | RouteRecordRaw)[]> = computed(() => {
+  return props.directories.map((directory) => {
+    return {
+      ...directory,
+      ...getRoute(directory),
     }
   })
 })
@@ -48,15 +29,15 @@ nav#navigation
     v-for='navigationRoute in navigationRoutes'
   )
     img(
-      v-if='navigationRoute.directory.thumbnailUrl'
-      :src='navigationRoute.directory.thumbnailUrl'
+      v-if='navigationRoute.thumbnailUrl'
+      :src='navigationRoute.thumbnailUrl'
     )
     AppPlaceholder(
       v-else
     )
     router-link(
-      :to='navigationRoute.route'
-    ) {{ navigationRoute.directory.title }}
+      :to='{ name: navigationRoute.name }'
+    ) {{ navigationRoute.title }}
 </template>
 
 <style scoped lang='sass'>

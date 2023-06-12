@@ -6,6 +6,7 @@ import { capitalizeFirstLetter } from '@/src/utilities/string'
 import { envProd } from '@/src/env.prod'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
+import { pushRoutes } from '@/src/router'
 
 import type env from '@/src/types/internal/env'
 import type site from '@/src/types/views/site'
@@ -25,16 +26,16 @@ fetchAndParseYaml('/content/site.yml')
   .then(async (content) => {
     const environment: env = envProd
     store.$patch({ environment: environment as env })
-
     store.$patch({ site: content as site })
+    pushRoutes((content as site).directories)
     await router.isReady()
-    ready.value = true
     setTitle(route)
     router.afterEach((to, from) => {
       nextTick(() => {
         setTitle(to)
       })
     })
+    ready.value = true
   })
 
 /**
@@ -55,7 +56,9 @@ function setTitle(route: RouteLocationNormalized) {
     v-if='showHeader'
   )
   main
-    router-view
+    router-view(
+      v-if='ready'
+    )
 </template>
 
 <style lang='sass' scoped>

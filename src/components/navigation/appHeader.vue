@@ -89,7 +89,9 @@ header(
   AppNavButton(
     @stateChanged='onToggleNavigation($event)'
   )
-  nav
+  nav(
+    v-if='false'
+  )
     router-link(
       :to='{ name: "home" }'
     ) 
