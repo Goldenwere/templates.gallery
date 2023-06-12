@@ -3,13 +3,8 @@ import { computed, nextTick, ref } from 'vue'
 import { type RouteLocationNormalized, useRoute, useRouter } from 'vue-router'
 
 import { capitalizeFirstLetter } from '@/src/utilities/string'
-import { envProd } from '@/src/env.prod'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
-import { pushRoutes } from '@/src/router'
-
-import type env from '@/src/types/internal/env'
-import type site from '@/src/types/views/site'
 
 import AppHeader from './components/navigation/appHeader.vue'
 
@@ -22,21 +17,18 @@ const showHeader = computed(() => {
 })
 const ready = ref(false)
 
-fetchAndParseYaml('/content/site.yml')
-  .then(async (content) => {
-    const environment: env = envProd
-    store.$patch({ environment: environment as env })
-    store.$patch({ site: content as site })
-    pushRoutes((content as site).directories)
-    await router.isReady()
-    setTitle(route)
-    router.afterEach((to, from) => {
-      nextTick(() => {
-        setTitle(to)
-      })
+async function init() {
+  await router.isReady()
+  setTitle(route)
+  router.afterEach((to, from) => {
+    nextTick(() => {
+      setTitle(to)
     })
-    ready.value = true
   })
+  ready.value = true
+}
+
+init()
 
 /**
  * Sets the title of the document based on current route

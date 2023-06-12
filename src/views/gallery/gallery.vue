@@ -54,6 +54,10 @@ getGalleryData()
 function getGalleryData() {
   const notStored = store.getGalleryById(directory.value) === undefined
   const config = store.getGalleryConfigByTitle(directory.value) as directoryRoute
+  if (!config) {
+    return
+  }
+
   if (notStored) {
     fetchAndParseYaml(`/content/${config.path}.yml`)
     .then((parsed) => {
