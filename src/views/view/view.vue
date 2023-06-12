@@ -1,35 +1,38 @@
 <script setup lang='ts'>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { type RouteRecordName, useRouter, useRoute } from 'vue-router'
 
 import { amendVariantWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
 import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
+import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
 import ViewArt from './viewArt.vue'
 
 const props = defineProps<{
-  id: string,
   variantIds: string[],
 }>()
 
 const store = useStore()
 const router = useRouter()
+const route = useRoute()
 
 const work = ref({} as galleryArtWork)
 
 const ready = ref(false)
+const directory = computed(() => (route.name as RouteRecordName).toString().replace(/(\w+\:\s)/gm, ''))
 
-const notStored = store.getGalleryById(props.id) === undefined
+const notStored = store.getGalleryById(directory.value) === undefined
+const config = store.getGalleryConfigByTitle(directory.value) as directoryRoute
 if (notStored) {
-  fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
+  fetchAndParseYaml(`/content/${config.path}.yml`)
   .then((parsed) => {
     const _parsed = parsed as galleryData
-    store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
+    store.setGalleryById(directory.value, convertGalleryData(_parsed, store.environment.uuidNamespace))
     initializeView()
   })
 } else {
@@ -41,7 +44,7 @@ if (notStored) {
  */
 function initializeView() {
   const _iterator = deepCopy(props.variantIds)
-  const _galleryRef = store.getGalleryById(props.id)
+  const _galleryRef = store.getGalleryById(directory.value)
   let _work = deepCopy(_galleryRef.work[_iterator[0]])
   _iterator.shift()
   while (_iterator.length > 0) {

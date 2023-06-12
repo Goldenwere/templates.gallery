@@ -28,6 +28,11 @@ export const useStore = defineStore('store', {
       return (id: string) => {
         return state.galleries[id]
       }
+    },
+    getGalleryConfigByTitle: (state) => {
+      return (title: string) => {
+        return state.site.directories.find(other => other.title === title)
+      }
     }
   },
 })

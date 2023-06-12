@@ -1,6 +1,6 @@
 <script setup lang='ts'>
-import { nextTick, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, nextTick, reactive, ref } from 'vue'
+import { type RouteRecordName, useRouter, useRoute } from 'vue-router'
 
 import { amendVariantsWithDefaults, convertGalleryData } from '@/src/utilities/galleryData'
 import { deepCopy } from '@/src/utilities/object'
@@ -8,6 +8,7 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { flattenFolders } from '@/src/utilities/galleryFolder'
 import { useStore } from '@/src/store'
 
+import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
@@ -16,14 +17,15 @@ import GalleryImage from './galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
 const props = defineProps<{
-  id: string,
   variantIds?: string[],
 }>()
 
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 
 const ready = ref(false)
+const directory = computed(() => (route.name as RouteRecordName).toString().replace(/(\w+\:\s)/gm, ''))
 
 const galleryState = reactive({
   folders: [] as object[],
@@ -37,10 +39,7 @@ const galleryState = reactive({
 // react to navigation to new gallery
 router.afterEach((to, from) => {
   nextTick(() => {
-    // only load if the gallery id changes (i.e. /gallery/{id}, [0] = '', [1] = 'gallery', [2] = {id})
-    if (to.fullPath.split('/')[2] !== from.fullPath.split('/')[2]) {
-      getGalleryData()
-    }
+    getGalleryData()
   })
 })
 
@@ -53,12 +52,13 @@ getGalleryData()
  * (i.e. from navigating to a different gallery from the header while still in the gallery component)
  */
 function getGalleryData() {
-  const notStored = store.getGalleryById(props.id) === undefined
+  const notStored = store.getGalleryById(directory.value) === undefined
+  const config = store.getGalleryConfigByTitle(directory.value) as directoryRoute
   if (notStored) {
-    fetchAndParseYaml(`/content/gallery/${props.id}.yml`)
+    fetchAndParseYaml(`/content/${config.path}.yml`)
     .then((parsed) => {
       const _parsed = parsed as galleryData
-      store.setGalleryById(props.id, convertGalleryData(_parsed, store.environment.uuidNamespace))
+      store.setGalleryById(directory.value, convertGalleryData(_parsed, store.environment.uuidNamespace))
       initializeView()
     })
   } else {
@@ -74,8 +74,8 @@ function getGalleryData() {
  */
 function initializeView() {
   // 1. set primary content to state
-  galleryState.folders = flattenFolders(store.getGalleryById(props.id).folders || [])
-  galleryState.work = store.getGalleryById(props.id).work
+  galleryState.folders = flattenFolders(store.getGalleryById(directory.value).folders || [])
+  galleryState.work = store.getGalleryById(directory.value).work
   // 2. reset other state info
   galleryState.selectedFolder = ''
   
@@ -142,15 +142,15 @@ function onNavigate(event: Event, id: string) {
     _variantIds.pop()
     if (_variantIds.length < 1) {
       // navigate to the root gallery route (without variantIds)
-      router.push({ name: 'gallery', params: { id: props.id }})
+      router.push({ name: `gallery: ${directory.value}` })
     } else {
       // navigate to the subgallery route with the new variantIds
-      router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
+      router.push({ name: `subgallery: ${directory.value}`, params: { variantIds: _variantIds }})
     }
   } else {
     // handle navigation into an artWork by pushing its id to variantIds and navigating to subgallery route
     _variantIds.push(id)
-    router.push({ name: 'subgallery', params: { id: props.id, variantIds: _variantIds }})
+    router.push({ name: `subgallery: ${directory.value}`, params: { variantIds: _variantIds }})
   }
   // as router won't refresh the page or props, update variantIds and view data
   galleryState.variantIds = _variantIds
@@ -166,7 +166,7 @@ function onNavigate(event: Event, id: string) {
   event.preventDefault()
   if (piece.url?.[0] === '/') {
     // if the url is root, navigate to the view
-    router.push({ name: 'view', params: { variantIds: [ ...galleryState.variantIds, piece._id ] }})
+    router.push({ name: `view: ${directory.value}`, params: { variantIds: [ ...galleryState.variantIds, piece._id ] }})
   } else {
     // if the url is not root, open it in a new tab
     window.open(piece.url, '_blank')
