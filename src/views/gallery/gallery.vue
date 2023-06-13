@@ -13,6 +13,7 @@ import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 import type galleryData from '@/src/types/views/gallery'
 
 import AppButton from '@/src/components/inputs/appButton.vue'
+import AppModal from '@/src/components/inputs/appModal.vue'
 import GalleryImage from './galleryImage.vue'
 import GalleryFolders from './galleryFolders.vue'
 
@@ -26,6 +27,13 @@ const store = useStore()
 
 const ready = ref(false)
 const directory = computed(() => (route.name as RouteRecordName).toString().replace(/(\w+\:\s)/gm, ''))
+const acknowledged = ref(false)
+const showWarning = computed(() => store.getGalleryConfigByTitle(directory.value)?.mature)
+const warningContent = `
+The following gallery contains mature/adult material.
+By clicking "Acknowledge" you agree that you are at least 18
+and are of age in your country of residence in order to view the gallery's material.
+`
 
 const galleryState = reactive({
   folders: [] as object[],
@@ -181,8 +189,24 @@ function onNavigate(event: Event, id: string) {
 </script>
 
 <template lang='pug'>
+#warning(
+  v-if='showWarning && !acknowledged'
+)
+  AppModal(
+    @close='router.push({ name: "home" })'
+  )
+    p {{ warningContent }}
+    .buttons
+      AppButton(
+        @click='router.push({ name: "home" })'
+      )
+        span Go Back
+      AppButton(
+        @click='() => { acknowledged = true }'
+      )
+        span Acknowledge
 #gallery(
-  v-if='ready'
+  v-else-if='ready'
   :class=`{
     hasNav: galleryState.variantIds.length > 0,
     hasFolders: galleryState.folders.length > 0 && galleryState.variantIds?.length === 0,
@@ -225,6 +249,11 @@ function onNavigate(event: Event, id: string) {
 </template>
 
 <style scoped lang='sass'>
+#warning
+  min-height: calc(100vh - 4em)
+  .buttons
+    display: flex
+    justify-content: center
 #gallery
   width: 100%
   min-height: calc(100vh - 4em)

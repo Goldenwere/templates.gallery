@@ -137,7 +137,7 @@ function toggleMaximized(event: Event, value: boolean) {
     position: fixed
     @include positioning(0, 0, 0, 0)
     z-index: 99
-    background-color: var(--theme-modal-overlay-bg)
+    background: var(--theme-modal-overlay-bg)
     img
       position: relative
       max-width: calc(100% - 1em)
