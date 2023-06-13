@@ -176,7 +176,7 @@ function onNavigate(event: Event, id: string) {
  * @param event reference to the original event object
  * @param piece reference to the variant piece that was selected
  */
- function onOpenImage(event: Event, piece: galleryArtWork) {
+function onOpenImage(event: Event, piece: galleryArtWork) {
   event.preventDefault()
   if (piece.url?.[0] === '/') {
     // if the url is root, navigate to the view

@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
 
-import { useStore } from '@/src/store'
 import { getContentType } from '@/src/utilities/fetch'
+import { useStore } from '@/src/store'
 
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
 

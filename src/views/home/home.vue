@@ -1,15 +1,11 @@
 <script setup lang='ts'>
 import { computed, reactive, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import type { RouteLocationRaw } from 'vue-router'
 
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
 import type artWork from '@/src/types/views/shared/artWork'
-import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type homeData from '@/src/types/views/home'
-import type socialContact from '@/src/types/views/shared/socialContact'
 
 import HomeAbout from './homeAbout.vue'
 import HomeLanding from './homeLanding.vue'
@@ -17,7 +13,6 @@ import HomeNavigation from './homeNavigation.vue'
 import HomeSocial from './homeSocial.vue'
 
 const store = useStore()
-const route = useRoute()
 
 const content = reactive(store.home)
 const site = reactive(store.site)

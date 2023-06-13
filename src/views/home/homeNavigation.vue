@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { type ComputedRef, computed } from 'vue'
-import { type RouteLocationRaw, type RouteRecordRaw } from 'vue-router'
+import { type RouteRecordRaw } from 'vue-router'
 
 import { getRoute } from '@/src/router'
 

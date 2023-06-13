@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type artWork from '@/src/types/views/shared/artWork'
 import type homeData from '@/src/types/views/home'
 import type siteData from '@/src/types/views/site'
@@ -24,7 +24,7 @@ emit('selectedImage', selectedImage.value)
  * @param event the event that called this function
  * @param index the index of the featured artwork selected
  */
- function onFeatureClick(event: Event, index: number) {
+function onFeatureClick(event: Event, index: number) {
   event.preventDefault()
   selectedImage.value = props.content.featured?.[index]
   selectedImageIndex.value = index

@@ -1,7 +1,10 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
+
 import { getContentType } from '@/src/utilities/fetch'
+
 import type artWork from '@/src/types/views/shared/artWork'
+
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{

@@ -7,8 +7,8 @@ import { useStore } from '@/src/store'
 
 import type commissionData from '@/src/types/views/commission'
 
-import CommissionCarousel from './commissionCarousel.vue'
 import AppArticle from '@/src/components/embeds/appArticle.vue'
+import CommissionCarousel from './commissionCarousel.vue'
 
 const store = useStore()
 const route = useRoute()

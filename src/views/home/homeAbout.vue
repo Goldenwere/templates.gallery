@@ -1,6 +1,4 @@
 <script setup lang='ts'>
-import type homeData from '@/src/types/views/home'
-
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const props = defineProps<{
