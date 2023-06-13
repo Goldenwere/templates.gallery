@@ -1,10 +1,21 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
-import { marked } from 'marked'
+
+import { gfmHeadingId } from 'marked-gfm-heading-id';
+import { marked } from 'marked';
 
 const props = defineProps<{
   content: string
 }>()
+
+const headingOptions = {
+	prefix: "article-",
+};
+
+marked.use(gfmHeadingId(headingOptions));
+marked.options({
+  mangle: false,
+});
 
 const parsed = computed(() => {
   return marked.parse(props.content.replace(/^[\u200B\u200C\u200D\u200E\u200F\uFEFF]/,''))
