@@ -12,37 +12,27 @@ const galleryDropdownOpen = ref(false)
 const isOpen = ref(false)
 
 const headerData = reactive({
-  hasCommissions: false,
-  hasTos: false,
-  galleries: [] as any[],
+  mainLinks: [] as string[],
+  galleries: [] as {
+    routeName: string,
+    routeTitle: string,  
+  }[],
 })
 
-if (site.directories !== undefined) {
-  initialize()
-} else {
-  watch(site, (oldSite, newSite) => {
-    if (newSite.directories !== undefined) {
-      initialize()
-    }
-})
-}
+initialize()
 
 /**
  * Handles initializing the view data
  */
 function initialize() {
-  headerData.hasCommissions = !!site.directories?.find((other) => other.path === 'commission')
-  headerData.hasTos = !!site.directories?.find((other) => other.path === 'tos')
-  headerData.galleries = site.directories.filter((other) => !['tos', 'commission'].includes(other.path)).map((other) => {
+  headerData.galleries = site.directories.filter((other) => other.template === 'gallery' || other.template === undefined).map((other) => {
     return {
-      route: {
-        name: 'gallery',
-        params: {
-          id: other.path,
-        }
-      },
-      ...other,
+      routeName: `gallery: ${other.title}`,
+      routeTitle: other.title || other.path,
     }
+  })
+  headerData.mainLinks = site.directories.filter((other) => !!other.template && other.template !== 'gallery').map((other) => {
+    return other.title
   })
 }
 
@@ -89,22 +79,21 @@ header(
   AppNavButton(
     @stateChanged='onToggleNavigation($event)'
   )
-  nav(
-    v-if='false'
-  )
+  nav
     router-link(
       :to='{ name: "home" }'
     ) 
       span Home
     router-link(
-      v-if='headerData.hasCommissions'
-      :to='{ name: "commission" }'
-    ) Commission
+      v-for='link in headerData.mainLinks'
+      :to='{ name: link }'
+    ) {{ link }}
     router-link(
-      v-if='headerData.hasTos'
-      :to='{ name: "tos" }'
-    ) Terms of Service
+      v-if='headerData.galleries.length === 1'
+      :to='{ name: headerData.galleries[0].routeName }'
+    ) {{ headerData.galleries[0].routeTitle }}
     span.dropdown(
+      v-else
       @mouseover='onToggleMenu($event, true)'
       @mouseleave='onToggleMenu($event, false)'
       @focusin='onToggleMenu($event, true)'
@@ -116,12 +105,12 @@ header(
       )
         router-link.dropdown-link(
           v-for='gallery in headerData.galleries'
-          :to='gallery.route'
+          :to='{ name: gallery.routeName }'
           :tabindex='galleryDropdownOpen ? 0 : 1'
           @focusout='onToggleMenu($event, false)'
           @click='onToggleMenu(null, false)'
           @keydown.enter='onToggleMenu(null, false)'
-        ) {{ gallery.title || gallery.path }}
+        ) {{ gallery.routeTitle }}
 </template>
 
 <style scoped lang='sass'>
