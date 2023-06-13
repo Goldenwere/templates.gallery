@@ -71,33 +71,32 @@ function onSelectedImage(image: artWork) {
   width: 100vw
   background-size: cover
   background-attachment: fixed
-  #info
-    position: relative
-    display: flex
-    min-height: 100vh
-    width: 100vw
-    > nav,
-    > section
-      padding: 1em
-      > :deep(h2)
-        margin: 0
-    #navigation
-      width: 30%
-    #about
-      width: 30%
-    #places
-      width: 40%
+#info
+  position: relative
+  display: flex
+  min-height: 100vh
+  width: 100vw
+  > nav,
+  > section
+    padding: 1em
+    > :deep(h2)
+      margin: 0
+#navigation
+  width: 30%
+#about
+  width: 30%
+#places
+  width: 40%
 
 @media screen and (max-aspect-ratio: 1/1)
-  #home
-    #info
-      flex-direction: column
-      #navigation,
-      #about,
-      #places
-        width: 100%
-      #about
-        article
-          max-width: 24rem
-          font-size: 1.2em
+  #info
+    flex-direction: column
+  #navigation,
+  #about,
+  #places
+    width: 100%
+  #about
+    article
+      max-width: 24rem
+      font-size: 1.2em
 </style>

@@ -121,6 +121,7 @@ function toggleMaximized(event: Event, value: boolean) {
     display: flex
     align-items: center
     margin-bottom: 1em
+    gap: 0.5em
     h2
       margin: 0
       margin-right: auto

@@ -254,6 +254,7 @@ function onOpenImage(event: Event, piece: galleryArtWork) {
   .buttons
     display: flex
     justify-content: center
+    gap: 0.5em
 #gallery
   width: 100%
   min-height: calc(100vh - 4em)

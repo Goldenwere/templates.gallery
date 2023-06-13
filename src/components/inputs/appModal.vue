@@ -41,10 +41,13 @@ const emit = defineEmits<{
     background: var(--theme-modal-overlay-bg)
   .modal-content
     z-index: 0
+    position: relative
     padding: 1em
+    background: var(--theme-modal-bg)
   .toolbar
     width: 100%
     display: flex
+    gap: 0.5em
     .close
       margin-left: auto
 </style>
