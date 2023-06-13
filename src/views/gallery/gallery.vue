@@ -39,7 +39,9 @@ const galleryState = reactive({
 // react to navigation to new gallery
 router.afterEach((to, from) => {
   nextTick(() => {
-    getGalleryData()
+    if (to.name?.toString().includes('gallery')) {
+      getGalleryData()
+    }
   })
 })
 
