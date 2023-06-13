@@ -11,7 +11,7 @@ const homeBody = () => import('./views/home/home.vue')
 const commissionBody = () => import('./views/commission/commission.vue')
 const galleryBody = () => import('./views/gallery/gallery.vue')
 const tosBody = () => import('./views/tos/tos.vue')
-const viewBody = () => import('./views/view/view.vue')
+const viewBody = () => import('./views/gallery/view/view.vue')
 
 export const siteRoutes: RouteRecordRaw[] = [
   {
