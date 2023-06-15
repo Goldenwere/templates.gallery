@@ -9,7 +9,7 @@ import { useStore } from '@/src/store'
 
 import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import type galleryArtWork from '@/src/types/internal/galleryArtWork'
-import type galleryData from '@/src/types/views/gallery'
+import type GalleryViewModel from '@/src/types/views/gallery'
 
 import ViewArt from './viewArt.vue'
 
@@ -31,7 +31,7 @@ const config = store.getGalleryConfigByTitle(directory.value) as directoryRoute
 if (notStored) {
   fetchAndParseYaml(`/content/${config.path}.yml`)
   .then((parsed) => {
-    const _parsed = parsed as galleryData
+    const _parsed = parsed as GalleryViewModel
     store.setGalleryById(directory.value, convertGalleryData(_parsed, store.environment.uuidNamespace))
     initializeView()
   })

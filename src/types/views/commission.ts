@@ -3,7 +3,7 @@ import type commissionType from '@/src/types/views/shared/commissionType'
 /**
  * Modal for commission route data
  */
-interface commissionData {
+interface CommissionViewModel {
   /** the commission types offerred */
   commissionTypes: commissionType[]
   /** Optional descriptive header for the commission page */
@@ -18,4 +18,4 @@ interface commissionData {
   }
 }
 
-export default commissionData
+export default CommissionViewModel

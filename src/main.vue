@@ -38,7 +38,7 @@ function setTitle(route: RouteLocationNormalized) {
   const name = (route.name === 'gallery' || route.name === 'subgallery')
     ? `${capitalizeFirstLetter(route.params.id as string)} - Gallery`
     : capitalizeFirstLetter(route.name as string)
-  document.title = `${name} - ${store.site.title}`
+  document.title = `${name} - ${store.app.title}`
 }
 </script>
 

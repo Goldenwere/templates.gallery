@@ -11,7 +11,7 @@ Content is stored in a `.gitignore`d `/content` folder using YML files. The reas
 - to update this information independently from the CI/CD template (e.g. updating information about art, commissions, etc.) 
 - to make the template itself more re-usable, open-source, and independent of branding.
 YML files for each view (i.e. `/src/views`) have associated "View Models" to adhere to (`/src/types/views`).
-For the site to load at all, you need at minimum a `site.yml` and `home.yml` written.
+For the site to load at all, you need at minimum an `app.yml` and `home.yml` written.
 To read more about the Content DB and what is required, read the [wiki page on the topic](https://github.com/Goldenwere/templates.gallery/wiki/Content-DB).
 
 ## How To Use This Template

@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type commissionData from '@/src/types/views/commission'
+import type CommissionViewModel from '@/src/types/views/commission'
 
 import CommissionInfo from './commissionInfo.vue'
 import CommissionType from './commissionType.vue'
@@ -20,7 +20,7 @@ const ready = ref(false)
 if (store.commission.commissionTypes === undefined) {
   fetchAndParseYaml('/content/commission.yml')
     .then((content) => {
-      store.$patch({ commission: content as commissionData })
+      store.$patch({ commission: content as CommissionViewModel })
       ready.value = true
     })
 } else {

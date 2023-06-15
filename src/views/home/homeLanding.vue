@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
 import type artWork from '@/src/types/views/shared/artWork'
-import type homeData from '@/src/types/views/home'
-import type siteData from '@/src/types/views/site'
+import type HomeViewModel from '@/src/types/views/home'
+import type AppViewModel from '@/src/types/views/app'
 
 const props = defineProps<{
-  site: siteData,
-  content: homeData,
+  app: AppViewModel,
+  content: HomeViewModel,
 }>()
 
 const emit = defineEmits<{
@@ -35,13 +35,13 @@ function onFeatureClick(event: Event, index: number) {
 <template lang='pug'>
 #landing
   .body
-    h1 {{ site.title }}
+    h1 {{ app.title }}
     h2(
-      v-if='site.subtitle'
-    ) {{ site.subtitle }}
+      v-if='app.subtitle'
+    ) {{ app.subtitle }}
     img.logo(
-      :src='site.logo'
-      v-if='site.logo'
+      :src='app.logo'
+      v-if='app.logo'
       alt='logo'
     )
     .featured-gallery

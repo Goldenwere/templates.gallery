@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type tosData from '@/src/types/views/tos'
+import type TosViewModel from '@/src/types/views/tos'
 
 import TosTerm from './tosTerm.vue'
 
@@ -19,7 +19,7 @@ const ready = ref(false)
 if (store.tos.terms === undefined) {
   fetchAndParseYaml('/content/tos.yml')
     .then((content) => {
-      store.$patch({ tos: content as tosData })
+      store.$patch({ tos: content as TosViewModel })
       ready.value = true
     })
 } else {

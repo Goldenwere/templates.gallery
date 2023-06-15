@@ -3,7 +3,7 @@ import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 /**
  * Modal for site data
  */
-interface siteData {
+interface AppViewModel {
   /** the gallery directories present on the site; see directoryRoute for more information on how to configure */
   directories: directoryRoute[]
   /** the url to the favicon */
@@ -16,4 +16,4 @@ interface siteData {
   subtitle?: string
 }
 
-export default siteData
+export default AppViewModel

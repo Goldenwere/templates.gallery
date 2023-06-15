@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
 
-import type commissionData from './types/views/commission'
+import type CommissionViewModel from './types/views/commission'
 import type galleryContent from './types/internal/galleryContent'
-import type homeData from './types/views/home'
+import type HomeViewModel from './types/views/home'
 import type env from './types/internal/env'
-import type siteData from './types/views/site'
-import type tosData from './types/views/tos'
+import type AppViewModel from './types/views/app'
+import type TosViewModel from './types/views/tos'
 
 export const useStore = defineStore('store', {
   state: () => ({
     environment: {} as env,
-    site: {} as siteData,
-    home: {} as homeData,
-    commission: {} as commissionData,
-    tos: {} as tosData,
+    app: {} as AppViewModel,
+    home: {} as HomeViewModel,
+    commission: {} as CommissionViewModel,
+    tos: {} as TosViewModel,
     galleries: {} as { [key: string]: galleryContent },
 
     acknowledgedMaturity: false,
@@ -32,7 +32,7 @@ export const useStore = defineStore('store', {
     },
     getGalleryConfigByTitle: (state) => {
       return (title: string) => {
-        return state.site.directories.find(other => other.title === title)
+        return state.app.directories.find(other => other.title === title)
       }
     }
   },

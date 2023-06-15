@@ -7,7 +7,7 @@ import type directoryRoute from '@/src/types/views/shared/directoryRoute'
 import AppNavButton from './appNavButton.vue'
 
 const store = useStore()
-const site = reactive(store.site)
+const app = reactive(store.app)
 const galleryDropdownOpen = ref(false)
 const isOpen = ref(false)
 
@@ -25,13 +25,13 @@ initialize()
  * Handles initializing the view data
  */
 function initialize() {
-  headerData.galleries = site.directories.filter((other) => other.template === 'gallery' || other.template === undefined).map((other) => {
+  headerData.galleries = app.directories.filter((other) => other.template === 'gallery' || other.template === undefined).map((other) => {
     return {
       routeName: `gallery: ${other.title}`,
       routeTitle: other.title || other.path,
     }
   })
-  headerData.mainLinks = site.directories.filter((other) => !!other.template && other.template !== 'gallery').map((other) => {
+  headerData.mainLinks = app.directories.filter((other) => !!other.template && other.template !== 'gallery').map((other) => {
     return other.title
   })
 }
@@ -74,7 +74,7 @@ header(
     :to='{ name: "home" }'
   )
     img(
-      :src='site.logo'
+      :src='app.logo'
     )
   AppNavButton(
     @stateChanged='onToggleNavigation($event)'

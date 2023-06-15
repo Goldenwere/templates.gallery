@@ -13,13 +13,13 @@ import router, { pushRoutes } from '@/src/router'
 import { useStore } from '@/src/store'
 
 import type env from '@/src/types/internal/env'
-import type site from '@/src/types/views/site'
+import type AppViewModel from '@/src/types/views/app'
 
 import app from '@/src/main.vue'
 
-fetchAndParseYaml('/content/site.yml')
+fetchAndParseYaml('/content/app.yml')
   .then(async (content) => {
-    pushRoutes((content as site).directories)
+    pushRoutes((content as AppViewModel).directories)
 
     const instance = createApp(app)
       .use(router)
@@ -45,6 +45,6 @@ fetchAndParseYaml('/content/site.yml')
     const store = useStore()
     const environment: env = envProd
     store.$patch({ environment: environment as env })
-    store.$patch({ site: content as site })
+    store.$patch({ app: content as AppViewModel })
     instance.mount('#app')
   })

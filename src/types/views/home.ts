@@ -4,7 +4,7 @@ import type socialContact from '@/src/types/views/shared/socialContact'
 /**
  * Modal for home route data
  */
-interface homeData {
+interface HomeViewModel {
   /** [MARKDOWN OPTIONAL] description about the artist, site, etc. */
   about?: string
   /** copyright notice displayed as is on the page */
@@ -15,4 +15,4 @@ interface homeData {
   featured?: artWork[]
 }
 
-export default homeData
+export default HomeViewModel

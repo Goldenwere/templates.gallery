@@ -5,7 +5,7 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
 import type artWork from '@/src/types/views/shared/artWork'
-import type homeData from '@/src/types/views/home'
+import type HomeViewModel from '@/src/types/views/home'
 
 import HomeAbout from './homeAbout.vue'
 import HomeLanding from './homeLanding.vue'
@@ -15,7 +15,7 @@ import HomeSocial from './homeSocial.vue'
 const store = useStore()
 
 const content = reactive(store.home)
-const site = reactive(store.site)
+const app = reactive(store.app)
 
 const selectedImage = ref({} as artWork | undefined)
 const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl})`)
@@ -26,7 +26,7 @@ const ready = ref(false)
 if (store.home.copyrightNotice === undefined) {
   fetchAndParseYaml('/content/home.yml')
     .then((content) => {
-      store.$patch({ home: content as homeData })
+      store.$patch({ home: content as HomeViewModel })
       ready.value = true
     })
 } else {
@@ -48,13 +48,13 @@ function onSelectedImage(image: artWork) {
   :style='{ backgroundImage: selectedImageUrl, backgroundPosition: selectedImagePosition, }'
 )
   HomeLanding(
-    :site='site'
+    :app='app'
     :content='content'
     @selectedImage='onSelectedImage'
   )
   #info
     HomeNavigation(
-      :directories='site.directories'
+      :directories='app.directories'
     )
     HomeAbout(
       v-if='content.about'
