@@ -1,17 +1,17 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 
-import type contractTerm from '@/src/types/views/shared/contractTerm'
+import type ContractTerm from '@/src/types/views/shared/contractTerm'
 
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const props = defineProps<{
   depth: number,
-  term: contractTerm
+  term: ContractTerm,
 }>()
 
 const shouldRecurse = computed(() => {
-  return (props.term.terms[0] as contractTerm).title !== undefined
+  return (props.term.terms[0] as ContractTerm).title !== undefined
 })
 </script>
 

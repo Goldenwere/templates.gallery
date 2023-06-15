@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-import type commissionType from '@/src/types/views/shared/commissionType'
+import type CommissionType from '@/src/types/views/shared/commissionType'
 
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 import CommissionCarousel from './commissionCarousel.vue'
 
 const props = defineProps<{
-  commissionType: commissionType,
+  commissionType: CommissionType,
 }>()
 </script>
 

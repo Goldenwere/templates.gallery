@@ -1,25 +1,25 @@
-import type artWork from './artWork'
+import type ArtWork from './artWork'
 
 /**
  * Represents a type of commission a commissioner can order.
  */
-interface commissionType {
+interface CommissionType {
   /**
    * [MARKDOWN OPTIONAL] The details of a commission.
    */
   details: string
   /**
-   * A set of examples to display as examples for a commissionType. Only need thumbnailUrl and alt from artWork class.
+   * A set of examples to display as examples for a CommissionType. Only need thumbnailUrl and alt from ArtWork class.
    */
-  examples?: artWork[]
+  examples?: ArtWork[]
   /**
    * Optionally display the status of a commission type. E.g. Closed, Tentative, Opening Soon, etc.
    */
   status?: string
   /**
-   * The title of the commissionType. E.g. Shaded, Sketch, etc.
+   * The title of the CommissionType. E.g. Shaded, Sketch, etc.
    */
   title: string
 }
 
-export default commissionType
+export default CommissionType

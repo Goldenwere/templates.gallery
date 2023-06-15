@@ -4,7 +4,7 @@ import { computed, reactive, ref } from 'vue'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type artWork from '@/src/types/views/shared/artWork'
+import type ArtWork from '@/src/types/views/shared/artWork'
 import type HomeViewModel from '@/src/types/views/home'
 
 import HomeAbout from './homeAbout.vue'
@@ -17,7 +17,7 @@ const store = useStore()
 const content = reactive(store.home)
 const app = reactive(store.app)
 
-const selectedImage = ref({} as artWork | undefined)
+const selectedImage = ref({} as ArtWork | undefined)
 const selectedImageUrl = computed(() => `url(${selectedImage.value?.thumbnailUrl})`)
 const selectedImagePosition = computed(() => `${selectedImage.value?.thumbnailPosition}`)
 
@@ -37,7 +37,7 @@ if (store.home.copyrightNotice === undefined) {
  * Handler for updating the selected image from the landing component
  * @param image the image that was selected
  */
-function onSelectedImage(image: artWork) {
+function onSelectedImage(image: ArtWork) {
   selectedImage.value = image
 }
 </script>

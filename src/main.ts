@@ -12,7 +12,7 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import router, { pushRoutes } from '@/src/router'
 import { useStore } from '@/src/store'
 
-import type env from '@/src/types/internal/env'
+import type Environment from '@/src/types/internal/environment'
 import type AppViewModel from '@/src/types/views/app'
 
 import app from '@/src/main.vue'
@@ -43,8 +43,8 @@ fetchAndParseYaml('/content/app.yml')
       })
 
     const store = useStore()
-    const environment: env = envProd
-    store.$patch({ environment: environment as env })
+    const environment: Environment = envProd
+    store.$patch({ environment: environment as Environment })
     store.$patch({ app: content as AppViewModel })
     instance.mount('#app')
   })

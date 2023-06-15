@@ -4,15 +4,15 @@ import { type RouteRecordRaw } from 'vue-router'
 
 import { getRoute } from '@/src/router'
 
-import type directoryRoute from '@/src/types/views/shared/directoryRoute'
+import type DirectoryRoute from '@/src/types/views/shared/directoryRoute'
 
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
-  directories: directoryRoute[]
+  directories: DirectoryRoute[]
 }>()
 
-const navigationRoutes: ComputedRef<(directoryRoute | RouteRecordRaw)[]> = computed(() => {
+const navigationRoutes: ComputedRef<(DirectoryRoute | RouteRecordRaw)[]> = computed(() => {
   return props.directories.map((directory) => {
     return {
       ...directory,

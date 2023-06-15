@@ -1,11 +1,11 @@
-import type commissionType from '@/src/types/views/shared/commissionType'
+import type CommissionType from '@/src/types/views/shared/commissionType'
 
 /**
  * Modal for commission route data
  */
 interface CommissionViewModel {
   /** the commission types offerred */
-  commissionTypes: commissionType[]
+  commissionTypes: CommissionType[]
   /** Optional descriptive header for the commission page */
   header?: {
     /** [MARKDOWN OPTIONAL] Body of text to put at the top of the commission page */

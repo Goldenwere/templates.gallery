@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import { scrollTo } from '@/src/utilities/dom'
 
-import type galleryArtWork from '@/src/types/internal/galleryArtWork'
+import type GalleryArtWork from '@/src/types/internal/galleryArtWork'
 
 import AppButton from '@/src/components/inputs/appButton.vue'
 
 const props = defineProps<{
-  piece: galleryArtWork,
+  piece: GalleryArtWork,
 }>()
 </script>
 

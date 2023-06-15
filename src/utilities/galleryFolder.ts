@@ -1,12 +1,12 @@
 import { deepCopy } from '@/src/utilities/object'
-import type folder from '@/src/types/internal/folder'
+import type Folder from '@/src/types/internal/folder'
 
 /**
  * Utility recursive function that flattens folder hierarchy into an array of options
  * @param folders the original folders to map from
  * @param depth the current depth to keep track of for indenting purposes; the initial call should default to 0
  */
-export const flattenFolders = (folders: folder[], depth: number = 0): object[] => {
+export const flattenFolders = (folders: Folder[], depth: number = 0): object[] => {
   return folders.flatMap((other) => [
     {
       ...deepCopy(other),

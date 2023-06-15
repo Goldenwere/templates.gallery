@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
-import type artWork from '@/src/types/views/shared/artWork'
+import type ArtWork from '@/src/types/views/shared/artWork'
 import type HomeViewModel from '@/src/types/views/home'
 import type AppViewModel from '@/src/types/views/app'
 
@@ -10,10 +10,10 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'selectedImage', image?: artWork): void
+  (e: 'selectedImage', image?: ArtWork): void
 }>()
 
-const selectedImage = ref({} as artWork | undefined)
+const selectedImage = ref({} as ArtWork | undefined)
 const selectedImageIndex = ref(0)
 
 selectedImage.value = props.content.featured?.[0]

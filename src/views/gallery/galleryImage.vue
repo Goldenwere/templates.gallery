@@ -3,12 +3,12 @@ import { computed, ref } from 'vue'
 
 import { getContentType } from '@/src/utilities/fetch'
 
-import type artWork from '@/src/types/views/shared/artWork'
+import type ArtWork from '@/src/types/views/shared/artWork'
 
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
 
 const props = defineProps<{
-  piece: artWork,
+  piece: ArtWork,
 }>()
 
 const urlContentType = ref('')

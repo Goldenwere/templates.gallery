@@ -1,12 +1,12 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
 
-import type artWork from '@/src/types/views/shared/artWork'
+import type ArtWork from '@/src/types/views/shared/artWork'
 
 import AppButton from '@/src/components/inputs/appButton.vue'
 
 const props = defineProps<{
-  art: artWork[]
+  art: ArtWork[]
 }>()
 
 const selected = ref(0)

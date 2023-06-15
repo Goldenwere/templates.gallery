@@ -1,12 +1,12 @@
-import type folder from '@/src/types/internal/folder'
-import type galleryArtWork from '@/src/types/internal/galleryArtWork'
+import type Folder from '@/src/types/internal/folder'
+import type GalleryArtWork from '@/src/types/internal/galleryArtWork'
 
 /**
  * This is a converted version of GalleryViewModel to work with the site
  */
-interface galleryContent {
-  folders?: folder[]
-  work: { [key: string]: galleryArtWork }
+interface GalleryContent {
+  folders?: Folder[]
+  work: { [key: string]: GalleryArtWork }
 }
 
-export default galleryContent
+export default GalleryContent

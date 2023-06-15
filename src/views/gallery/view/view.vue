@@ -7,8 +7,8 @@ import { deepCopy } from '@/src/utilities/object'
 import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
-import type directoryRoute from '@/src/types/views/shared/directoryRoute'
-import type galleryArtWork from '@/src/types/internal/galleryArtWork'
+import type DirectoryRoute from '@/src/types/views/shared/directoryRoute'
+import type GalleryArtWork from '@/src/types/internal/galleryArtWork'
 import type GalleryViewModel from '@/src/types/views/gallery'
 
 import ViewArt from './viewArt.vue'
@@ -21,13 +21,13 @@ const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
-const work = ref({} as galleryArtWork)
+const work = ref({} as GalleryArtWork)
 
 const ready = ref(false)
 const directory = computed(() => (route.name as RouteRecordName).toString().replace(/(\w+\:\s)/gm, ''))
 
 const notStored = store.getGalleryById(directory.value) === undefined
-const config = store.getGalleryConfigByTitle(directory.value) as directoryRoute
+const config = store.getGalleryConfigByTitle(directory.value) as DirectoryRoute
 if (notStored) {
   fetchAndParseYaml(`/content/${config.path}.yml`)
   .then((parsed) => {
@@ -48,7 +48,7 @@ function initializeView() {
   let _work = deepCopy(_galleryRef.work[_iterator[0]])
   _iterator.shift()
   while (_iterator.length > 0) {
-    _work = amendVariantWithDefaults(_work, (_work.variants as { [key: string]: galleryArtWork })[_iterator[0]])
+    _work = amendVariantWithDefaults(_work, (_work.variants as { [key: string]: GalleryArtWork })[_iterator[0]])
     _iterator.shift()
   }
   work.value = _work

@@ -1,7 +1,7 @@
-type templateType =
+type TemplateType =
 | 'lander'
 | 'gallery'
 | 'tos'
 | 'commission'
 
-export default templateType
+export default TemplateType

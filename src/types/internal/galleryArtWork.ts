@@ -1,7 +1,7 @@
 /**
- * This is a converted version of artWork to work with the site.
+ * This is a converted version of ArtWork to work with the site.
  */
-interface artWork {
+interface GalleryArtWork {
   _id: string
   date?: Date
   description?: string
@@ -11,7 +11,7 @@ interface artWork {
   title?: string
   thumbnailPosition?: string
   thumbnailUrl?: string
-  variants?: { [key: string]: artWork }
+  variants?: { [key: string]: GalleryArtWork }
 }
 
-export default artWork
+export default GalleryArtWork

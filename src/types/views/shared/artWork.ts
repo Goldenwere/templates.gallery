@@ -1,25 +1,25 @@
 /**
- * An `artWork` is a greater piece of art with various details pertaining to it.
- * An `artWork` can contain `variants` that can be navigated deeper down into a gallery to explore said `variants`,
+ * An `ArtWork` is a greater piece of art with various details pertaining to it.
+ * An `ArtWork` can contain `variants` that can be navigated deeper down into a gallery to explore said `variants`,
  * or will open a preview of the piece if it does not contain `variants`.
  * 
  * Technically every variable can be undefined, however this will just lead to generic placeholders being added that do nothing.
- * At minimum, `url` *OR* `variants` (which eventually filter to `artWork` with urls) should be defined,
+ * At minimum, `url` *OR* `variants` (which eventually filter to `ArtWork` with urls) should be defined,
  * unless using for the featured artwork on the home page, in which only thumbnailUrl and optionally title needs to be defined.
  * 
- * When an `artWork` is read into the gallery, it is modified to contain an _id, which is a UUID generated
+ * When an `ArtWork` is read into the gallery, it is modified to contain an _id, which is a UUID generated
  * based off a combination of the `title`, `url`, `thumbnailUrl`, and `date`.
  * It is assumed that you will only use a `thumbnailUrl`/`url` once within a hierarchical level of variants.
  * Between levels, `thumbnailUrl` can be re-used.
- * For example, at the root level of a gallery, each `artWork` has a different thumbnail.
- * One `artWork` has variants, and one of those variants re-uses the same thumbnail used at the root.
+ * For example, at the root level of a gallery, each `ArtWork` has a different thumbnail.
+ * One `ArtWork` has variants, and one of those variants re-uses the same thumbnail used at the root.
  * This variant doesn't change in title/date/url. While this would generate the same UUID, it won't collide with anything
  * due to it being nested.
- * The only point of collision would be if you defined 2+ `artWork` with the same exact `title`, `url`, `thumbnailUrl`, and `date`,
+ * The only point of collision would be if you defined 2+ `ArtWork` with the same exact `title`, `url`, `thumbnailUrl`, and `date`,
  * or lack of definition thereof,
  * all within the same hierarchical level (e.g. the root gallery).
  */
-interface artWork {
+interface ArtWork {
   /**
    * The date the piece was finished, published, or otherwise deemed complete.
    */
@@ -35,7 +35,7 @@ interface artWork {
    * NOTE: This is an array of folder.id, hierarchy is irrelevant to the artwork.
    * 
    * NOTE: This is disregarded on variants,
-   * so organize this at the root artWork according to the variants available to a piece,
+   * so organize this at the root ArtWork according to the variants available to a piece,
    * or avoid using variants.
    */
   folders?: string[]
@@ -79,7 +79,7 @@ interface artWork {
    * This theoretical limit is specified in order to keep the URL under 2048 characters (the proposed maximum length of a URL),
    * as each variant will append a 36-character generated uuid (not including slash) to the url
    */
-  variants?: artWork[]
+  variants?: ArtWork[]
 }
 
-export default artWork
+export default ArtWork

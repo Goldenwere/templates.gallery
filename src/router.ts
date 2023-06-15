@@ -4,8 +4,8 @@ import {
   RouteRecordRaw,
 } from 'vue-router'
 
-import type templateType from '@/src/types/views/shared/templateType'
-import type directoryRoute from '@/src/types/views/shared/directoryRoute'
+import type TemplateType from '@/src/types/views/shared/templateType'
+import type DirectoryRoute from '@/src/types/views/shared/directoryRoute'
 
 const homeBody = () => import('./views/home/home.vue')
 const commissionBody = () => import('./views/commission/commission.vue')
@@ -29,7 +29,7 @@ export const templates: {[ key: string ]: () => Promise<any>} = {
   'commission': commissionBody,
 }
 
-export const pushRoute = (directory: directoryRoute): void => {
+export const pushRoute = (directory: DirectoryRoute): void => {
   const {
     template = 'gallery',
   } = directory
@@ -63,13 +63,13 @@ export const pushRoute = (directory: directoryRoute): void => {
   }
 }
 
-export const pushRoutes = (directories: directoryRoute[]): void => {
+export const pushRoutes = (directories: DirectoryRoute[]): void => {
   directories.forEach((directory) => {
     pushRoute(directory)
   })
 }
 
-export const getRoute = (directory: directoryRoute): RouteRecordRaw | undefined => {
+export const getRoute = (directory: DirectoryRoute): RouteRecordRaw | undefined => {
   const {
     template = 'gallery',
   } = directory

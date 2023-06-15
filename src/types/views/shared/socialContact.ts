@@ -2,7 +2,7 @@
  * A social contact is a page element used to represent some sort of external reference,
  * with options for categorizing, url linking, and subtitles
  */
-interface socialContact {
+interface SocialContact {
   /**
    * Allows for the site to sort contact information by category.
    * Any social contact missing a category will be categorized as miscellaneous.
@@ -32,4 +32,4 @@ interface socialContact {
   url?: string
 }
 
-export default socialContact
+export default SocialContact

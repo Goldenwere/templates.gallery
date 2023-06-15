@@ -1,7 +1,7 @@
 /**
  * Represents a folder to organize artwork under
  */
-interface folder {
+interface Folder {
   /**
    * A display name for the folder.
    * This is allowed to be the same as another folder within a gallery.
@@ -18,7 +18,7 @@ interface folder {
   /**
    * Optional subfolders.
    */
-  folders?: folder[]
+  folders?: Folder[]
 }
 
-export default folder
+export default Folder

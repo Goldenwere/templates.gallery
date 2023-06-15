@@ -5,7 +5,7 @@ import { getContentType } from '@/src/utilities/fetch'
 import { scrollTo } from '@/src/utilities/dom'
 import { useStore } from '@/src/store'
 
-import type galleryArtWork from '@/src/types/internal/galleryArtWork'
+import type GalleryArtWork from '@/src/types/internal/galleryArtWork'
 
 import AppButton from '@/src/components/inputs/appButton.vue'
 import AppPlaceholder from '@/src/components/embeds/appPlaceholder.vue'
@@ -15,7 +15,7 @@ import ViewTitlebar from './viewTitlebar.vue'
 const store = useStore()
 
 const props = defineProps<{
-  piece: galleryArtWork,
+  piece: GalleryArtWork,
 }>()
 
 const emits = defineEmits<{

@@ -1,5 +1,5 @@
-import type artWork from '@/src/types/views/shared/artWork'
-import type socialContact from '@/src/types/views/shared/socialContact'
+import type ArtWork from '@/src/types/views/shared/artWork'
+import type SocialContact from '@/src/types/views/shared/socialContact'
 
 /**
  * Modal for home route data
@@ -10,9 +10,9 @@ interface HomeViewModel {
   /** copyright notice displayed as is on the page */
   copyrightNotice: string
   /** list of social contacts that may be organized by their category */
-  social?: socialContact[]
+  social?: SocialContact[]
   /** artwork featured on the landing page with a selected piece set as the home page's background */
-  featured?: artWork[]
+  featured?: ArtWork[]
 }
 
 export default HomeViewModel
