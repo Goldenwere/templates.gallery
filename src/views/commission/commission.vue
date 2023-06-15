@@ -7,8 +7,8 @@ import { useStore } from '@/src/store'
 
 import type commissionData from '@/src/types/views/commission'
 
-import AppArticle from '@/src/components/embeds/appArticle.vue'
-import CommissionCarousel from './commissionCarousel.vue'
+import CommissionInfo from './commissionInfo.vue'
+import CommissionType from './commissionType.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -32,54 +32,23 @@ if (store.commission.commissionTypes === undefined) {
 #commission(
   v-if='ready'
 )
-  #header(
+  CommissionInfo(
     v-if='content.header'
+    :info='content.header'
   )
-    p(
-      v-if='content.header.form'
-    ) Commission form:&nbsp;
-      a(
-        :href='content.header.form'
-        target='_blank'
-      ) {{ content.header.form }}
-    AppArticle(
-      v-if='content.header.description'
-      :content='content.header.description'
-    )
   section#types
     h2 Commission Types
-    section.type(
-      v-for='commission in content.commissionTypes'
-      :class='{ "no-example": commission.examples === undefined }'
+    CommissionType(
+      v-for='commissionType in content.commissionTypes'
+      :commissionType='commissionType'
     )
-      h3 {{ commission.title }}
-      span.status(
-        v-if='commission.status'
-      ) {{ commission.status }}
-      AppArticle(
-        v-if='commission.details'
-        :content='commission.details'
-      )
-      .examples(
-        v-if='commission.examples'
-      )
-        CommissionCarousel(
-          :art='commission.examples'
-        )
 </template>
 
 <style scoped lang='sass'>
-@import './commission.mixins.scss'
-
 #commission
   width: 100%
   background: var(--theme-commission-bg)
   color: var(--theme-commission-fg)
-  #header
-    width: calc(100% - 6em)
-    max-width: 48em
-    margin: 0 auto 2em
-    padding-top: 2em
   #types
     width: calc(100% - 6em)
     max-width: 48em
@@ -87,14 +56,4 @@ if (store.commission.commissionTypes === undefined) {
     display: flex
     flex-direction: column
     gap: 1em
-    .type
-      flex: 0 0 100%
-      padding: 2em
-      &:last-child
-        margin-bottom: 2em
-@media screen and (max-aspect-ratio: 2/3)
-  #commission
-    #types
-      .type
-        padding: 1em
 </style>
