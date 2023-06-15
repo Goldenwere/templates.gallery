@@ -8,7 +8,8 @@
   "scripts": {
     "start": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "npm run build && npm run start:static",
+    "start-static": "rm -rf dist/content && cp -r content dist/content && vite preview"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.2",
