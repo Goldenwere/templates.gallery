@@ -16,6 +16,7 @@ export const useStore = defineStore('store', {
     tos: {} as tosData,
     galleries: {} as { [key: string]: galleryContent },
 
+    acknowledgedMaturity: false,
     hideHeader: false,
   }),
   actions: {
