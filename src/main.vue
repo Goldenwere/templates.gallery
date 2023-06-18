@@ -13,7 +13,7 @@ const route = useRoute()
 const router = useRouter()
 
 const showHeader = computed(() => {
-  return ready && route.name !== 'home' && !store.hideHeader
+  return ready.value && route.name !== 'home' && !store.hideHeader
 })
 const ready = ref(false)
 
