@@ -1,3 +1,4 @@
+import type AppTheme from '@/src/types/views/shared/appTheme'
 import type DirectoryRoute from '@/src/types/views/shared/directoryRoute'
 
 /**
@@ -14,6 +15,8 @@ interface AppViewModel {
   title: string
   /** optional subtitle for the site, mainly used on the home page */
   subtitle?: string
+  /** array of themes to use for app */
+  themes?: AppTheme[]
 }
 
 export default AppViewModel

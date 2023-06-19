@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 
+import type AppTheme from './types/views/shared/appTheme'
 import type CommissionViewModel from './types/views/commission'
 import type GalleryContent from './types/internal/galleryContent'
 import type HomeViewModel from './types/views/home'
@@ -18,6 +19,7 @@ export const useStore = defineStore('store', {
 
     acknowledgedMaturity: false,
     hideHeader: false,
+    currentTheme: null as unknown as AppTheme,
   }),
   actions: {
     setGalleryById(id: string, content: GalleryContent) {
