@@ -9,3 +9,10 @@
   bottom: $bottom;
   right: $right;
 }
+
+@mixin svgMask(
+  $url,
+) {
+  -webkit-mask-image: url($url);
+  mask-image: url($url);
+}

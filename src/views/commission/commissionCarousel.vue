@@ -51,6 +51,8 @@ function navigate(event: Event, direction: number) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
+
 .carousel
   .container
     position: relative
@@ -74,16 +76,11 @@ function navigate(event: Event, direction: number) {
       height: 1.5em
       display: flex
       .svg
-        margin: auto
         width: 0.5em
         height: 90%
         background: var(--theme-input-fg)
-        mask-position: center center
-        mask-size: 100% 100%
       .left
-        -webkit-mask-image: url('/assets/icons/triangle-left.svg')
-        mask-image: url('/assets/icons/triangle-left.svg')
+        @include svgMask('/assets/icons/triangle-left.svg')
       .right
-        -webkit-mask-image: url('/assets/icons/triangle-right.svg')
-        mask-image: url('/assets/icons/triangle-right.svg')
+        @include svgMask('/assets/icons/triangle-right.svg')
 </style>
