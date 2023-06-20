@@ -48,6 +48,11 @@ fetchAndParseYaml('/content/app.yml')
     store.$patch({ app: content as AppViewModel })
     instance.mount('#app')
     if (!!store.app.themes && store.app.themes.length > 0) {
+      const themeOutlet = document.createElement('link')
+      themeOutlet.setAttribute('href', store.app.themes[0].location)
+      themeOutlet.setAttribute('rel', 'stylesheet')
+      themeOutlet.setAttribute('id', 'theme-outlet')
+      document.querySelector('head')?.appendChild(themeOutlet)
       store.setTheme(store.app.themes[0])
     }
   })
