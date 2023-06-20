@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1"
+     style="stroke:none">
+    <circle
+       style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round"
+       id="path110"
+       cx="50"
+       cy="50"
+       r="22.5" />
+    <g
+       id="g1629"
+       style="stroke:none">
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1451"
+         width="5"
+         height="20"
+         x="47.5"
+         y="-20"
+         rx="2.5"
+         ry="2.5"
+         transform="rotate(90)" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1449"
+         width="5"
+         height="20"
+         x="47.5"
+         y="80"
+         rx="2.5"
+         ry="2.5" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1453"
+         width="5"
+         height="20"
+         x="47.5"
+         y="-100"
+         rx="2.5"
+         ry="2.5"
+         transform="rotate(90)" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1367"
+         width="5"
+         height="20"
+         x="47.5"
+         y="0"
+         rx="2.5"
+         ry="2.5" />
+    </g>
+    <g
+       id="g1639"
+       transform="rotate(45,50,50)"
+       style="stroke:none">
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1635"
+         width="5"
+         height="20"
+         x="47.5"
+         y="-20"
+         rx="2.5"
+         ry="2.5"
+         transform="rotate(90)" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1633"
+         width="5"
+         height="20"
+         x="47.5"
+         y="80"
+         rx="2.5"
+         ry="2.5" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1637"
+         width="5"
+         height="20"
+         x="47.5"
+         y="-100"
+         rx="2.5"
+         ry="2.5"
+         transform="rotate(90)" />
+      <rect
+         style="fill:currentColor;stroke:none;stroke-width:4.99999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect1631"
+         width="5"
+         height="20"
+         x="47.5"
+         y="0"
+         rx="2.5"
+         ry="2.5" />
+    </g>
+  </g>
+</svg>

@@ -9,6 +9,7 @@ const darkTheme = ref(store.app.themes?.find((other => other.designation === 'da
 const lightTheme = ref(store.app.themes?.find((other => other.designation === 'light' || other.designation === 'light_high_contrast')))
 const useToggle = computed(() => !!darkTheme.value && !!lightTheme.value && store.app.themes?.length === 2)
 const toggled = ref(false)
+const useDarkIcon = computed(() => !!store.currentTheme && (store.currentTheme.designation === 'dark' || store.currentTheme.designation === 'dark_high_contrast'))
 
 function onSelectTheme(event: Event, selection: AppTheme) {
   event.preventDefault()
@@ -32,11 +33,13 @@ function onToggleTheme(event: Event) {
 .theme-picker
   .toggle(
     v-if='useToggle'
+    tabindex='0'
     @click='onToggleTheme($event, theme)'
   )
     .button(
-      :class='{ "toggled": toggled }'
+      :class='{ "toggled": toggled, "dark": useDarkIcon }'
     )
+      .svg
   .dropdown(
     v-else
   )
@@ -48,10 +51,16 @@ function onToggleTheme(event: Event) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
+
 .theme-picker
   position: fixed
   bottom: 0.5em
   right: 0.5em
+  opacity: 0.5
+  &:hover,
+  &:focus
+    opacity: 1
   .toggle
     background-color: #aaaaaa
     width: 4em
@@ -66,8 +75,17 @@ function onToggleTheme(event: Event) {
       left: 0
       border-radius: 50%
       position: absolute
+      display: flex
+      .svg
+        width: 80%
+        height: 80%
+        background: black
+        @include svgMask('/assets/icons/sun.svg')
       &.toggled
         transform: translateX(2em)
+      &.dark
+        .svg
+          @include svgMask('/assets/icons/moon.svg')
   .option
     cursor: pointer
 </style>
