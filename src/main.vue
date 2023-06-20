@@ -7,6 +7,7 @@ import { fetchAndParseYaml } from '@/src/utilities/fetch'
 import { useStore } from '@/src/store'
 
 import AppHeader from './components/navigation/appHeader.vue'
+import AppThemePicker from './components/inputs/appThemePicker.vue'
 
 const store = useStore()
 const route = useRoute()
@@ -51,6 +52,7 @@ function setTitle(route: RouteLocationNormalized) {
     router-view(
       v-if='ready'
     )
+  AppThemePicker
 </template>
 
 <style lang='sass' scoped>

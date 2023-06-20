@@ -25,6 +25,10 @@ export const useStore = defineStore('store', {
     setGalleryById(id: string, content: GalleryContent) {
       this.galleries[id] = content
     },
+    setTheme(newTheme: AppTheme) {
+      this.currentTheme = newTheme
+      document.querySelector('#theme-outlet')?.setAttribute('href', newTheme.location)
+    },
   },
   getters: {
     getGalleryById: (state) => {
