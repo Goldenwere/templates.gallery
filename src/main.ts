@@ -47,4 +47,7 @@ fetchAndParseYaml('/content/app.yml')
     store.$patch({ environment: environment as Environment })
     store.$patch({ app: content as AppViewModel })
     instance.mount('#app')
+    if (!!store.app.themes && store.app.themes.length > 0) {
+      store.setTheme(store.app.themes[0])
+    }
   })

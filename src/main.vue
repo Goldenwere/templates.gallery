@@ -52,7 +52,9 @@ function setTitle(route: RouteLocationNormalized) {
     router-view(
       v-if='ready'
     )
-  AppThemePicker
+  AppThemePicker(
+    v-if='store.app.themes'
+  )
 </template>
 
 <style lang='sass' scoped>
