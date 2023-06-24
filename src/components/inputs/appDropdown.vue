@@ -20,8 +20,8 @@ const emits = defineEmits(['update:modelValue'])
   select.input(
     :name='id'
     :id='id'
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    :value='modelValue'
+    @input='$emit("update:modelValue", $event.target.value)'
   )
     option(
       v-for='option in options'

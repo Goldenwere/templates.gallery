@@ -8,7 +8,7 @@ import 'tippy.js/animations/shift-away.css'
 import './main.sass'
 
 import { envProd } from '@/src/env.prod'
-import { fetchAndParseYaml } from '@/src/utilities/fetch'
+import { fetchAndParseYaml, storage } from '@/src/utilities/fetch'
 import router, { pushRoutes } from '@/src/router'
 import { useStore } from '@/src/store'
 
@@ -46,13 +46,16 @@ fetchAndParseYaml('/content/app.yml')
     const environment: Environment = envProd
     store.$patch({ environment: environment as Environment })
     store.$patch({ app: content as AppViewModel })
-    instance.mount('#app')
     if (!!store.app.themes && store.app.themes.length > 0) {
       const themeOutlet = document.createElement('link')
       themeOutlet.setAttribute('href', store.app.themes[0].location)
       themeOutlet.setAttribute('rel', 'stylesheet')
       themeOutlet.setAttribute('id', 'theme-outlet')
       document.querySelector('head')?.appendChild(themeOutlet)
-      store.setTheme(store.app.themes[0])
+      store.setTheme(storage.read(`${store.app.title}:theme`) || store.app.themes[0])
     }
+    if (storage.read(`${store.app.title}:acknowledgedMaturity`) === true) {
+      store.$patch({ acknowledgedMaturity: true })
+    }
+    instance.mount('#app')
   })

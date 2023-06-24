@@ -15,7 +15,7 @@ and are of age in your country of residence in order to view the gallery's mater
 
 function onAcknowledged(event: Event) {
   event.preventDefault()
-  store.$patch({ acknowledgedMaturity: true, })
+  store.setAcknowledged()
 }
 </script>
 

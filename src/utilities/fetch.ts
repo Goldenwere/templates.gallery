@@ -86,3 +86,54 @@ export const getContentType = async (path: string) => {
   const response = await fetch(path, {method: 'HEAD'})
   return response.headers.get('Content-Type')
 }
+
+/**
+ * Creates a Promise which waits for a condition to be true
+ * @param condition the condition which should be met
+ * @param interval the period of time (ms) to wait between attempts
+ * @param tries the number of attempts (up to and including this number) to try before determining the condition couldn't be met
+ * @returns A Promise which will resolve when the condition is met or reject if timed out after a period of `(interval * tries)`
+ */
+export const awaitCondition = (condition: () => boolean, interval: number = 100, tries: number = 100) => {
+  return new Promise<void>((resolve, reject) => {
+    let _attempts = 1
+    const wait: any = () => {
+      _attempts += 1
+      console.log(condition())
+      if (condition()) {
+        return resolve()
+      } else if (_attempts > tries) {
+        reject()
+      } else {
+        setTimeout(wait, interval)
+      }
+    }
+    wait()
+  })
+}
+
+/**
+ * Methods related to local storage
+ */
+export const storage = {
+  /**
+   * Retrieves a value from local storage
+   * @param key the key of the local storage item
+   * @returns the parsed object or null
+   */
+  read: <T>(key: string) => {
+    const value = window.localStorage.getItem(key)
+    return !!value
+      ? JSON.parse(value) as T
+      : null
+  },
+
+  /**
+   * Stores a value to local storage
+   * @param key the key of the local storage item
+   * @param value the object to store
+   */
+  write: <T>(key: string, value: T) => {
+    window.localStorage.setItem(key, JSON.stringify(value))
+  },
+}

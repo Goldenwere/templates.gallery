@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 
+import { storage } from './utilities/fetch'
+
 import type AppTheme from './types/views/shared/appTheme'
 import type CommissionViewModel from './types/views/commission'
 import type GalleryContent from './types/internal/galleryContent'
@@ -10,6 +12,8 @@ import type TosViewModel from './types/views/tos'
 
 export const useStore = defineStore('store', {
   state: () => ({
+    _ready: false,
+
     environment: {} as Environment,
     app: {} as AppViewModel,
     home: {} as HomeViewModel,
@@ -27,8 +31,13 @@ export const useStore = defineStore('store', {
     },
     setTheme(newTheme: AppTheme) {
       this.currentTheme = newTheme
+      storage.write(`${this.app.title}:theme`, newTheme)
       document.querySelector('#theme-outlet')?.setAttribute('href', newTheme.location)
     },
+    setAcknowledged() {
+      this.acknowledgedMaturity = true
+      storage.write(`${this.app.title}:acknowledgedMaturity`, true)
+    }
   },
   getters: {
     getGalleryById: (state) => {

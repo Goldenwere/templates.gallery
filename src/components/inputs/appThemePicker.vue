@@ -8,20 +8,31 @@ import type AppTheme from '@/src/types/views/shared/appTheme'
 import AppDropdown from './appDropdown.vue'
 
 const store = useStore()
+const selectedTheme = ref(store.currentTheme?.location)
+// variables for dropdown
 const themesDropdownOptions = computed(() => store.app.themes?.map(theme => ({ id: theme.location, displayName: theme.displayName })))
-const selectedTheme = ref(store.app.themes?.[0].location)
+// variables for toggle
 const darkTheme = ref(store.app.themes?.find((other => other.designation === 'dark' || other.designation === 'dark_high_contrast')))
 const lightTheme = ref(store.app.themes?.find((other => other.designation === 'light' || other.designation === 'light_high_contrast')))
 const useToggle = computed(() => !!darkTheme.value && !!lightTheme.value && store.app.themes?.length === 2)
 const toggled = ref(false)
 const useDarkIcon = computed(() => !!store.currentTheme && (store.currentTheme.designation === 'dark' || store.currentTheme.designation === 'dark_high_contrast'))
 
+/**
+ * Handler for dropdown selection of theme
+ * @param selection the theme id (location) that was selected
+ */
 function onSelectTheme(selection: string) {
   store.setTheme(store.app.themes?.find((other => other.location === selection)) as AppTheme)
   selectedTheme.value = selection
 }
 
+/**
+ * Handler for toggle button of theme
+ * @param event the event object that called this function
+ */
 function onToggleTheme(event: Event) {
+  event.preventDefault()
   switch (store.currentTheme.designation) {
     case 'dark':
     case 'dark_high_contrast':
@@ -40,6 +51,7 @@ function onToggleTheme(event: Event) {
     v-if='useToggle'
     tabindex='0'
     @click='onToggleTheme($event, theme)'
+    @keydown.enter='onToggleTheme($event, theme)'
   )
     .button(
       :class='{ "toggled": toggled, "dark": useDarkIcon }'
