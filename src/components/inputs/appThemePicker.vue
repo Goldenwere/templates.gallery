@@ -1,19 +1,24 @@
 <script setup lang='ts'>
 import { computed, ref } from 'vue'
+
 import { useStore } from '@/src/store'
+
 import type AppTheme from '@/src/types/views/shared/appTheme'
 
+import AppDropdown from './appDropdown.vue'
+
 const store = useStore()
-const themes = ref(store.app.themes)
+const themesDropdownOptions = computed(() => store.app.themes?.map(theme => ({ id: theme.location, displayName: theme.displayName })))
+const selectedTheme = ref(store.app.themes?.[0].location)
 const darkTheme = ref(store.app.themes?.find((other => other.designation === 'dark' || other.designation === 'dark_high_contrast')))
 const lightTheme = ref(store.app.themes?.find((other => other.designation === 'light' || other.designation === 'light_high_contrast')))
 const useToggle = computed(() => !!darkTheme.value && !!lightTheme.value && store.app.themes?.length === 2)
 const toggled = ref(false)
 const useDarkIcon = computed(() => !!store.currentTheme && (store.currentTheme.designation === 'dark' || store.currentTheme.designation === 'dark_high_contrast'))
 
-function onSelectTheme(event: Event, selection: AppTheme) {
-  event.preventDefault()
-  store.setTheme(selection)
+function onSelectTheme(selection: string) {
+  store.setTheme(store.app.themes?.find((other => other.location === selection)) as AppTheme)
+  selectedTheme.value = selection
 }
 
 function onToggleTheme(event: Event) {
@@ -40,14 +45,14 @@ function onToggleTheme(event: Event) {
       :class='{ "toggled": toggled, "dark": useDarkIcon }'
     )
       .svg
-  .dropdown(
+  AppDropdown(
     v-else
+    label='Theme'
+    id='theme-dropdown'
+    :options='themesDropdownOptions'
+    :modelValue='selectedTheme'
+    @update:modelValue='onSelectTheme($event)'
   )
-    .option(
-      v-for='theme in themes'
-      @click='onSelectTheme($event, theme)'
-    )
-      span {{ theme.displayName }}
 </template>
 
 <style scoped lang='sass'>
