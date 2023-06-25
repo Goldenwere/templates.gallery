@@ -1,5 +1,8 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
+
+import { randomRangeInt } from '@/src/utilities/number'
+
 import type ArtWork from '@/src/types/views/shared/artWork'
 import type HomeViewModel from '@/src/types/views/home'
 import type AppViewModel from '@/src/types/views/app'
@@ -13,11 +16,17 @@ const emit = defineEmits<{
   (e: 'selectedImage', image?: ArtWork): void
 }>()
 
-const selectedImage = ref({} as ArtWork | undefined)
-const selectedImageIndex = ref(0)
+// Determine what the first image should be based on settings
+let selectedImageInitialIndex = 0
+if (props.content.featuredFirstImage === 'random') {
+  selectedImageInitialIndex = randomRangeInt(0, (props.content.featured?.length || 1) - 1)
+} else if (typeof(props.content.featuredFirstImage) === typeof(0)) {
+  selectedImageInitialIndex = props.content.featuredFirstImage as number
+}
 
-selectedImage.value = props.content.featured?.[0]
-emit('selectedImage', selectedImage.value)
+const selectedImageIndex = ref(selectedImageInitialIndex)
+
+emit('selectedImage', props.content.featured?.[selectedImageIndex.value])
 
 /**
  * Handles selection of featured artwork
@@ -26,9 +35,8 @@ emit('selectedImage', selectedImage.value)
  */
 function onFeatureClick(event: Event, index: number) {
   event.preventDefault()
-  selectedImage.value = props.content.featured?.[index]
   selectedImageIndex.value = index
-  emit('selectedImage', selectedImage.value)
+  emit('selectedImage', props.content.featured?.[selectedImageIndex.value])
 }
 </script>
 

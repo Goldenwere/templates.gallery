@@ -13,6 +13,8 @@ interface HomeViewModel {
   social?: SocialContact[]
   /** artwork featured on the landing page with a selected piece set as the home page's background */
   featured?: ArtWork[]
+  /** the initial featured image on the ladning page */
+  featuredFirstImage?: number | 'random'
 }
 
 export default HomeViewModel
