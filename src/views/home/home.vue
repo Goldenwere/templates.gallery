@@ -10,7 +10,7 @@ import type HomeViewModel from '@/src/types/views/home'
 import HomeAbout from './homeAbout.vue'
 import HomeLanding from './homeLanding.vue'
 import HomeNavigation from './homeNavigation.vue'
-import HomeSocial from './homeSocial.vue'
+import HomePlaces from './homePlaces.vue'
 
 const store = useStore()
 
@@ -60,7 +60,7 @@ function onSelectedImage(image: ArtWork) {
       v-if='content.about'
       :aboutContent='content.about'
     )
-    HomeSocial(
+    HomePlaces(
       v-if='content.social'
       :socialContacts='content.social'
     )

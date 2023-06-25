@@ -19,4 +19,6 @@ section#about
 #about
   background: var(--theme-home-about-bg)
   color: var(--theme-home-about-fg)
+  a
+    color: var(--theme-home-about-link)
 </style>

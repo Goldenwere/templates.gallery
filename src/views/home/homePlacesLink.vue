@@ -29,14 +29,14 @@ a.social(
 
 <style scoped lang='sass'>
 .social
-  background: var(--theme-social-bg)
-  color: var(--theme-social-fg)
+  background: var(--theme-home-places-link-bg)
+  color: var(--theme-home-places-link-fg)
   text-decoration: none
   display: flex
   padding: 0.5em
   gap: 0.5em
   &:focus
-    outline: 1px solid var(--theme-social-fg)
+    outline: 1px solid var(--theme-home-places-link-fg)
   .text
     flex: 1 1 auto
     display: flex

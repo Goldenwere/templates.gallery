@@ -43,8 +43,8 @@ const emit = defineEmits<{
   height: 100vh
   text-align: center
   .body
-    background: var(--theme-landing-body-bg)
-    color: var(--theme-landing-body-fg)
+    background: var(--theme-home-landing-bg)
+    color: var(--theme-home-landing-fg)
     position: absolute
     display: flex
     flex-direction: column
@@ -56,6 +56,8 @@ const emit = defineEmits<{
       max-width: 95%
       height: auto
       width: auto
+    a
+      color: var(--theme-home-landing-link)
 
 @media screen and (max-aspect-ratio: 1/1)
   #landing

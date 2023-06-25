@@ -60,4 +60,6 @@ nav#navigation
     .placeholder
       height: 5em
       width: 5em
+    a
+      color: var(--theme-home-nav-link)
 </style>

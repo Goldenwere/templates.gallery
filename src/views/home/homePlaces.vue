@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import type SocialContact from '@/src/types/views/shared/socialContact'
 
-import HomeSocialLink from './homeSocialLink.vue'
+import HomePlacesLink from './homePlacesLink.vue'
 
 const props = defineProps<{
   socialContacts: SocialContact[]
@@ -33,7 +33,7 @@ section#places
   )
     h3 {{ index }}
     .grid
-      HomeSocialLink(
+      HomePlacesLink(
         v-for='social in category'
         :social='social'
       )
