@@ -91,6 +91,9 @@ function onSelectedImage(image: ArtWork) {
 @media screen and (max-aspect-ratio: 1/1)
   #info
     flex-direction: column
+    #places
+      /* make space for theme picker */
+      padding-bottom: 4em
   #navigation,
   #about,
   #places

@@ -49,6 +49,8 @@ if (store.commission.commissionTypes === undefined) {
   width: 100%
   background: var(--theme-commission-bg)
   color: var(--theme-commission-fg)
+  /* make space for theme picker */
+  margin-bottom: 2em
   #types
     width: calc(100% - 6em)
     max-width: 48em

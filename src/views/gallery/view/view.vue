@@ -79,8 +79,8 @@ function onBack(event: Event) {
 #view
   background: var(--theme-view-bg)
   color: var(--theme-view-fg)
-  min-height: calc(100vh - 4rem)
-  padding: 1em 1em
+  min-height: calc(100vh - 4.5rem)
+  padding: 1em 1em 4em 1em
   ::deep(.viewer)
     position: relative
 </style>

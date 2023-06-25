@@ -236,6 +236,8 @@ GalleryWarning(
   display: grid
   background: var(--theme-gallery-bg)
   color: var(--theme-gallery-fg)
+  /* make space for theme picker */
+  margin-bottom: 4em
   &.hasNav
     grid-template-rows: 7em auto
   &.hasFolders
