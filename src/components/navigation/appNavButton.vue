@@ -1,9 +1,16 @@
 <script setup lang='ts'>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const emit = defineEmits<{
   (e: 'stateChanged', state?: boolean): void
 }>()
+
+const router = useRouter()
+router.afterEach((to, from) => {
+  isOpen.value = false
+  emit('stateChanged', isOpen.value)
+})
 
 const isOpen = ref(false)
 
