@@ -16,9 +16,7 @@ section#about
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #about
-  background: var(--theme-home-about-bg)
-  color: var(--theme-home-about-fg)
-  a
-    color: var(--theme-home-about-link)
+  @include themeColors(var(--theme-home-about-bg), var(--theme-home-about-fg), var(--theme-home-about-link))
 </style>

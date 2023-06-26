@@ -36,15 +36,13 @@ const emit = defineEmits<{
 
 <style scoped lang='sass'>
 @import '@/src/styles/mixins.scss'
-
 #landing
   position: relative
   width: 100vw
   height: 100vh
   text-align: center
   .body
-    background: var(--theme-home-landing-bg)
-    color: var(--theme-home-landing-fg)
+    @include themeColors(var(--theme-home-landing-bg), var(--theme-home-landing-fg), var(--theme-home-landing-link))
     position: absolute
     display: flex
     flex-direction: column
@@ -56,8 +54,6 @@ const emit = defineEmits<{
       max-width: 95%
       height: auto
       width: auto
-    a
-      color: var(--theme-home-landing-link)
 
 @media screen and (max-aspect-ratio: 1/1)
   #landing

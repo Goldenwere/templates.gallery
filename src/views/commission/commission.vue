@@ -45,10 +45,10 @@ if (store.commission.commissionTypes === undefined) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #commission
+  @include themeColors(var(--theme-commission-bg), var(--theme-commission-fg), var(--theme-commission-link))
   width: 100%
-  background: var(--theme-commission-bg)
-  color: var(--theme-commission-fg)
   /* make space for theme picker */
   margin-bottom: 2em
   #types

@@ -1,4 +1,6 @@
+@import '@/src/styles/mixins.scss';
 section.type {
+  @include themeColors(var(--theme-commission-type-bg), var(--theme-commission-type-fg), var(--theme-commission-type-link));
   display: grid;
   gap: 1em;
   grid-template-areas:
@@ -8,8 +10,6 @@ section.type {
   ;
   grid-template-rows: 0.5em 0.5em auto;
   grid-template-columns: 15em auto;
-  background: var(--theme-commission-box-bg);
-  color: var(--theme-commission-box-fg);
 
   &.no-example {
     grid-template-areas:

@@ -40,9 +40,9 @@ section#places
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #places
-  background: var(--theme-home-places-bg)
-  color: var(--theme-home-places-fg)
+  @include themeColors(var(--theme-home-places-bg), var(--theme-home-places-fg), var(--theme-home-places-link-fg))
   h3
     text-transform: capitalize
   .grid

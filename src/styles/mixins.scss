@@ -16,3 +16,15 @@
   -webkit-mask-image: url($url);
   mask-image: url($url);
 }
+
+@mixin themeColors(
+  $bg,
+  $fg,
+  $link,
+) {
+  background: $bg;
+  color: $fg;
+  a {
+    color: $link;
+  }
+}

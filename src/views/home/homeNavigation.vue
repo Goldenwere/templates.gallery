@@ -41,9 +41,9 @@ nav#navigation
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #navigation
-  background: var(--theme-home-nav-bg)
-  color: var(--theme-home-nav-fg)
+  @include themeColors(var(--theme-home-nav-bg), var(--theme-home-nav-fg), var(--theme-home-nav-link))
   display: flex
   flex-direction: column
   justify-content: flex-start
@@ -60,6 +60,4 @@ nav#navigation
     .placeholder
       height: 5em
       width: 5em
-    a
-      color: var(--theme-home-nav-link)
 </style>

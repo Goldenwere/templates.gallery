@@ -61,7 +61,7 @@ const hasOnsiteImage = computed(() => {
   flex-direction: column
   position: relative
   &:focus
-    outline: 1px solid var(--theme-nav-fg)
+    outline: 1px solid var(--theme-gallery-element-focus)
   .indicator
     opacity: 0.75
     display: block

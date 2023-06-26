@@ -47,10 +47,9 @@ if (store.tos.terms === undefined) {
 <style scoped lang='sass'>
 @import '@/src/styles/mixins.scss'
 #tos
+  @include themeColors(var(--theme-tos-bg), var(--theme-tos-fg), var(--theme-tos-link))
   width: 100%
   padding: 2em
-  background: var(--theme-tos-bg)
-  color: var(--theme-tos-fg)
   z-index: 1
   position: relative
   .background
