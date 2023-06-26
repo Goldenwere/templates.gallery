@@ -76,9 +76,9 @@ function onBack(event: Event) {
 </template>
 
 <style scoped lang='sass'>
+@import '@/src/styles/mixins.scss'
 #view
-  background: var(--theme-view-bg)
-  color: var(--theme-view-fg)
+  @include themeColors(var(--theme-view-bg), var(--theme-view-fg), var(--theme-view-link))
   min-height: calc(100vh - 4.5rem)
   padding: 1em 1em 4em 1em
   ::deep(.viewer)
