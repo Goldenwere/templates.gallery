@@ -1,5 +1,5 @@
 @import '@/src/styles/mixins.scss';
-section.type {
+.commission-type {
   @include themeColors(var(--theme-commission-type-bg), var(--theme-commission-type-fg), var(--theme-commission-type-link));
   display: grid;
   gap: 1em;
@@ -44,8 +44,8 @@ section.type {
   }
 }
 
-@media screen and (max-aspect-ratio: 2/3) {
-  section.type {
+@media screen and (max-width: 480px) {
+  .commission-type {
     grid-template-areas:
       'heading'
       'status'
@@ -56,14 +56,12 @@ section.type {
     grid-template-rows: auto;
     gap: 0.25em;
 
-    &.no-examples {
-      &.no-example {
-        grid-template-areas:
-          'heading'
-          'status'
-          'article'
-        ;
-      }
+    &.no-example {
+      grid-template-areas:
+        'heading'
+        'status'
+        'article'
+      ;
     }
   }
 }

@@ -10,7 +10,7 @@ const props = defineProps<{
 </script>
 
 <template lang='pug'>
-section.type(
+section.commission-type(
   :class='{ "no-example": commissionType.examples === undefined }'
 )
   h3 {{ commissionType.title }}
@@ -32,13 +32,12 @@ section.type(
 <style scoped lang='sass'>
 @import './commissionType.scss'
 
-.type
-  flex: 0 0 100%
+.commission-type
   padding: 2em
   &:last-child
     margin-bottom: 2em
 
 @media screen and (max-aspect-ratio: 2/3)
-  .type
+  .commission-type
     padding: 1em
 </style>

@@ -33,8 +33,8 @@ function navigate(event: Event, direction: number) {
 .carousel
   .container
     img(
-      :src='props.art[selected].thumbnailUrl'
-      :alt='props.art[selected].alt'
+      :src='art[selected].thumbnailUrl'
+      :alt='art[selected].alt'
     )
   .controls
     AppButton(

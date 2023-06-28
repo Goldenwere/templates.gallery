@@ -2,7 +2,7 @@
 import AppArticle from '@/src/components/embeds/appArticle.vue'
 
 const props = defineProps<{
-  info: {
+  header: {
     description?: string,
     form?: string,
   },
@@ -10,24 +10,23 @@ const props = defineProps<{
 </script>
 
 <template lang='pug'>
-#commission-info
+section#commission-header.wide
+  h2 Commission Info
   p(
-    v-if='info.form'
+    v-if='header.form'
   ) Commission form:&nbsp;
     a(
-      :href='info.form'
+      :href='header.form'
       target='_blank'
-    ) {{ info.form }}
+    ) {{ header.form }}
   AppArticle(
-    v-if='info.description'
-    :content='info.description'
+    v-if='header.description'
+    :content='header.description'
   )
 </template>
 
 <style scoped lang='sass'>
-#commission-info
-  width: calc(100% - 6em)
-  max-width: 48em
-  margin: 0 auto 2em
+@import './commission.shared.sass'
+#commission-header
   padding-top: 2em
 </style>

@@ -7,7 +7,7 @@ import { useStore } from '@/src/store'
 
 import type CommissionViewModel from '@/src/types/views/commission'
 
-import CommissionInfo from './commissionInfo.vue'
+import CommissionHeader from './commissionHeader.vue'
 import CommissionType from './commissionType.vue'
 
 const store = useStore()
@@ -32,11 +32,11 @@ if (store.commission.commissionTypes === undefined) {
 #commission(
   v-if='ready'
 )
-  CommissionInfo(
+  CommissionHeader(
     v-if='content.header'
-    :info='content.header'
+    :header='content.header'
   )
-  section#types
+  section#commission-types.wide
     h2 Commission Types
     CommissionType(
       v-for='commissionType in content.commissionTypes'
@@ -46,16 +46,16 @@ if (store.commission.commissionTypes === undefined) {
 
 <style scoped lang='sass'>
 @import '@/src/styles/mixins.scss'
+@import './commission.shared.sass'
 #commission
   @include themeColors(var(--theme-commission-bg), var(--theme-commission-fg), var(--theme-commission-link))
-  width: 100%
   /* make space for theme picker */
   margin-bottom: 2em
-  #types
-    width: calc(100% - 6em)
-    max-width: 48em
-    margin: auto
+  width: 100%
+  #commission-types
     display: flex
     flex-direction: column
     gap: 1em
+    .commission-type
+      flex: 0 0 100%
 </style>
